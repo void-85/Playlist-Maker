@@ -12,5 +12,6 @@
     <color name="app_background">#3772E7</color>
     <color name="app_header">#FFFFFF</color>
     <color name="button">#FFFFFF</color>
+    <color name="app_settings_background">#F5F5F5</color>
 
 </resources>

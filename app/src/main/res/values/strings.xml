@@ -7,4 +7,6 @@
     <string name="medialibrary_button">Медиатека</string>
     <string name="settings_button">Настройки</string>
 
+    <string name="settings_header">Настройки</string>
+
 </resources>

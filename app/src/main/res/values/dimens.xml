@@ -10,4 +10,10 @@
 
     <dimen name="icon_padding">10dp</dimen>
 
+    <dimen name="settings_back_button_margin_left_top">20dp</dimen>
+
+
+    <dimen name="app_font_size">22sp</dimen>
+    <dimen name="app_icon_size">20sp</dimen>
+
 </resources>
