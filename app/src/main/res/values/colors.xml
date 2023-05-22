@@ -13,5 +13,6 @@
     <color name="app_header">#FFFFFF</color>
     <color name="button">#FFFFFF</color>
     <color name="app_settings_background">#F5F5F5</color>
+    <color name="in_dev_color">#CCCC11</color>
 
 </resources>

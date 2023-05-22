@@ -22,6 +22,8 @@
             android:layout_height="@dimen/settings_header_size">
 
             <ImageView
+                android:id="@+id/settings_go_back_button"
+
                 android:layout_width="16dp"
                 android:layout_height="16dp"
 
