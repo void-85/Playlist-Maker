@@ -8,5 +8,11 @@
     <string name="settings_button">Настройки</string>
 
     <string name="settings_header">Настройки</string>
+    <string name="settings_back_button_description">Вернуться назад</string>
+
+    <string name="settings_switch_to_dark_theme">Тёмная тема</string>
+    <string name="settings_share_app">Поделиться приложением</string>
+    <string name="settings_support">Написать в поддержку</string>
+    <string name="settings_user_agreement">Пользовательское соглашение</string>
 
 </resources>

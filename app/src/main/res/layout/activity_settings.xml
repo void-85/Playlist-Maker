@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app     ="http://schemas.android.com/apk/res-auto"
     xmlns:tools   ="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,23 +15,153 @@
         tools:layout_editor_absoluteY="1dp"
         android:background="@color/app_settings_background">
 
-        <TextView
+
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/settings_header_size">
 
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
 
-            android:text="@string/settings_header"
-            android:textSize="@dimen/app_font_size"
-            android:textColor="@color/black"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
 
-            app:icon="@drawable/back_icon"
-            app:iconSize = "@dimen/app_icon_size"
+                android:src="@drawable/back_icon"
+                android:contentDescription="@string/settings_back_button_description"/>
 
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="14dp"
+
+                android:text="@string/settings_header"
+                android:textSize="@dimen/app_font_size"
+                android:textColor="@color/black"/>
+
+        </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_parameters_size">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/settings_parameters_padding_width"
+                android:layout_marginTop="@dimen/settings_parameters_padding_height"
+
+                android:text="@string/settings_switch_to_dark_theme"
+                android:textSize="@dimen/app_small_font_size"
+                android:textColor="@color/black"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="56dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="10dp"/>
+
+        </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_parameters_size">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/settings_parameters_padding_width"
+                android:layout_marginTop="@dimen/settings_parameters_padding_height"
+
+                android:text="@string/settings_share_app"
+                android:textSize="@dimen/app_small_font_size"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="@dimen/settings_icon_size"
+                android:layout_height="@dimen/settings_icon_size"
+
+                android:src="@drawable/share_icon"
+                android:contentDescription="@string/settings_share_app"
+
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/settings_icon_padding_top"
+                android:layout_marginEnd="@dimen/settings_icon_padding_right"
+                />
+
+        </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_parameters_size">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/settings_parameters_padding_width"
+                android:layout_marginTop="@dimen/settings_parameters_padding_height"
+
+                android:text="@string/settings_support"
+                android:textSize="@dimen/app_small_font_size"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="@dimen/settings_icon_size"
+                android:layout_height="@dimen/settings_icon_size"
+
+                android:src="@drawable/support_icon"
+                android:contentDescription="@string/settings_support"
+
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/settings_icon_padding_top"
+                android:layout_marginEnd="@dimen/settings_icon_padding_right"
+                />
+
+        </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_parameters_size">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/settings_parameters_padding_width"
+                android:layout_marginTop="@dimen/settings_parameters_padding_height"
+
+                android:text="@string/settings_user_agreement"
+                android:textSize="@dimen/app_small_font_size"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="@dimen/settings_icon_size"
+                android:layout_height="@dimen/settings_icon_size"
+
+                android:src="@drawable/next_icon"
+                android:contentDescription="@string/settings_user_agreement"
+
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/settings_icon_padding_top"
+                android:layout_marginEnd="@dimen/settings_icon_padding_right"
+                />
+
+        </FrameLayout>
 
     </LinearLayout>
 
