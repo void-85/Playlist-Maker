@@ -29,6 +29,8 @@
 
 
         <Button
+            android:id="@+id/search_button"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/default_margin"
@@ -57,6 +59,8 @@
 
 
         <Button
+            android:id="@+id/medialibrary_button"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/default_margin"
@@ -86,6 +90,8 @@
 
 
         <Button
+            android:id="@+id/settings_button"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/default_margin"
