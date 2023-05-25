@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-
     xmlns:android ="http://schemas.android.com/apk/res/android"
     xmlns:app     ="http://schemas.android.com/apk/res-auto"
     xmlns:tools   ="http://schemas.android.com/tools"
@@ -10,121 +9,71 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    android:background="@color/app_background"
+    android:background="@color/main_screen_background"
     tools:context=".MainActivity">
 
 
 
     <TextView
-
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/header_margin_top"
 
         android:text="@string/app_header"
-        android:textSize="@dimen/app_font_size"
-        android:textColor="@color/app_header"/>
-
-
+        android:textColor="@color/main_screen_header"
+        style="@style/main_font"
+    />
 
     <Button
-
         android:id="@+id/search_button"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="@dimen/top_button_margin_top"
-        android:layout_marginEnd="@dimen/default_margin"
         android:layout_weight="1"
 
-        android:backgroundTint="@color/button"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
+        android:layout_marginTop="@dimen/top_button_margin_top"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
 
         android:text="@string/search_button"
-        android:textSize="@dimen/app_font_size"
-
-        android:textAllCaps="false"
-
-        android:textColor="@color/black"
-        app:cornerRadius="@dimen/corner_radius"
-
         app:icon="@drawable/search"
-        app:iconSize = "@dimen/app_icon_size"
-
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/black"/>
-
-
+        style="@style/main_screen_button"
+    />
 
     <Button
-
         android:id="@+id/medialibrary_button"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/default_margin"
-
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
         android:layout_weight="1"
 
-        android:backgroundTint="@color/button"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
 
         android:text="@string/medialibrary_button"
-        android:textSize="@dimen/app_font_size"
-
-        android:textAllCaps="false"
-
-        android:textColor="@color/black"
-        app:cornerRadius="@dimen/corner_radius"
-
         app:icon="@drawable/media_library"
-        app:iconSize = "@dimen/app_icon_size"
-
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/black" />
-
-
+        style="@style/main_screen_button"
+    />
 
     <Button
-
         android:id="@+id/settings_button"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/default_margin"
-
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/bottom_button_margin_bottom"
         android:layout_weight="1"
 
-        android:backgroundTint="@color/button"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/bottom_button_margin_bottom"
 
         android:text="@string/settings_button"
-        android:textSize="@dimen/app_font_size"
-
-        android:textAllCaps="false"
-
-        android:textColor="@color/black"
-        app:cornerRadius="@dimen/corner_radius"
-
         app:icon="@drawable/settings"
-        app:iconSize = "@dimen/app_icon_size"
-
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/black" />
+        style="@style/main_screen_button"
+    />
 
 </LinearLayout>
 

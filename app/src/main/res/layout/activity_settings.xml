@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
-    android:background="@color/app_settings_background">
+    android:background="@color/settings_screen_background">
 
 
 
@@ -16,13 +16,17 @@
         android:layout_height="@dimen/settings_header_size">
 
 
-        <ImageView
 
+        <!-- BIGGER CLICK AREA ( 20margin + 16size + 20 margin ) -->
+        <FrameLayout
             android:id="@+id/settings_go_back_button"
+            android:layout_width="56dip"
+            android:layout_height="56dip"/>
+
+        <ImageView
 
             android:layout_width="16dp"
             android:layout_height="16dp"
-
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
 
@@ -61,7 +65,8 @@
 
             android:text="@string/settings_switch_to_dark_theme"
             android:textSize="@dimen/app_small_font_size"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+        />
 
 
         <androidx.appcompat.widget.SwitchCompat
@@ -69,7 +74,10 @@
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:layout_marginEnd="6dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            app:thumbTint="@color/settings_screen_switch_thumb"
+            app:trackTint="@color/settings_screen_switch_track"
+        />
 
     </FrameLayout>
 
