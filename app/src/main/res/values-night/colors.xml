@@ -12,29 +12,29 @@
 
 
 
-    <color name="main_screen_background">        #3772E7 </color>
+    <color name="main_screen_background">        #1A1B22 </color>
     <color name="main_screen_header">            #FFFFFF </color>
     <color name="main_screen_button_text">       #1A1B22 </color>
     <color name="main_screen_button_background"> #FFFFFF </color>
 
-    <color name="settings_screen_background">    #F5F5F5 </color>
-    <color name="settings_screen_header">        #1A1B22 </color>
-    <color name="settings_screen_text">          #000000 </color>
-    <color name="settings_screen_switch_thumb">  #AEAFB4 </color>
-    <color name="settings_screen_switch_track">  #E6E8EB </color>
+    <color name="settings_screen_background">    #1A1B22 </color>
+    <color name="settings_screen_header">        #FFFFFF </color>
+    <color name="settings_screen_text">          #FFFFFF </color>
+    <color name="settings_screen_switch_thumb">  #3772E7 </color>
+    <color name="settings_screen_switch_track">  #3772E7 </color>
 
 
     <color name="icon_search">    #1A1B22 </color>
     <color name="icon_media">     #1A1B22 </color>
     <color name="icon_settings">  #1A1B22 </color>
 
-    <color name="icon_back">      #1A1B22 </color>
-    <color name="icon_share">     #AEAFB4 </color>
-    <color name="icon_support_1"> #AEAFB4 </color>
-    <color name="icon_support_2"> #AEAFB4 </color>
-    <color name="icon_support_3"> #AEAFB4 </color>
-    <color name="icon_support_4"> #AEAFB4 </color>
-    <color name="icon_next">      #AEAFB4 </color>
+    <color name="icon_back">      #FFFFFF </color>
+    <color name="icon_share">     #FFFFFF </color>
+    <color name="icon_support_1"> #FFFFFF </color>
+    <color name="icon_support_2"> #FFFFFF </color>
+    <color name="icon_support_3"> #FFFFFF </color>
+    <color name="icon_support_4"> #FFFFFF </color>
+    <color name="icon_next">      #FFFFFF </color>
 
 
 

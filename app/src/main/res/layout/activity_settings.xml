@@ -42,7 +42,7 @@
             android:layout_marginTop="14dp"
 
             android:text="@string/settings_header"
-            android:textColor="@color/settings_screen_text"
+            android:textColor="@color/settings_screen_header"
             style="@style/main_font"
         />
     </FrameLayout>
