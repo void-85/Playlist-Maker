@@ -13,7 +13,7 @@
     <dimen name="settings_back_button_margin_left_top">20dp</dimen>
 
 
-    <dimen name="app_font_size">22sp</dimen>
+    <dimen name="app_main_font_size">22sp</dimen>
     <dimen name="app_small_font_size">16sp</dimen>
     <dimen name="app_icon_size">20sp</dimen>
 

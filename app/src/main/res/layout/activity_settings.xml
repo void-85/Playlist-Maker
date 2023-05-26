@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
     android:background="@color/settings_screen_background">
 
 
-
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_header_size">
-
-
 
         <!-- BIGGER CLICK AREA ( 20margin + 16size + 20 margin ) -->
         <FrameLayout
             android:id="@+id/settings_go_back_button"
+
             android:layout_width="56dip"
-            android:layout_height="56dip"/>
+            android:layout_height="56dip"
+        />
 
         <ImageView
-
             android:layout_width="16dp"
             android:layout_height="16dp"
+
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
 
             android:src="@drawable/back_icon"
-            android:contentDescription="@string/settings_back_button_description"/>
-
+            android:contentDescription="@string/settings_back_button_description"
+        />
 
         <TextView
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -43,145 +42,83 @@
             android:layout_marginTop="14dp"
 
             android:text="@string/settings_header"
-            android:textSize="@dimen/app_font_size"
-            android:textColor="@color/black"/>
-
+            android:textColor="@color/settings_screen_text"
+            style="@style/main_font"
+        />
     </FrameLayout>
 
 
-
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_parameters_size">
 
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/settings_parameters_padding_width"
-            android:layout_marginTop="@dimen/settings_parameters_padding_height"
-
             android:text="@string/settings_switch_to_dark_theme"
-            android:textSize="@dimen/app_small_font_size"
-            android:textColor="@color/black"
+            style="@style/settings_screen_items_text"
         />
-
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="56dp"
             android:layout_height="40dp"
+
             android:layout_gravity="end"
             android:layout_marginEnd="6dp"
             android:layout_marginTop="10dp"
+
             app:thumbTint="@color/settings_screen_switch_thumb"
             app:trackTint="@color/settings_screen_switch_track"
         />
-
     </FrameLayout>
 
 
-
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_parameters_size">
 
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/settings_parameters_padding_width"
-            android:layout_marginTop="@dimen/settings_parameters_padding_height"
-
             android:text="@string/settings_share_app"
-            android:textSize="@dimen/app_small_font_size"
-            android:textColor="@color/black"/>
-
+            style="@style/settings_screen_items_text"
+        />
 
         <ImageView
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-
             android:src="@drawable/share_icon"
             android:contentDescription="@string/settings_share_app"
-
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_icon_padding_top"
-            android:layout_marginEnd="@dimen/settings_icon_padding_right"
-            />
-
+            style="@style/settings_screen_items_icons"
+        />
     </FrameLayout>
 
 
-
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_parameters_size">
 
-
         <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/settings_parameters_padding_width"
-            android:layout_marginTop="@dimen/settings_parameters_padding_height"
-
             android:text="@string/settings_support"
-            android:textSize="@dimen/app_small_font_size"
-            android:textColor="@color/black"/>
+            style="@style/settings_screen_items_text"
+        />
 
         <ImageView
-
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-
             android:src="@drawable/support_icon"
             android:contentDescription="@string/settings_support"
-
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_icon_padding_top"
-            android:layout_marginEnd="@dimen/settings_icon_padding_right"
-            />
-
+            style="@style/settings_screen_items_icons"
+        />
     </FrameLayout>
 
 
-
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_parameters_size">
 
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/settings_parameters_padding_width"
-            android:layout_marginTop="@dimen/settings_parameters_padding_height"
-
             android:text="@string/settings_user_agreement"
-            android:textSize="@dimen/app_small_font_size"
-            android:textColor="@color/black"/>
-
+            style="@style/settings_screen_items_text"
+        />
 
         <ImageView
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-
             android:src="@drawable/next_icon"
             android:contentDescription="@string/settings_user_agreement"
-
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_icon_padding_top"
-            android:layout_marginEnd="@dimen/settings_icon_padding_right"
-            />
-
+            style="@style/settings_screen_items_icons"
+        />
     </FrameLayout>
 
 </LinearLayout>
