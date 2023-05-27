@@ -12,18 +12,41 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 
 class SearchActivity : AppCompatActivity() {
+
+
+
+    companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
 
 
-        val editTextId = findViewById<EditText>(R.id.search_edit_text)
+        val goBackButtonId    = findViewById<FrameLayout>( R.id.search_go_back_button )
+        val clearTextButtonId = findViewById<ImageView>  ( R.id.search_clear_edit_text_button )
+        val editTextId        = findViewById<EditText>   ( R.id.search_edit_text )
+
+
+
         editTextId.requestFocus()
+        goBackButtonId.setOnClickListener{ finish() }
 
 
+        savedInstanceState?.let {
 
-        val clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
+            val s = savedInstanceState.getString( SEARCH_REQUEST, null )
+
+            s?.let {
+                editTextId.setText( s )
+                clearTextButtonId.visibility = View.VISIBLE
+            }
+
+        }
+
+
         clearTextButtonId.setOnClickListener{
 
             editTextId.setText("")
@@ -34,12 +57,6 @@ class SearchActivity : AppCompatActivity() {
                 inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
-
-
-
-        val goBackButtonId = findViewById<FrameLayout>(R.id.search_go_back_button)
-        goBackButtonId.setOnClickListener{ finish() }
-
 
 
         val simpleTextWatcher = object : TextWatcher {
@@ -67,6 +84,17 @@ class SearchActivity : AppCompatActivity() {
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
 
+
+    }
+
+
+
+    override fun onSaveInstanceState( outState :Bundle ){
+
+        super.onSaveInstanceState(outState)
+
+        val editTextId = findViewById<EditText>(R.id.search_edit_text)
+        outState.putString( SEARCH_REQUEST, editTextId.text.toString() )
 
     }
 }

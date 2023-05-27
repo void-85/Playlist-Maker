@@ -99,6 +99,8 @@
             <EditText
                 android:id="@+id/search_edit_text"
 
+                android:saveEnabled="false"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
@@ -113,7 +115,6 @@
                 android:textFontWeight="400"
 
                 android:textColor="@color/search_screen_edit_text_input"
-
                 android:hint="@string/search_search_hint"
                 android:textColorHint="@color/search_edit_text_hint"
                 android:backgroundTint="@color/search_screen_edit_text_background"
