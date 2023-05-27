@@ -37,13 +37,12 @@ class SearchActivity : AppCompatActivity() {
 
         savedInstanceState?.let {
 
-            val s = savedInstanceState.getString( SEARCH_REQUEST, null )
+            val s = savedInstanceState.getString( SEARCH_REQUEST, "" )
 
-            s?.let {
+            if( s != "" ){
                 editTextId.setText( s )
                 clearTextButtonId.visibility = View.VISIBLE
             }
-
         }
 
 
