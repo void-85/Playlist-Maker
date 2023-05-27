@@ -41,4 +41,11 @@
     <color name="screen_is_under_development"> #CCCC11 </color>
 
 
+
+    <color name="search_screen_background">            #1A1B22 </color>
+    <color name="search_screen_header">                #FFFFFF </color>
+    <color name="search_screen_edit_text_background">  #FFFFFF </color>
+    <color name="search_screen_edit_text_input">       #1A1B22 </color>
+    <color name="search_edit_text_hint">               #1A1B22 </color>
+
 </resources>
