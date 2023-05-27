@@ -112,9 +112,10 @@
                 android:textSize="16sp"
                 android:textFontWeight="400"
 
+                android:textColor="@color/search_screen_edit_text_input"
+
                 android:hint="@string/search_search_hint"
                 android:textColorHint="@color/search_edit_text_hint"
-
                 android:backgroundTint="@color/search_screen_edit_text_background"
             />
 
