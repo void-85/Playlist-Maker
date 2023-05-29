@@ -18,26 +18,34 @@
     <color name="main_screen_button_background"> #FFFFFF </color>
 
     <color name="settings_screen_background">    #F5F5F5 </color>
+    <color name="settings_screen_header">        #1A1B22 </color>
     <color name="settings_screen_text">          #000000 </color>
     <color name="settings_screen_switch_thumb">  #AEAFB4 </color>
     <color name="settings_screen_switch_track">  #E6E8EB </color>
 
 
+    <color name="icon_search">    #1A1B22 </color>
+    <color name="icon_media">     #1A1B22 </color>
+    <color name="icon_settings">  #1A1B22 </color>
 
+    <color name="icon_back">      #1A1B22 </color>
+    <color name="icon_share">     #AEAFB4 </color>
     <color name="icon_support_1"> #AEAFB4 </color>
     <color name="icon_support_2"> #AEAFB4 </color>
     <color name="icon_support_3"> #AEAFB4 </color>
     <color name="icon_support_4"> #AEAFB4 </color>
-
-    <color name="icon_share">     #AEAFB4 </color>
-    <color name="icon_settings">  #1A1B22 </color>
-    <color name="icon_search">    #1A1B22 </color>
     <color name="icon_next">      #AEAFB4 </color>
-    <color name="icon_media">     #1A1B22 </color>
-    <color name="icon_back">      #1A1B22 </color>
+
 
 
     <color name="screen_is_under_development"> #CCCC11 </color>
 
+
+
+    <color name="search_screen_background">            #FFFFFF </color>
+    <color name="search_screen_header">                #1A1B22 </color>
+    <color name="search_screen_edit_text_background">  #E6E8EB </color>
+    <color name="search_screen_edit_text_input">       #1A1B22 </color>
+    <color name="search_edit_text_hint">               #AEAFB4 </color>
 
 </resources>
