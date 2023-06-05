@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+
+
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +13,15 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 
+
+
 class SearchActivity : AppCompatActivity() {
 
 
 
     companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
+
+    val mockData = SearchActivityMockData().getData()
 
 
 
