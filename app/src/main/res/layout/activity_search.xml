@@ -64,7 +64,6 @@
             app:cardCornerRadius="@dimen/search_search_panel_corner_radius"
             android:backgroundTint="@color/search_screen_edit_text_background"
         >
-
             <ImageView
                 android:elevation="2dp"
     
@@ -119,9 +118,14 @@
                 android:textColorHint="@color/search_edit_text_hint"
                 android:backgroundTint="@color/search_screen_edit_text_background"
             />
-
         </androidx.cardview.widget.CardView>
-
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    />
 
 </LinearLayout>

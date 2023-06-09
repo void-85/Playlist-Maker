@@ -12,6 +12,8 @@
 
     <dimen name="app_main_font_size">22sp</dimen>
     <dimen name="app_small_font_size">16sp</dimen>
+    <dimen name="app_even_smaller_font_size">11sp</dimen>
+
     <dimen name="app_icon_size">20sp</dimen>
 
 
