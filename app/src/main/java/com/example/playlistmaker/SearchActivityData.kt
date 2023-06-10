@@ -4,14 +4,14 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.Resource
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
+
 
 
 data class Track( val trackName     :String ,
@@ -57,6 +57,8 @@ class TrackAdapter( private val tracks :List<Track> ) :RecyclerView.Adapter<Trac
 
     override fun onBindViewHolder( holder :TrackViewHolder, position :Int) {
         holder.bind( tracks[position] )
+
+        holder.itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim)
     }
 
     override fun getItemCount() :Int {
