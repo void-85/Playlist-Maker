@@ -71,8 +71,8 @@ class SearchActivityMockData {
     private val mockData = arrayListOf<Track>(
 
         // TEST TRACK WITH LONG STRINGS
-        Track(  trackName     = "SONG WITH NAME TOO LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG",
-                artistName    = "ARTIST WITH NAME TOO LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG",
+        Track(  trackName     = "Nyan caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat",
+                artistName    = "Nyan caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat",
                 trackTime     = "1234:56",
                 artworkUrl100 = "https://broken.link/src.jpg" ),
 

@@ -34,7 +34,7 @@
         android:id="@+id/track_view_track_name"
 
         android:layout_width ="match_parent"
-        android:layout_height="19dp"
+        android:layout_height="@dimen/search_track_view_track_name_height"
 
         android:layout_marginTop  ="@dimen/search_track_view_track_name_margin_top"
         android:layout_marginStart="@dimen/search_track_view_track_name_margin_start"
@@ -51,22 +51,21 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width ="match_parent"
         android:layout_height="@dimen/search_track_view_artist_point_duration_height"
 
-        android:layout_marginStart="66dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop  ="@dimen/search_track_view_artist_point_duration_margin_top"
+        android:layout_marginStart="@dimen/search_track_view_artist_point_duration_margin_start"
+        android:layout_marginEnd  ="@dimen/search_track_view_artist_point_duration_margin_end"
     >
-
             <TextView
                 android:id="@+id/track_view_artist_name"
 
-                android:layout_width="wrap_content"
+                android:layout_width ="wrap_content"
                 android:layout_height="match_parent"
 
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines ="1"
 
                 tools:text="artist name"
                 style="@style/even_smaller_font"
@@ -75,26 +74,26 @@
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_chainStyle="packed"
 
-                app:layout_constraintEnd_toStartOf="@+id/frameLayout"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toStartOf  ="@+id/track_view_text_point"
              />
 
             <FrameLayout
-                android:id="@+id/frameLayout"
+                android:id="@+id/track_view_text_point"
 
-                android:layout_width="13dp"
-                android:layout_height="13dp"
+                android:layout_width ="@dimen/search_track_view_point_frame_size"
+                android:layout_height="@dimen/search_track_view_point_frame_size"
 
                 app:layout_constraintStart_toEndOf="@+id/track_view_artist_name"
                 app:layout_constraintEnd_toStartOf="@+id/track_view_track_time"
             >
                     <ImageView
-                        android:layout_width="3dp"
-                        android:layout_height="3dp"
+                        android:layout_width ="@dimen/search_track_view_point_size"
+                        android:layout_height="@dimen/search_track_view_point_size"
 
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop  ="@dimen/search_track_view_point_margin"
+                        android:layout_marginStart="@dimen/search_track_view_point_margin"
 
                         android:src="@drawable/text_ellipse"
                     />
@@ -103,15 +102,15 @@
             <TextView
                 android:id="@+id/track_view_track_time"
 
-                android:layout_width="wrap_content"
+                android:layout_width ="wrap_content"
                 android:layout_height="match_parent"
 
                 tools:text="123:45"
                 style="@style/even_smaller_font"
                 android:textColor="@color/search_track_view_artist_point_duration_select"
 
-                app:layout_constraintStart_toEndOf="@id/frameLayout"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/track_view_text_point"
+                app:layout_constraintEnd_toEndOf  ="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -166,7 +165,6 @@
                 tools:text="15:55"
                 android:textColor="@color/search_edit_text_hint"
             />
-
     </LinearLayout>-->
 
 </FrameLayout>
