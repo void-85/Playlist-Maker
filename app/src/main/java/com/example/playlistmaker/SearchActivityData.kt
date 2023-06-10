@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.Resource
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -32,12 +34,14 @@ class TrackViewHolder( itemView : View) :RecyclerView.ViewHolder(itemView){
         artistName.text = model.artistName
          trackTime.text = model.trackTime
 
+        val dp2px :Int = (Resources.getSystem().displayMetrics.density *2 ).toInt()
+
         Glide
             .with       ( itemView                )
             .load       ( model.artworkUrl100     )
-            .placeholder( R.drawable.text_ellipse )
-            .transform  ( CenterCrop()    ,
-                          RoundedCorners(4)       )
+            .placeholder( R.drawable.spiral       )
+            .transform  ( CenterCrop()            ,
+                          RoundedCorners(dp2px)   )
             .into       ( artworkUrl              )
     }
 }
@@ -65,6 +69,12 @@ class TrackAdapter( private val tracks :List<Track> ) :RecyclerView.Adapter<Trac
 class SearchActivityMockData {
 
     private val mockData = arrayListOf<Track>(
+
+        // TEST TRACK WITH LONG STRINGS
+        Track(  trackName     = "SONG WITH NAME TOO LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG",
+                artistName    = "ARTIST WITH NAME TOO LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG",
+                trackTime     = "1234:56",
+                artworkUrl100 = "https://broken.link/src.jpg" ),
 
         Track(  trackName     = "Smells Like Teen Spirit",
                 artistName    = "Nirvana",

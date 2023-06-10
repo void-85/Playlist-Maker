@@ -5,28 +5,27 @@
     xmlns:app    ="http://schemas.android.com/apk/res-auto"
     xmlns:tools  ="http://schemas.android.com/tools"
     android:layout_width ="match_parent"
-    android:layout_height="61dp">
+    android:layout_height="@dimen/search_track_view_height">
 
     <ImageView
         android:id="@+id/track_view_artwork_url"
 
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width ="@dimen/search_track_view_artwork_size"
+        android:layout_height="@dimen/search_track_view_artwork_size"
 
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="13dp"
+        android:layout_marginTop  ="@dimen/search_track_view_artwork_margin_top"
+        android:layout_marginStart="@dimen/search_track_view_artwork_margin_start"
 
-        app:cornerRadius="2dp"
         android:src="@drawable/spiral"
     />
 
     <ImageView
-        android:layout_width="8dp"
-        android:layout_height="14dp"
+        android:layout_width ="@dimen/search_track_view_select_icon_width"
+        android:layout_height="@dimen/search_track_view_select_icon_height"
 
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="20dp"
-        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/search_track_view_select_icon_margin_top"
+        android:layout_marginEnd="@dimen/search_track_view_select_icon_margin_end"
+        android:layout_gravity  ="end"
 
         android:src="@drawable/next_icon"
     />
@@ -34,72 +33,140 @@
     <TextView
         android:id="@+id/track_view_track_name"
 
-        android:layout_width="match_parent"
+        android:layout_width ="match_parent"
         android:layout_height="19dp"
 
-        android:layout_marginTop="14dp"
-        android:layout_marginStart="66dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop  ="@dimen/search_track_view_track_name_margin_top"
+        android:layout_marginStart="@dimen/search_track_view_track_name_margin_start"
+        android:layout_marginEnd  ="@dimen/search_track_view_track_name_margin_end"
 
-        android:maxLines="1"
+        android:maxLines ="1"
         android:ellipsize="end"
 
         style="@style/small_font"
-        tools:text="asd"
-        android:textColor="#000000"
+        tools:text="Track name"
+        android:textColor="@color/search_track_view_track_name"
     />
 
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_track_view_artist_point_duration_height"
+
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="44dp"
+    >
+
+            <TextView
+                android:id="@+id/track_view_artist_name"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:ellipsize="end"
+                android:maxLines="1"
+
+                tools:text="artist name"
+                style="@style/even_smaller_font"
+                android:textColor="@color/search_track_view_artist_point_duration_select"
+
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_chainStyle="packed"
+
+                app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+             />
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+
+                app:layout_constraintStart_toEndOf="@+id/track_view_artist_name"
+                app:layout_constraintEnd_toStartOf="@+id/track_view_track_time"
+            >
+                    <ImageView
+                        android:layout_width="3dp"
+                        android:layout_height="3dp"
+
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+
+                        android:src="@drawable/text_ellipse"
+                    />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/track_view_track_time"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                tools:text="123:45"
+                style="@style/even_smaller_font"
+                android:textColor="@color/search_track_view_artist_point_duration_select"
+
+                app:layout_constraintStart_toEndOf="@id/frameLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--
     <LinearLayout
         android:layout_width ="match_parent"
-        android:layout_height="13dp"
+        android:layout_height="@dimen/search_track_view_artist_point_duration_height"
 
-        android:layout_marginTop="34dp"
+        android:layout_marginTop  ="34dp"
         android:layout_marginStart="66dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd  ="44dp"
 
         android:orientation="horizontal"
     >
-        <TextView
-            android:id="@+id/track_view_artist_name"
+            <TextView
+                android:id="@+id/track_view_artist_name"
 
-            android:layout_width ="wrap_content"
-            android:layout_height="match_parent"
+                android:layout_width ="wrap_content"
+                android:layout_height="match_parent"
 
-            android:maxWidth="100dp"
-            android:maxLines="1"
-            android:ellipsize="end"
+                android:maxLines="1"
+                android:ellipsize="end"
 
-            style="@style/even_smaller_font"
-            tools:text="artist name"
-            android:textColor="@color/search_edit_text_hint"
-        />
-
-        <FrameLayout
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-        >
-            <ImageView
-                android:layout_width="3dp"
-                android:layout_height="3dp"
-
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="5dp"
-
-                android:src="@drawable/text_ellipse"
+                style="@style/even_smaller_font"
+                tools:text="artist name xxxxxxxx"
+                android:textColor="@color/search_edit_text_hint"
             />
-        </FrameLayout>
 
-        <TextView
-            android:id="@+id/track_view_track_time"
+            <FrameLayout
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+            >
+                <ImageView
+                    android:layout_width="3dp"
+                    android:layout_height="3dp"
 
-            android:layout_width ="wrap_content"
-            android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
 
-            style="@style/even_smaller_font"
-            tools:text="5:55"
-            android:textColor="@color/search_edit_text_hint"
-        />
+                    android:src="@drawable/text_ellipse"
+                />
+            </FrameLayout>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/track_view_track_time"
+
+                android:layout_width ="wrap_content"
+                android:layout_height="match_parent"
+
+                style="@style/even_smaller_font"
+                tools:text="15:55"
+                android:textColor="@color/search_edit_text_hint"
+            />
+
+    </LinearLayout>-->
 
 </FrameLayout>
