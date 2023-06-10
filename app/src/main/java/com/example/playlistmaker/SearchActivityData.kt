@@ -34,7 +34,7 @@ class TrackViewHolder( itemView : View) :RecyclerView.ViewHolder(itemView){
         artistName.text = model.artistName
          trackTime.text = model.trackTime
 
-        val dp2px :Int = (Resources.getSystem().displayMetrics.density *2 ).toInt()
+        val dp2px :Int = (Resources.getSystem().displayMetrics.density * R.dimen.search_track_view_artwork_corner_radius ).toInt()
 
         Glide
             .with       ( itemView                )
