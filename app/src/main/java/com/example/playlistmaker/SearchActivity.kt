@@ -20,7 +20,7 @@ class SearchActivity :AppCompatActivity() {
 
 
 
-    companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
+    private companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
 
 
 
@@ -85,15 +85,10 @@ class SearchActivity :AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 if (s.isNullOrEmpty()) {
-
                     clearTextButtonId.visibility = View.GONE
-
                 } else {
-
                     clearTextButtonId.visibility = View.VISIBLE
-
                 }
             }
 
