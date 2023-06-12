@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+
+
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,12 +12,18 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
+import kotlin.random.Random
 
-class SearchActivity : AppCompatActivity() {
+
+class SearchActivity :AppCompatActivity() {
 
 
 
-    companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
+    private companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
+
+
+
 
 
 
@@ -25,9 +33,21 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        val goBackButtonId    = findViewById<FrameLayout>( R.id.search_go_back_button )
-        val clearTextButtonId = findViewById<ImageView>  ( R.id.search_clear_edit_text_button )
-        val editTextId        = findViewById<EditText>   ( R.id.search_edit_text )
+        val goBackButtonId    = findViewById<FrameLayout> ( R.id.search_go_back_button )
+        val clearTextButtonId = findViewById<ImageView>   ( R.id.search_clear_edit_text_button )
+        val editTextId        = findViewById<EditText>    ( R.id.search_edit_text )
+        val recyclerView      = findViewById<RecyclerView>( R.id.rView )
+
+
+
+        val data     :List<Track> = SearchActivityMockData().getData()
+        val dataSize :Int         = 55
+
+        recyclerView.adapter = TrackAdapter(
+            List<Track>(dataSize) {
+                data[   Random.nextInt(0, data.size) %data.size   ]
+            }
+        )
 
 
 
@@ -65,15 +85,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 if (s.isNullOrEmpty()) {
-
                     clearTextButtonId.visibility = View.GONE
-
                 } else {
-
                     clearTextButtonId.visibility = View.VISIBLE
-
                 }
             }
 

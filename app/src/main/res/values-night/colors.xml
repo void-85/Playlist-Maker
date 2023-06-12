@@ -11,7 +11,6 @@
 
 
 
-
     <color name="main_screen_background">        #1A1B22 </color>
     <color name="main_screen_header">            #FFFFFF </color>
     <color name="main_screen_button_text">       #1A1B22 </color>
@@ -22,6 +21,7 @@
     <color name="settings_screen_text">          #FFFFFF </color>
     <color name="settings_screen_switch_thumb">  #3772E7 </color>
     <color name="settings_screen_switch_track">  #3772E7 </color>
+
 
 
     <color name="icon_search">    #1A1B22 </color>
@@ -47,5 +47,8 @@
     <color name="search_screen_edit_text_background">  #FFFFFF </color>
     <color name="search_screen_edit_text_input">       #1A1B22 </color>
     <color name="search_edit_text_hint">               #1A1B22 </color>
+
+    <color name="search_track_view_track_name">                   #FFFFFF </color>
+    <color name="search_track_view_artist_point_duration_select"> #FFFFFF </color>
 
 </resources>
