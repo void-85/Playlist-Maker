@@ -24,7 +24,7 @@ class TrackViewHolder( itemView : View) : RecyclerView.ViewHolder(itemView){
         artistName.text = model.artistName
         trackTime.text  = model.trackTime
 
-        itemView.resources.displayMetrics.density
+        //itemView.resources.displayMetrics.density
 
         Glide
             .with(itemView)
