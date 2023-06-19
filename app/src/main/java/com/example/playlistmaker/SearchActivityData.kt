@@ -22,9 +22,7 @@ data class ResponseTrack (
 
 
 
-
-
-
+/*
 class SearchActivityMockData {
 
     private val mockData = arrayListOf<Track>(
@@ -73,9 +71,6 @@ class SearchActivityMockData {
         )
     )
 
+    fun getData(): ArrayList<Track> = mockData
 
-    fun getData(): ArrayList<Track> {
-        return mockData
-    }
-
-}
+}*/
