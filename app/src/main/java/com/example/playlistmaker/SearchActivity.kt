@@ -56,10 +56,33 @@ class SearchActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        goBackButtonId    = findViewById<FrameLayout> ( R.id.search_go_back_button )
-        clearTextButtonId = findViewById<ImageView>   ( R.id.search_clear_edit_text_button )
-        editTextId        = findViewById<EditText>    ( R.id.search_edit_text )
-        recyclerView      = findViewById<RecyclerView>( R.id.rView )
+
+        goBackButtonId = findViewById<FrameLayout>( R.id.search_go_back_button )
+        goBackButtonId.setOnClickListener{ finish() }
+
+
+        clearTextButtonId = findViewById<ImageView>( R.id.search_clear_edit_text_button )
+        clearTextButtonId.setOnClickListener{
+
+            editTextId.setText("")
+
+            data.clear()
+            recyclerView.adapter?.notifyDataSetChanged()
+
+            this.currentFocus?.let { view ->
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+
+
+        editTextId = findViewById<EditText>    ( R.id.search_edit_text )
+
+
+        recyclerView = findViewById<RecyclerView>( R.id.rView )
+        recyclerView.adapter = SearchTrackAdapter( data )
+
 
         editTextId.requestFocus()
         editTextId.setOnEditorActionListener { _, actionId, _ ->
@@ -117,7 +140,7 @@ class SearchActivity :AppCompatActivity() {
 
 
 
-        goBackButtonId.setOnClickListener{ finish() }
+
 
 
 
@@ -141,7 +164,7 @@ class SearchActivity :AppCompatActivity() {
             }
         )
         */
-        recyclerView.adapter = SearchTrackAdapter( data )
+
 
 
 
@@ -159,16 +182,7 @@ class SearchActivity :AppCompatActivity() {
         }
 
 
-        clearTextButtonId.setOnClickListener{
 
-            editTextId.setText("")
-
-            this.currentFocus?.let { view ->
-                val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
 
 
         val simpleTextWatcher = object : TextWatcher {
