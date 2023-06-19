@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 
 
-class TrackViewHolder( itemView : View) : RecyclerView.ViewHolder(itemView){
+class SearchTrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
     private val trackName  :TextView  = itemView.findViewById( R.id.track_view_track_name  )
     private val artistName :TextView  = itemView.findViewById( R.id.track_view_artist_name )
@@ -23,8 +23,6 @@ class TrackViewHolder( itemView : View) : RecyclerView.ViewHolder(itemView){
         trackName.text  = model.trackName
         artistName.text = model.artistName
         trackTime.text  = model.trackTime
-
-        //itemView.resources.displayMetrics.density
 
         Glide
             .with(itemView)
