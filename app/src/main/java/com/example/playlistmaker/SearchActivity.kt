@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
+import android.widget.ViewSwitcher
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +48,12 @@ class SearchActivity :AppCompatActivity() {
     private lateinit var editTextId        :EditText
     private lateinit var recyclerView      :RecyclerView
 
+    private lateinit var switchForData  :ViewSwitcher
+    private lateinit var switchForInfo  :ViewSwitcher
+    private lateinit var noDataFrame    :FrameLayout
+    private lateinit var noNetworkFrame :FrameLayout
+
+
 
     private var data = ArrayList<Track>()
 
@@ -56,6 +63,10 @@ class SearchActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        switchForData  = findViewById<ViewSwitcher>( R.id.search_show_tracks_or_info )
+        switchForInfo  = findViewById<ViewSwitcher>( R.id.search_no_tracks_no_data_or_error )
+        noDataFrame    = findViewById<FrameLayout> ( R.id.search_no_data_frame )
+        noNetworkFrame = findViewById<FrameLayout> ( R.id.search_no_network_frame )
 
         goBackButtonId = findViewById<FrameLayout>( R.id.search_go_back_button )
         goBackButtonId.setOnClickListener{ finish() }
@@ -89,6 +100,34 @@ class SearchActivity :AppCompatActivity() {
 
             if( actionId == EditorInfo.IME_ACTION_DONE ){
 
+                    //TEST SWITCHERS BLOCK
+
+                    if( editTextId.text.toString() == "1" ){
+
+                        // SHOW TRACKS
+                        if( switchForData.currentView != recyclerView){ switchForData.showNext() }
+
+                    }else
+                    if( editTextId.text.toString() == "2" ){
+
+                        // NO DATA
+                        if( switchForData.currentView != switchForInfo){ switchForData.showNext() }
+                        if( switchForInfo.currentView != noDataFrame)  { switchForInfo.showNext() }
+
+                    }else
+                    if( editTextId.text.toString() == "3" ){
+
+                        // NO NETWORK (OR ERROR)
+                        if( switchForData.currentView != switchForInfo) { switchForData.showNext() }
+                        if( switchForInfo.currentView != noNetworkFrame){ switchForInfo.showNext() }
+
+                    }else
+
+
+
+
+
+
                     searchAPIService.getTracksByTerm( editTextId.text.toString() ).enqueue( object :Callback<ResponseData>{
 
                         override fun onResponse(
@@ -98,19 +137,22 @@ class SearchActivity :AppCompatActivity() {
                             if( response.isSuccessful ){
 
                                 val responseData = response.body()?.results.orEmpty()
-
                                 data.clear()
+
+
+
                                 responseData.forEach{
-
                                     data.add( Track(
-
                                         trackName     = it.trackName     ,
                                         artistName    = it.artistName    ,
                                         artworkUrl100 = it.artworkUrl100 ,
-
                                         trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault()).format( it.trackTimeMillis )
                                     ))
                                 }
+
+
+
+
                                 recyclerView.adapter?.notifyDataSetChanged()
 
                             }else{
