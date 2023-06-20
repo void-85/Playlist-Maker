@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -34,14 +35,11 @@ class SearchActivity :AppCompatActivity() {
 
     private companion object { const val SEARCH_REQUEST = "SEARCH_REQUEST" }
 
-
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
-
 
     private lateinit var goBackButtonId    :FrameLayout
     private lateinit var clearTextButtonId :ImageView
@@ -53,9 +51,101 @@ class SearchActivity :AppCompatActivity() {
     private lateinit var noDataFrame    :FrameLayout
     private lateinit var noNetworkFrame :FrameLayout
 
-
+    private lateinit var noNetworkUpdateButton :Button
 
     private var data = ArrayList<Track>()
+
+
+
+    private fun showTracks(){
+        if( switchForData.currentView != recyclerView){ switchForData.showNext() }
+    }
+
+    private fun showNoData(){
+        if( switchForData.currentView != switchForInfo){ switchForData.showNext() }
+        if( switchForInfo.currentView != noDataFrame)  { switchForInfo.showNext() }
+    }
+
+    private fun showNoNetwork(){
+        if( switchForData.currentView != switchForInfo) { switchForData.showNext() }
+        if( switchForInfo.currentView != noNetworkFrame){ switchForInfo.showNext() }
+    }
+
+
+
+    private fun onSearchEntered(){
+
+        //TEST SWITCHERS BLOCK
+        /*
+        if( editTextId.text.toString() == "1" ){
+            // SHOW TRACKS
+            if( switchForData.currentView != recyclerView){ switchForData.showNext() }
+        }else
+            if( editTextId.text.toString() == "2" ){
+                // NO DATA
+                if( switchForData.currentView != switchForInfo){ switchForData.showNext() }
+                if( switchForInfo.currentView != noDataFrame)  { switchForInfo.showNext() }
+            }else
+                if( editTextId.text.toString() == "3" ){
+                    // NO NETWORK (OR ERROR)
+                    if( switchForData.currentView != switchForInfo) { switchForData.showNext() }
+                    if( switchForInfo.currentView != noNetworkFrame){ switchForInfo.showNext() }
+                }else
+           */
+
+        searchAPIService.getTracksByTerm( editTextId.text.toString() ).enqueue( object :Callback<ResponseData>{
+
+            override fun onResponse(
+                call     :Call     <ResponseData> ,
+                response :Response <ResponseData> )
+            {
+                if( response.isSuccessful ){
+
+                    val responseData = response.body()?.results.orEmpty()
+                    data.clear()
+
+                    if( responseData.size >0 ) {
+
+                        responseData.forEach {data.add(
+                                Track(
+                                    trackName = it.trackName,
+                                    artistName = it.artistName,
+                                    artworkUrl100 = it.artworkUrl100,
+                                    trackTime = SimpleDateFormat( "mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
+                                ) )
+                        }
+                        showTracks()
+
+                    }else{ showNoData() }
+
+                    recyclerView.adapter?.notifyDataSetChanged()
+
+                }else{
+
+                    //Toast.makeText(applicationContext, data[0].artistName, Toast.LENGTH_LONG).show()
+                    showNoNetwork()
+
+                }
+            }
+
+            override fun onFailure(
+                call :Call<ResponseData> ,
+                t    :Throwable          )
+            {
+                //TODO("Not yet implemented")
+                //Toast.makeText(applicationContext, "FAILURE:\n\n"+t.toString(), Toast.LENGTH_LONG).show()
+                Log.e( "ERROR: ", t.toString() )
+            }
+
+        })
+
+        //Toast.makeText(this, editTextId.text.toString(), Toast.LENGTH_LONG).show()
+    }
+
+
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +157,11 @@ class SearchActivity :AppCompatActivity() {
         switchForInfo  = findViewById<ViewSwitcher>( R.id.search_no_tracks_no_data_or_error )
         noDataFrame    = findViewById<FrameLayout> ( R.id.search_no_data_frame )
         noNetworkFrame = findViewById<FrameLayout> ( R.id.search_no_network_frame )
+
+
+        noNetworkUpdateButton = findViewById<Button> ( R.id.no_network_update_button )
+        noNetworkUpdateButton.setOnClickListener { onSearchEntered() }
+
 
         goBackButtonId = findViewById<FrameLayout>( R.id.search_go_back_button )
         goBackButtonId.setOnClickListener{ finish() }
@@ -100,101 +195,11 @@ class SearchActivity :AppCompatActivity() {
 
             if( actionId == EditorInfo.IME_ACTION_DONE ){
 
-                    //TEST SWITCHERS BLOCK
-
-                    if( editTextId.text.toString() == "1" ){
-
-                        // SHOW TRACKS
-                        if( switchForData.currentView != recyclerView){ switchForData.showNext() }
-
-                    }else
-                    if( editTextId.text.toString() == "2" ){
-
-                        // NO DATA
-                        if( switchForData.currentView != switchForInfo){ switchForData.showNext() }
-                        if( switchForInfo.currentView != noDataFrame)  { switchForInfo.showNext() }
-
-                    }else
-                    if( editTextId.text.toString() == "3" ){
-
-                        // NO NETWORK (OR ERROR)
-                        if( switchForData.currentView != switchForInfo) { switchForData.showNext() }
-                        if( switchForInfo.currentView != noNetworkFrame){ switchForInfo.showNext() }
-
-                    }else
-
-
-
-
-
-
-                    searchAPIService.getTracksByTerm( editTextId.text.toString() ).enqueue( object :Callback<ResponseData>{
-
-                        override fun onResponse(
-                            call     :Call     <ResponseData> ,
-                            response :Response <ResponseData> )
-                        {
-                            if( response.isSuccessful ){
-
-                                val responseData = response.body()?.results.orEmpty()
-                                data.clear()
-
-
-
-                                responseData.forEach{
-                                    data.add( Track(
-                                        trackName     = it.trackName     ,
-                                        artistName    = it.artistName    ,
-                                        artworkUrl100 = it.artworkUrl100 ,
-                                        trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault()).format( it.trackTimeMillis )
-                                    ))
-                                }
-
-
-
-
-                                recyclerView.adapter?.notifyDataSetChanged()
-
-                            }else{
-
-                                //Toast.makeText(applicationContext, data[0].artistName, Toast.LENGTH_LONG).show()
-
-                            }
-                        }
-
-                        override fun onFailure(
-                            call :Call<ResponseData> ,
-                            t    :Throwable          )
-                        {
-                            //TODO("Not yet implemented")
-                            //Toast.makeText(applicationContext, "FAILURE:\n\n"+t.toString(), Toast.LENGTH_LONG).show()
-                            Log.e( "ERROR: ", t.toString() )
-                        }
-
-                    })
-
-                    //Toast.makeText(this, editTextId.text.toString(), Toast.LENGTH_LONG).show()
-
+                onSearchEntered()
                 true
             }
             false
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         /*
         val data     :List<Track> = SearchActivityMockData().getData()
@@ -207,12 +212,6 @@ class SearchActivity :AppCompatActivity() {
         )
         */
 
-
-
-
-
-
-
         savedInstanceState?.let {
 
             val s = savedInstanceState.getString( SEARCH_REQUEST, "" )
@@ -222,9 +221,6 @@ class SearchActivity :AppCompatActivity() {
                 clearTextButtonId.visibility = View.VISIBLE
             }
         }
-
-
-
 
 
         val simpleTextWatcher = object : TextWatcher {
@@ -242,8 +238,6 @@ class SearchActivity :AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) { /* empty */  }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
-
-
     }
 
 
