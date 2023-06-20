@@ -99,7 +99,7 @@ class SearchActivity :AppCompatActivity() {
                 call     :Call     <ResponseData> ,
                 response :Response <ResponseData> )
             {
-                if( response.isSuccessful ){
+                if( response.code() == 200 ){
 
                     val responseData = response.body()?.results.orEmpty()
                     data.clear()
@@ -174,6 +174,8 @@ class SearchActivity :AppCompatActivity() {
 
             data.clear()
             recyclerView.adapter?.notifyDataSetChanged()
+
+            showTracks()
 
             this.currentFocus?.let { view ->
                 val inputMethodManager =
