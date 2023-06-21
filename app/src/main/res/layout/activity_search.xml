@@ -123,18 +123,13 @@
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 
-
-
-    <ViewSwitcher
-        android:id="@+id/search_show_tracks_or_info"
-
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:inAnimation="@anim/switches_in"
-        android:outAnimation="@anim/switches_out"
     >
 
+
+        <!-- TRACKS -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rView"
             android:layout_width ="match_parent"
@@ -142,67 +137,67 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-        <ViewSwitcher
-            android:id="@+id/search_no_tracks_no_data_or_error"
 
+        <!-- NOTHING FOUND -->
+        <FrameLayout
+            android:id="@+id/search_no_data_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-            android:inAnimation="@anim/switches_in"
-            android:outAnimation="@anim/switches_out"
+            android:visibility="gone"
         >
 
             <FrameLayout
-                android:id="@+id/search_no_data_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width ="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
             >
                 <ImageView
                     android:layout_width ="120dp"
                     android:layout_height="120dp"
-
-                    android:layout_marginTop="102dp"
-                    android:layout_marginLeft="120dp"
-
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/no_data"
                 />
 
                 <TextView
-                    android:layout_width ="312dp"
+                    android:layout_width ="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="238dp"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="136dp"
 
                     android:text="@string/search_info_no_data"
                     android:textAlignment="center"
                     style="@style/search_info_text"
                     android:textColor="@color/search_screen_header"
                 />
-
             </FrameLayout>
+        </FrameLayout>
+
+
+        <!-- NETWORK ERROR -->
+        <FrameLayout
+            android:id="@+id/search_no_network_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+        >
 
             <FrameLayout
-                android:id="@+id/search_no_network_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
             >
                 <ImageView
                     android:layout_width ="120dp"
                     android:layout_height="120dp"
-
-                    android:layout_marginTop="102dp"
-                    android:layout_marginLeft="120dp"
-
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/no_network"
                 />
 
                 <TextView
-                    android:layout_width ="312dp"
+                    android:layout_width ="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="238dp"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="136dp"
 
                     android:text="@string/search_info_no_network"
                     android:textAlignment="center"
@@ -216,8 +211,9 @@
                     android:layout_width ="96dp"
                     android:layout_height="36dp"
 
-                    android:layout_marginTop ="350dp"
-                    android:layout_marginLeft="134dp"
+                    android:layout_marginTop ="248dp"
+
+                    android:layout_gravity="center_horizontal"
 
                     android:backgroundTint="@color/search_screen_header"
                     app:cornerRadius="54dp"
@@ -232,17 +228,8 @@
                 />
 
             </FrameLayout>
-
-        </ViewSwitcher>
-    </ViewSwitcher>
+        </FrameLayout>
 
 
-
-
-
-    <!--
-    <ViewSwitcher
-    -->
-
-
+    </FrameLayout>
 </LinearLayout>
