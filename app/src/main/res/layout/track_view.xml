@@ -117,7 +117,7 @@
 
     <!--
     <LinearLayout
-        android:layout_width ="match_parent"
+        android:layout_width ="wrap_content"
         android:layout_height="@dimen/search_track_view_artist_point_duration_height"
 
         android:layout_marginTop  ="34dp"
@@ -131,6 +131,8 @@
 
                 android:layout_width ="wrap_content"
                 android:layout_height="match_parent"
+
+                android:layout_weight="1"
 
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -161,10 +163,13 @@
                 android:layout_width ="wrap_content"
                 android:layout_height="match_parent"
 
+                android:layout_weight="0"
+
                 style="@style/even_smaller_font"
                 tools:text="15:55"
                 android:textColor="@color/search_edit_text_hint"
             />
-    </LinearLayout>-->
+    </LinearLayout>
+    -->
 
 </FrameLayout>

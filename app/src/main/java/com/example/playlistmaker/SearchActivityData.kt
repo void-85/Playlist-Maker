@@ -2,23 +2,36 @@ package com.example.playlistmaker
 
 
 
-data class Track(
-    val trackName: String,
-    val artistName: String,
-    val trackTime: String,
-    val artworkUrl100: String
-)
+data class Track (
+    val trackName     :String ,
+    val artistName    :String ,
+    val trackTime     :String ,
+    val artworkUrl100 :String )
 
 
+
+data class ResponseData (
+    val resultCount :Long                ,
+    val results     :List<ResponseTrack> )
+
+data class ResponseTrack (
+    val trackName       :String ,
+    val artistName      :String ,
+    val trackTimeMillis :Long   ,
+    val artworkUrl100   :String )
+
+
+
+/*
 class SearchActivityMockData {
 
     private val mockData = arrayListOf<Track>(
 
         // TEST TRACK WITH LONG STRINGS
         Track(
-            trackName = "Nyan caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat",
+            trackName  = "Nyan caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat",
             artistName = "Nyan caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat",
-            trackTime = "1234:56",
+            trackTime  = "1234:56",
             artworkUrl100 = "https://broken.link/src.jpg"
         ),
 
@@ -58,9 +71,6 @@ class SearchActivityMockData {
         )
     )
 
+    fun getData(): ArrayList<Track> = mockData
 
-    fun getData(): ArrayList<Track> {
-        return mockData
-    }
-
-}
+}*/

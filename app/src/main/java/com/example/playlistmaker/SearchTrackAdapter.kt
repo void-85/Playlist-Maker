@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class SearchTrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<SearchTrackViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return TrackViewHolder(view)
+        return SearchTrackViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchTrackViewHolder, position: Int) {
         holder.bind(tracks[position])
 
         holder.itemView.animation =

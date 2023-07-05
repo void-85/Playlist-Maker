@@ -30,4 +30,8 @@
     <string name="search_search_hint">Поиск</string>
     <string name="search_search_clear_text">Очистить поле ввода</string>
 
+    <string name="search_info_no_data">Ничего не нашлось</string>
+    <string name="search_info_no_network">Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
+    <string name="search_no_network_update_button">Обновить</string>
+
 </resources>

@@ -13,4 +13,10 @@
         android:duration  ="500"
     />
 
+    <rotate
+        android:fromDegrees="60"
+        android:toDegrees="0"
+        android:duration  ="400"
+    />
+
 </set>

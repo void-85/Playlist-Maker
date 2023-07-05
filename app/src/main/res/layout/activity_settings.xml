@@ -57,6 +57,7 @@
             style="@style/settings_screen_items_text"
         />
 
+        <!--
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="56dp"
             android:layout_height="40dp"
@@ -68,6 +69,21 @@
             app:thumbTint="@color/settings_screen_switch_thumb"
             app:trackTint="@color/settings_screen_switch_track"
         />
+        -->
+
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/settings_theme_switcher"
+
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+
+            android:layout_gravity="end"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="10dp"
+        />
+
+
     </FrameLayout>
 
 

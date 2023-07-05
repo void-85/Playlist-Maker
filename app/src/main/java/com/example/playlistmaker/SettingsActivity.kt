@@ -5,13 +5,37 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.Toast
+import com.google.android.material.switchmaterial.SwitchMaterial
+
 
 class SettingsActivity : AppCompatActivity() {
+
+
+
+    private lateinit var settingsThemeSwitcher :SwitchMaterial
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+
+
+        val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERNCES, MODE_PRIVATE)
+        settingsThemeSwitcher = findViewById<SwitchMaterial>(R.id.settings_theme_switcher)
+        settingsThemeSwitcher.isChecked = sharedPrefs.getBoolean(App.CURRENT_THEME_KEY, false)
+        settingsThemeSwitcher.setOnCheckedChangeListener {
+
+            _, checked -> run{
+                (applicationContext as App).switchTheme(checked)
+                sharedPrefs
+                    .edit()
+                    .putBoolean(App.CURRENT_THEME_KEY, checked)
+                    .apply()
+            }
+        }
+
 
 
         val goBackButtonId = findViewById<FrameLayout>(R.id.settings_go_back_button)
