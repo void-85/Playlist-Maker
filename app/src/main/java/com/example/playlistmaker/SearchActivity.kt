@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +18,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showTracks() {
 
-        recyclerView.adapter?.notifyDataSetChanged()
+        //recyclerView.adapter?.notifyDataSetChanged()
 
         searchHistory.visibility  = View.GONE
         recyclerView.visibility   = View.VISIBLE
@@ -120,6 +123,7 @@ class SearchActivity : AppCompatActivity() {
                         data.clear()
 
                         if (responseData.isNotEmpty()) {
+
                             responseData.forEach {
                                 data.add( Track(
                                     trackName     = it.trackName     ,
@@ -128,6 +132,8 @@ class SearchActivity : AppCompatActivity() {
                                     trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
                                 ) )
                             }
+
+
                             showTracks()
 
                         } else { showNoData() }
@@ -150,6 +156,51 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        searchHistory = findViewById<LinearLayout>(R.id.search_history)
+        history_rView = findViewById<RecyclerView>(R.id.history_rView)
+        history_rView.adapter = SearchTrackAdapter(history_data)
+
+        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
+        if( !isSearchHistoryEmpty ){
+
+            val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
+            Log.d("JSON", json)
+
+            if( json.isNotEmpty() ) {
+
+                history_data.clear()
+
+                /* <!> ОШИБКА:
+                java.lang.ClassCastException:
+                    com.google.gson.internal.LinkedTreeMap cannot be cast to com.example.playlistmaker.Track
+
+                Gson().fromJson(json, ArrayList<Track>()::class.java).forEach {
+                    history_data.add( it )
+                }*/
+
+
+                /*Gson().fromJson(json, ArrayList<LinkedTreeMap<String,String>>()::class.java)
+                    .forEach {
+                        history_data.add( Track(
+                            artistName    = it["artistName"]    ?: "ERROR",
+                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR",
+                            trackName     = it["trackName"]     ?: "ERROR",
+                            trackTime     = it["trackTime"]     ?: "ERROR"
+                        ))
+                }*/
+
+                Gson().fromJson<ArrayList<Track>>(
+                    json,
+                    object :TypeToken<ArrayList<Track>>() {}.type
+                ).forEach {
+                    history_data.add( it )
+                }
+
+                history_rView.adapter?.notifyDataSetChanged()
+            }
+        }
+
         clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory.setOnClickListener {
 
@@ -158,18 +209,11 @@ class SearchActivity : AppCompatActivity() {
             isSearchHistoryEmpty = true
             showHistory()
 
+            sharedPrefs.edit().putBoolean(App.IS_SEARCH_HISTORY_EMPTY, true).apply()
+
         }
 
-        searchHistory = findViewById<LinearLayout>(R.id.search_history)
-        history_rView = findViewById<RecyclerView>(R.id.history_rView)
-        history_rView.adapter = SearchTrackAdapter(history_data)
 
-        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
-        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
-        if( !isSearchHistoryEmpty ){
-            //val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "")
-            //history_data = Gson().fromJson( json, ArrayList<Track>()::class.java ).toArray()
-        }
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data)
@@ -244,8 +288,17 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged( s :CharSequence?, start :Int, before :Int, count :Int )
             {
-                if (s.isNullOrEmpty()) { clearTextButtonId.visibility = View.GONE    }
-                else                   { clearTextButtonId.visibility = View.VISIBLE }
+                if (s.isNullOrEmpty()) {
+
+                    clearTextButtonId.visibility = View.GONE
+                    showHistory()
+
+                }else{
+
+                    clearTextButtonId.visibility = View.VISIBLE
+                    showTracks()
+
+                }
             }
 
             override fun afterTextChanged(s: Editable?)
