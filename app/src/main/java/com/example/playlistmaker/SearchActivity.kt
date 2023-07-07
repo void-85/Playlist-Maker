@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -30,10 +29,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
+lateinit var sharedPrefs: SharedPreferences
 
-lateinit var sharedPrefs :SharedPreferences
-
-lateinit var history_rView :RecyclerView
+lateinit var history_rView: RecyclerView
 val history_data = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
@@ -84,8 +82,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showTracks() {
-
-        //recyclerView.adapter?.notifyDataSetChanged()
 
         searchHistory.visibility  = View.GONE
         recyclerView.visibility   = View.VISIBLE
@@ -162,12 +158,12 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
         isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
-        if( !isSearchHistoryEmpty ){
+        if (!isSearchHistoryEmpty) {
 
             val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
-            Log.d("JSON", json)
+            //Log.d("JSON", json)
 
-            if( json.isNotEmpty() ) {
+            if (json.isNotEmpty()) {
 
                 history_data.clear()
 
@@ -192,9 +188,9 @@ class SearchActivity : AppCompatActivity() {
 
                 Gson().fromJson<ArrayList<Track>>(
                     json,
-                    object :TypeToken<ArrayList<Track>>() {}.type
+                    object : TypeToken<ArrayList<Track>>() {}.type
                 ).forEach {
-                    history_data.add( it )
+                    history_data.add(it)
                 }
 
                 history_rView.adapter?.notifyDataSetChanged()
@@ -286,14 +282,13 @@ class SearchActivity : AppCompatActivity() {
                 /* empty */
             }
 
-            override fun onTextChanged( s :CharSequence?, start :Int, before :Int, count :Int )
-            {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
 
                     clearTextButtonId.visibility = View.GONE
                     showHistory()
 
-                }else{
+                } else {
 
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
@@ -309,7 +304,7 @@ class SearchActivity : AppCompatActivity() {
         editTextId.addTextChangedListener(simpleTextWatcher)
 
 
-
+        //1st to show
         showHistory()
     }
 
