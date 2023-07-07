@@ -267,25 +267,28 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="64dp"
 
                 android:layout_weight="0"
             >
+
                 <Button
                     android:id="@+id/clear_search_history"
 
+                    style="@style/search_info_button"
                     android:layout_width="192dp"
-                    android:layout_height="48dp"
+
+                    android:layout_height="32dp"
 
                     android:layout_gravity="center"
-
                     android:backgroundTint="@color/search_screen_header"
-                    app:cornerRadius="54dp"
+
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
 
                     android:text="@string/search_history_bottom_button"
                     android:textColor="@color/search_screen_background"
-                    style="@style/search_info_button"
-                />
+                    app:cornerRadius="54dp" />
             </FrameLayout>
 
         </LinearLayout>

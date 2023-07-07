@@ -39,15 +39,35 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
             )
             .into(artworkUrl)
 
+
         // ? excess amount of listeners
         itemView.setOnClickListener {
-            /*Toast
-                .makeText(itemView.context, "${model.trackName} clicked", Toast.LENGTH_LONG)
-                .show()*/
+            //Toast.makeText(itemView.context, "${model.trackName} clicked", Toast.LENGTH_LONG).show()
 
-            history_data.add(0, model)
+            // swap old items
+            if( history_data.contains(model) ){
+
+                val oldPos :Int = history_data.indexOf(model)
+                history_data.remove(model)
+                history_data.add(0, model)
+                history_rView.adapter?.notifyItemMoved(oldPos, 0)
+                history_rView.scrollToPosition(0)
+
+            // insert new item
+            }else{
+
+                history_data.add(0, model)
+                history_rView.adapter?.notifyItemInserted(0)
+                history_rView.scrollToPosition(0)
+
+                if( history_data.size > 10 ){
+
+                    history_data.removeAt(10)
+                    history_rView.adapter?.notifyItemRemoved(10)
+
+                }
+            }
             isSearchHistoryEmpty = false
-
         }
     }
 }

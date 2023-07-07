@@ -30,6 +30,7 @@ import kotlin.collections.ArrayList
 
 lateinit var sharedPrefs :SharedPreferences
 
+lateinit var history_rView :RecyclerView
 val history_data = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
@@ -41,6 +42,7 @@ class SearchActivity : AppCompatActivity() {
     private companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
+
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -54,7 +56,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchHistory :LinearLayout
     private lateinit var clearHistory  :Button
-    private lateinit var history_rView :RecyclerView
 
     private lateinit var recyclerView :RecyclerView
 
@@ -73,13 +74,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showHistory() {
 
-        if( isSearchHistoryEmpty ){
-            searchHistory.visibility  = View.GONE
-        }else{
-            history_rView.adapter?.notifyDataSetChanged()
-            searchHistory.visibility  = View.VISIBLE
-        }
-
+        searchHistory.visibility  = if(isSearchHistoryEmpty) View.GONE else View.VISIBLE
         recyclerView.visibility   = View.GONE
         noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.GONE
@@ -159,6 +154,7 @@ class SearchActivity : AppCompatActivity() {
         clearHistory.setOnClickListener {
 
             history_data.clear()
+            history_rView.adapter?.notifyDataSetChanged()
             isSearchHistoryEmpty = true
             showHistory()
 
