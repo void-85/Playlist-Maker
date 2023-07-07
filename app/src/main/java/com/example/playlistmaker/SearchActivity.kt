@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +14,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +25,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
+
+
+lateinit var sharedPrefs :SharedPreferences
+
+val history_data = ArrayList<Track>()
+var isSearchHistoryEmpty = true
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -37,34 +48,64 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
 
-    private lateinit var goBackButtonId: FrameLayout
-    private lateinit var clearTextButtonId: ImageView
-    private lateinit var editTextId: EditText
+    private lateinit var goBackButtonId    :FrameLayout
+    private lateinit var clearTextButtonId :ImageView
+    private lateinit var editTextId        :EditText
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var noDataFrame: FrameLayout
-    private lateinit var noNetworkFrame: FrameLayout
+    private lateinit var searchHistory :LinearLayout
+    private lateinit var clearHistory  :Button
+    private lateinit var history_rView :RecyclerView
 
-    private lateinit var noNetworkUpdateButton: Button
+    private lateinit var recyclerView :RecyclerView
+
+    private lateinit var noDataFrame :FrameLayout
+
+    private lateinit var noNetworkFrame        :FrameLayout
+    private lateinit var noNetworkUpdateButton :Button
+
 
     private var data = ArrayList<Track>()
 
 
+
+
+
+
+    private fun showHistory() {
+
+        if( isSearchHistoryEmpty ){
+            searchHistory.visibility  = View.GONE
+        }else{
+            history_rView.adapter?.notifyDataSetChanged()
+            searchHistory.visibility  = View.VISIBLE
+        }
+
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.GONE
+        noNetworkFrame.visibility = View.GONE
+    }
+
     private fun showTracks() {
-        recyclerView.visibility = View.VISIBLE
-        noDataFrame.visibility = View.GONE
+
+        recyclerView.adapter?.notifyDataSetChanged()
+
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.VISIBLE
+        noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.GONE
     }
 
     private fun showNoData() {
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.VISIBLE
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.VISIBLE
         noNetworkFrame.visibility = View.GONE
     }
 
     private fun showNoNetwork() {
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.GONE
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.VISIBLE
     }
 
@@ -86,10 +127,10 @@ class SearchActivity : AppCompatActivity() {
                         if (responseData.isNotEmpty()) {
                             responseData.forEach {
                                 data.add( Track(
-                                    trackName = it.trackName,
-                                    artistName = it.artistName,
-                                    artworkUrl100 = it.artworkUrl100,
-                                    trackTime = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
+                                    trackName     = it.trackName     ,
+                                    artistName    = it.artistName    ,
+                                    artworkUrl100 = it.artworkUrl100 ,
+                                    trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
                                 ) )
                             }
                             showTracks()
@@ -114,6 +155,26 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        clearHistory = findViewById<Button>(R.id.clear_search_history)
+        clearHistory.setOnClickListener {
+
+            history_data.clear()
+            isSearchHistoryEmpty = true
+            showHistory()
+
+        }
+
+        searchHistory = findViewById<LinearLayout>(R.id.search_history)
+        history_rView = findViewById<RecyclerView>(R.id.history_rView)
+        history_rView.adapter = SearchTrackAdapter(history_data)
+
+        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
+        if( !isSearchHistoryEmpty ){
+            //val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "")
+            //history_data = Gson().fromJson( json, ArrayList<Track>()::class.java ).toArray()
+        }
+
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data)
 
@@ -135,9 +196,8 @@ class SearchActivity : AppCompatActivity() {
             editTextId.setText("")
 
             data.clear()
-            recyclerView.adapter?.notifyDataSetChanged()
 
-            showTracks()
+            showHistory()
 
             this.currentFocus?.let { view ->
                 val inputMethodManager =
@@ -146,6 +206,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
         }
+
+
 
 
 
@@ -158,7 +220,9 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        /*editTextId.setOnFocusChangeListener { _, hasFocus ->
 
+        }*/
 
 
         savedInstanceState?.let {
@@ -174,27 +238,30 @@ class SearchActivity : AppCompatActivity() {
         val simpleTextWatcher = object : TextWatcher {
 
             override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
+                s     :CharSequence? ,
+                start :Int           ,
+                count :Int           ,
+                after :Int           )
+            {
                 /* empty */
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    clearTextButtonId.visibility = View.GONE
-                } else {
-                    clearTextButtonId.visibility = View.VISIBLE
-                }
+            override fun onTextChanged( s :CharSequence?, start :Int, before :Int, count :Int )
+            {
+                if (s.isNullOrEmpty()) { clearTextButtonId.visibility = View.GONE    }
+                else                   { clearTextButtonId.visibility = View.VISIBLE }
             }
 
-            override fun afterTextChanged(s: Editable?) {
+            override fun afterTextChanged(s: Editable?)
+            {
                 /* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
+
+
+
+        showHistory()
     }
 
 

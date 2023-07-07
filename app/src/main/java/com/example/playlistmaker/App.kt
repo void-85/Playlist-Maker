@@ -9,8 +9,11 @@ class App :Application() {
 
 
     companion object{
-        const val PLAYLIST_PREFERNCES = "playlist_preferences"
-        const val CURRENT_THEME_KEY = "current_theme_key"
+        const val PLAYLIST_PREFERENCES = "playlist_preferences"
+
+        const val CURRENT_THEME_KEY       = "current_theme_key"
+        const val SEARCH_HISTORY_KEY      = "search_history_key"
+        const val IS_SEARCH_HISTORY_EMPTY = "is_search_history_empty"
     }
 
 
@@ -22,7 +25,7 @@ class App :Application() {
 
         super.onCreate()
 
-        val sharedPrefs = getSharedPreferences(PLAYLIST_PREFERNCES, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(PLAYLIST_PREFERENCES, MODE_PRIVATE)
         switchTheme( sharedPrefs.getBoolean(CURRENT_THEME_KEY, false) )
 
     }

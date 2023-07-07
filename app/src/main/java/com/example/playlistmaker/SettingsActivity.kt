@@ -21,8 +21,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
 
-
-        val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERNCES, MODE_PRIVATE)
+        // Exception ? to get SharedPrefs
+        val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
         settingsThemeSwitcher = findViewById<SwitchMaterial>(R.id.settings_theme_switcher)
         settingsThemeSwitcher.isChecked = sharedPrefs.getBoolean(App.CURRENT_THEME_KEY, false)
         settingsThemeSwitcher.setOnCheckedChangeListener {

@@ -33,5 +33,7 @@
     <string name="search_info_no_data">Ничего не нашлось</string>
     <string name="search_info_no_network">Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
     <string name="search_no_network_update_button">Обновить</string>
+    <string name="search_history_top_label">Вы искали</string>
+    <string name="search_history_bottom_button">Очистить историю</string>
 
 </resources>
