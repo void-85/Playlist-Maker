@@ -17,7 +17,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,21 +28,20 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-lateinit var sharedPrefs: SharedPreferences
 
-lateinit var history_rView: RecyclerView
-val history_data = ArrayList<Track>()
+lateinit var sharedPrefs: SharedPreferences
+lateinit var historyRView: RecyclerView
+
+val historyData = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
 
 
 class SearchActivity : AppCompatActivity() {
 
-
     private companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
-
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -64,7 +62,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var noNetworkFrame        :FrameLayout
     private lateinit var noNetworkUpdateButton :Button
-
 
     private var data = ArrayList<Track>()
 
@@ -153,8 +150,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
-        history_rView = findViewById<RecyclerView>(R.id.history_rView)
-        history_rView.adapter = SearchTrackAdapter(history_data)
+        historyRView = findViewById<RecyclerView>(R.id.history_rView)
+        historyRView.adapter = SearchTrackAdapter(historyData)
 
         sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
         isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
@@ -165,8 +162,10 @@ class SearchActivity : AppCompatActivity() {
 
             if (json.isNotEmpty()) {
 
-                history_data.clear()
+                historyData.clear()
 
+
+                //------------------------------------------------------------------------------------------
                 /* <!> ОШИБКА:
                 java.lang.ClassCastException:
                     com.google.gson.internal.LinkedTreeMap cannot be cast to com.example.playlistmaker.Track
@@ -174,49 +173,46 @@ class SearchActivity : AppCompatActivity() {
                 Gson().fromJson(json, ArrayList<Track>()::class.java).forEach {
                     history_data.add( it )
                 }*/
-
-
+                //------------------------------------------------------------------------------------------
                 /*Gson().fromJson(json, ArrayList<LinkedTreeMap<String,String>>()::class.java)
                     .forEach {
                         history_data.add( Track(
-                            artistName    = it["artistName"]    ?: "ERROR",
-                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR",
-                            trackName     = it["trackName"]     ?: "ERROR",
-                            trackTime     = it["trackTime"]     ?: "ERROR"
-                        ))
-                }*/
+                            artistName    = it["artistName"]    ?: "ERROR" ,
+                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR" ,
+                            trackName     = it["trackName"]     ?: "ERROR" ,
+                            trackTime     = it["trackTime"]     ?: "ERROR" )
+                        )}*/
+                //------------------------------------------------------------------------------------------
 
                 Gson().fromJson<ArrayList<Track>>(
                     json,
                     object : TypeToken<ArrayList<Track>>() {}.type
                 ).forEach {
-                    history_data.add(it)
+                    historyData.add(it)
                 }
 
-                history_rView.adapter?.notifyDataSetChanged()
+                historyRView.adapter?.notifyDataSetChanged()
             }
         }
 
         clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory.setOnClickListener {
 
-            history_data.clear()
-            history_rView.adapter?.notifyDataSetChanged()
+            historyData.clear()
+            historyRView.adapter?.notifyDataSetChanged()
             isSearchHistoryEmpty = true
             showHistory()
 
             sharedPrefs.edit().putBoolean(App.IS_SEARCH_HISTORY_EMPTY, true).apply()
-
         }
-
 
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data)
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
+
         noNetworkFrame = findViewById<FrameLayout>(R.id.search_no_network_frame)
-        showTracks()
 
         noNetworkUpdateButton = findViewById<Button>(R.id.no_network_update_button)
         noNetworkUpdateButton.setOnClickListener { onSearchEntered() }
@@ -225,14 +221,11 @@ class SearchActivity : AppCompatActivity() {
         goBackButtonId.setOnClickListener { finish() }
 
 
-
         clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
         clearTextButtonId.setOnClickListener {
 
             editTextId.setText("")
-
             data.clear()
-
             showHistory()
 
             this.currentFocus?.let { view ->
@@ -242,9 +235,6 @@ class SearchActivity : AppCompatActivity() {
             }
 
         }
-
-
-
 
 
         editTextId = findViewById<EditText>(R.id.search_edit_text)
@@ -259,16 +249,6 @@ class SearchActivity : AppCompatActivity() {
         /*editTextId.setOnFocusChangeListener { _, hasFocus ->
 
         }*/
-
-
-        savedInstanceState?.let {
-            val s = savedInstanceState.getString(SEARCH_REQUEST, "")
-            if (s != "") {
-                editTextId.setText(s)
-                clearTextButtonId.visibility = View.VISIBLE
-            }
-        }
-
 
 
         val simpleTextWatcher = object : TextWatcher {
@@ -303,6 +283,15 @@ class SearchActivity : AppCompatActivity() {
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
 
+
+
+        savedInstanceState?.let {
+            val s = savedInstanceState.getString(SEARCH_REQUEST, "")
+            if (s != "") {
+                editTextId.setText(s)
+                clearTextButtonId.visibility = View.VISIBLE
+            }
+        }
 
         //1st to show
         showHistory()

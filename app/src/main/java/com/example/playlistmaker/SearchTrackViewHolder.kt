@@ -45,25 +45,27 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
             //Toast.makeText(itemView.context, "${model.trackName} clicked", Toast.LENGTH_LONG).show()
 
             // swap old items
-            if (history_data.contains(model)) {
+            if (historyData.contains(model)) {
 
-                val oldPos: Int = history_data.indexOf(model)
-                history_data.remove(model)
-                history_data.add(0, model)
-                history_rView.adapter?.notifyItemMoved(oldPos, 0)
-                history_rView.scrollToPosition(0)
+                val oldPos: Int = historyData.indexOf(model)
+                historyData.remove(model)
+                historyData.add(0, model)
 
-                // insert new item
+                historyRView.adapter?.notifyItemMoved(oldPos, 0)
+                historyRView.scrollToPosition(0)
+
+            // insert new item
             } else {
 
-                history_data.add(0, model)
-                history_rView.adapter?.notifyItemInserted(0)
-                history_rView.scrollToPosition(0)
+                historyData.add(0, model)
 
-                if (history_data.size > 10) {
+                historyRView.adapter?.notifyItemInserted(0)
+                historyRView.scrollToPosition(0)
 
-                    history_data.removeAt(10)
-                    history_rView.adapter?.notifyItemRemoved(10)
+                if (historyData.size > App.SEARCH_HISTORY_MAX_LENGTH) {
+
+                    historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
+                    historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
 
                 }
             }
@@ -72,14 +74,8 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
 
             sharedPrefs
                 .edit()
-                .putString(
-                    App.SEARCH_HISTORY_KEY,
-                    Gson().toJson(history_data)
-                )
-                .putBoolean(
-                    App.IS_SEARCH_HISTORY_EMPTY,
-                    false
-                )
+                .putString ( App.SEARCH_HISTORY_KEY,      Gson().toJson(historyData) )
+                .putBoolean( App.IS_SEARCH_HISTORY_EMPTY, false                      )
                 .apply()
         }
     }
