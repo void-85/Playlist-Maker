@@ -135,6 +135,7 @@
             android:layout_width ="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="gone"
         />
 
 
@@ -229,6 +230,68 @@
 
             </FrameLayout>
         </FrameLayout>
+
+
+        <!-- SEARCH HISTORY -->
+        <LinearLayout
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+        >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_history_header_height"
+
+                android:layout_weight="0"
+
+                android:gravity="center"
+
+                android:text="@string/search_history_top_label"
+                style="@style/search_info_button"
+                android:textSize="@dimen/search_history_header_text_size"
+                android:textColor="@color/search_screen_header"
+            />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/history_rView"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="40" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_history_clear_frame_height"
+
+                android:layout_weight="0"
+            >
+
+                <Button
+                    android:id="@+id/clear_search_history"
+
+                    style="@style/search_info_button"
+                    android:layout_width="@dimen/search_history_clear_button_width"
+
+                    android:layout_height="@dimen/search_history_clear_button_height"
+
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/search_screen_header"
+
+                    android:insetTop   ="0dp"
+                    android:insetBottom="0dp"
+
+                    android:text="@string/search_history_bottom_button"
+                    android:textColor="@color/search_screen_background"
+                    app:cornerRadius="@dimen/search_history_clear_button_corner_radius" />
+            </FrameLayout>
+
+        </LinearLayout>
 
 
     </FrameLayout>

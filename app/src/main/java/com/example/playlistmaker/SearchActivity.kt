@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +14,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,8 +28,16 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchActivity : AppCompatActivity() {
 
+lateinit var sharedPrefs: SharedPreferences
+lateinit var historyRView: RecyclerView
+
+val historyData = ArrayList<Track>()
+var isSearchHistoryEmpty = true
+
+
+
+class SearchActivity : AppCompatActivity() {
 
     private companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
@@ -37,34 +49,54 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
 
-    private lateinit var goBackButtonId: FrameLayout
-    private lateinit var clearTextButtonId: ImageView
-    private lateinit var editTextId: EditText
+    private lateinit var goBackButtonId    :FrameLayout
+    private lateinit var clearTextButtonId :ImageView
+    private lateinit var editTextId        :EditText
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var noDataFrame: FrameLayout
-    private lateinit var noNetworkFrame: FrameLayout
+    private lateinit var searchHistory :LinearLayout
+    private lateinit var clearHistory  :Button
 
-    private lateinit var noNetworkUpdateButton: Button
+    private lateinit var recyclerView :RecyclerView
+
+    private lateinit var noDataFrame :FrameLayout
+
+    private lateinit var noNetworkFrame        :FrameLayout
+    private lateinit var noNetworkUpdateButton :Button
 
     private var data = ArrayList<Track>()
 
 
+
+
+
+
+    private fun showHistory() {
+
+        searchHistory.visibility  = if(isSearchHistoryEmpty) View.GONE else View.VISIBLE
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.GONE
+        noNetworkFrame.visibility = View.GONE
+    }
+
     private fun showTracks() {
-        recyclerView.visibility = View.VISIBLE
-        noDataFrame.visibility = View.GONE
+
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.VISIBLE
+        noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.GONE
     }
 
     private fun showNoData() {
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.VISIBLE
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.VISIBLE
         noNetworkFrame.visibility = View.GONE
     }
 
     private fun showNoNetwork() {
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.GONE
+        searchHistory.visibility  = View.GONE
+        recyclerView.visibility   = View.GONE
+        noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.VISIBLE
     }
 
@@ -84,14 +116,17 @@ class SearchActivity : AppCompatActivity() {
                         data.clear()
 
                         if (responseData.isNotEmpty()) {
+
                             responseData.forEach {
                                 data.add( Track(
-                                    trackName = it.trackName,
-                                    artistName = it.artistName,
-                                    artworkUrl100 = it.artworkUrl100,
-                                    trackTime = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
+                                    trackName     = it.trackName     ,
+                                    artistName    = it.artistName    ,
+                                    artworkUrl100 = it.artworkUrl100 ,
+                                    trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
                                 ) )
                             }
+
+
                             showTracks()
 
                         } else { showNoData() }
@@ -114,12 +149,70 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        searchHistory = findViewById<LinearLayout>(R.id.search_history)
+        historyRView = findViewById<RecyclerView>(R.id.history_rView)
+        historyRView.adapter = SearchTrackAdapter(historyData)
+
+        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
+        if (!isSearchHistoryEmpty) {
+
+            val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
+            //Log.d("JSON", json)
+
+            if (json.isNotEmpty()) {
+
+                historyData.clear()
+
+
+                //------------------------------------------------------------------------------------------
+                /* <!> ОШИБКА:
+                java.lang.ClassCastException:
+                    com.google.gson.internal.LinkedTreeMap cannot be cast to com.example.playlistmaker.Track
+
+                Gson().fromJson(json, ArrayList<Track>()::class.java).forEach {
+                    history_data.add( it )
+                }*/
+                //------------------------------------------------------------------------------------------
+                /*Gson().fromJson(json, ArrayList<LinkedTreeMap<String,String>>()::class.java)
+                    .forEach {
+                        history_data.add( Track(
+                            artistName    = it["artistName"]    ?: "ERROR" ,
+                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR" ,
+                            trackName     = it["trackName"]     ?: "ERROR" ,
+                            trackTime     = it["trackTime"]     ?: "ERROR" )
+                        )}*/
+                //------------------------------------------------------------------------------------------
+
+                Gson().fromJson<ArrayList<Track>>(
+                    json,
+                    object : TypeToken<ArrayList<Track>>() {}.type
+                ).forEach {
+                    historyData.add(it)
+                }
+
+                historyRView.adapter?.notifyDataSetChanged()
+            }
+        }
+
+        clearHistory = findViewById<Button>(R.id.clear_search_history)
+        clearHistory.setOnClickListener {
+
+            historyData.clear()
+            historyRView.adapter?.notifyDataSetChanged()
+            isSearchHistoryEmpty = true
+            showHistory()
+
+            sharedPrefs.edit().putBoolean(App.IS_SEARCH_HISTORY_EMPTY, true).apply()
+        }
+
+
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data)
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
+
         noNetworkFrame = findViewById<FrameLayout>(R.id.search_no_network_frame)
-        showTracks()
 
         noNetworkUpdateButton = findViewById<Button>(R.id.no_network_update_button)
         noNetworkUpdateButton.setOnClickListener { onSearchEntered() }
@@ -128,16 +221,12 @@ class SearchActivity : AppCompatActivity() {
         goBackButtonId.setOnClickListener { finish() }
 
 
-
         clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
         clearTextButtonId.setOnClickListener {
 
             editTextId.setText("")
-
             data.clear()
-            recyclerView.adapter?.notifyDataSetChanged()
-
-            showTracks()
+            showHistory()
 
             this.currentFocus?.let { view ->
                 val inputMethodManager =
@@ -146,7 +235,6 @@ class SearchActivity : AppCompatActivity() {
             }
 
         }
-
 
 
         editTextId = findViewById<EditText>(R.id.search_edit_text)
@@ -158,6 +246,42 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        /*editTextId.setOnFocusChangeListener { _, hasFocus ->
+
+        }*/
+
+
+        val simpleTextWatcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s     :CharSequence? ,
+                start :Int           ,
+                count :Int           ,
+                after :Int           )
+            {
+                /* empty */
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+
+                    clearTextButtonId.visibility = View.GONE
+                    showHistory()
+
+                } else {
+
+                    clearTextButtonId.visibility = View.VISIBLE
+                    showTracks()
+
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?)
+            {
+                /* empty */
+            }
+        }
+        editTextId.addTextChangedListener(simpleTextWatcher)
 
 
 
@@ -169,32 +293,8 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-
-
-        val simpleTextWatcher = object : TextWatcher {
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                /* empty */
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    clearTextButtonId.visibility = View.GONE
-                } else {
-                    clearTextButtonId.visibility = View.VISIBLE
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                /* empty */
-            }
-        }
-        editTextId.addTextChangedListener(simpleTextWatcher)
+        //1st to show
+        showHistory()
     }
 
 
