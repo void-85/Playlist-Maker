@@ -163,6 +163,26 @@
     />
 
     <TextView
+        android:id="@+id/media_screen_details_1_line_data"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_2_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="0:00"
+        style="@style/media_player_details_font"
+    />
+
+
+
+
+
+    <TextView
         android:id="@+id/media_screen_details_2_line"
 
         android:visibility="visible"
@@ -181,6 +201,36 @@
     />
 
     <TextView
+        android:id="@+id/media_screen_details_2_line_data"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_2_line"
+        android:layout_marginStart="8dp"
+
+        app:layout_constrainedWidth="true"
+
+        app:layout_constraintHorizontal_bias="1"
+
+        android:maxLines="1"
+        android:ellipsize="start"
+
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_3_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        style="@style/media_player_details_font"
+    />
+
+
+
+
+
+    <TextView
         android:id="@+id/media_screen_details_3_line"
 
         android:layout_width="wrap_content"
@@ -194,7 +244,27 @@
 
         android:text="Год"
         style="@style/media_player_details_font"
-        />
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_3_line_data"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_4_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="2049"
+        style="@style/media_player_details_font"
+    />
+
+
+
+
 
     <TextView
         android:id="@+id/media_screen_details_4_line"
@@ -213,6 +283,36 @@
     />
 
     <TextView
+        android:id="@+id/media_screen_details_4_line_data"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_4_line"
+        android:layout_marginStart="8dp"
+
+        app:layout_constrainedWidth="true"
+
+        app:layout_constraintHorizontal_bias="1"
+
+        android:maxLines="1"
+        android:ellipsize="start"
+
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_5_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Альбомfffffffffffffffffffffffffffffffffffffff"
+        style="@style/media_player_details_font"
+    />
+
+
+
+
+
+    <TextView
         android:id="@+id/media_screen_details_5_line"
 
         android:layout_width="wrap_content"
@@ -228,6 +328,31 @@
         style="@style/media_player_details_font"
     />
 
+    <TextView
+        android:id="@+id/media_screen_details_5_line_data"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_5_line"
+        android:layout_marginStart="8dp"
+
+        app:layout_constrainedWidth="true"
+
+        app:layout_constraintHorizontal_bias="1"
+
+        android:maxLines="1"
+        android:ellipsize="start"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+
+        android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        style="@style/media_player_details_font"
+    />
 
 
 
