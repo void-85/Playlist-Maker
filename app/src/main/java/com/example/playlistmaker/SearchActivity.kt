@@ -122,10 +122,14 @@ class SearchActivity : AppCompatActivity() {
                                     trackName     = it.trackName     ,
                                     artistName    = it.artistName    ,
                                     artworkUrl100 = it.artworkUrl100 ,
-                                    trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis)
-                                ) )
-                            }
+                                    trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis),
 
+                                    collectionName    = it.collectionName   ,
+                                    releaseDate       = it.releaseDate      ,
+                                    primaryGenreName  = it.primaryGenreName ,
+                                    country           = it.country          )
+                                )
+                            }
 
                             showTracks()
 
@@ -137,9 +141,9 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(
-                    call: Call<ResponseData>,
-                    t: Throwable
-                ) { showNoNetwork() }
+                    call :Call<ResponseData> ,
+                    t    :Throwable          )
+                { showNoNetwork() }
         })
     }
 
