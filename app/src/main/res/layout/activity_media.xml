@@ -128,15 +128,6 @@
 
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/media_screen_details_guideline"
-
-        android:layout_width ="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="128dp"
-    />
 
 
 
@@ -146,29 +137,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="80dp"
 
-        android:text="длительность"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_2_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Длительность"
         style="@style/media_player_details_font"
     />
 
     <TextView
         android:id="@+id/media_screen_details_2_line"
 
+        android:visibility="visible"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="64dp"
 
-        android:text="альбом"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_3_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Альбом"
         style="@style/media_player_details_font"
     />
 
@@ -179,12 +172,12 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="48dp"
 
-        android:text="альбом"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_4_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Год"
         style="@style/media_player_details_font"
         />
 
@@ -195,12 +188,12 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
         android:layout_marginStart ="16dp"
-        android:layout_marginBottom="32dp"
 
-        android:text="альбом"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_5_line"
+        android:layout_marginBottom="16dp"
+
+        android:text="Жанр"
         style="@style/media_player_details_font"
     />
 
@@ -210,13 +203,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/media_screen_details_4_line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="16dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
 
-        android:text="альбом"
+        android:text="Страна"
         style="@style/media_player_details_font"
     />
 
