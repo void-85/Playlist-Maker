@@ -89,7 +89,7 @@
 
         app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
         app:layout_constraintStart_toStartOf  ="parent"
-        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
         android:layout_marginStart="16dp"
         android:src="@drawable/icon_add2playlist"
@@ -104,12 +104,27 @@
         app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
         app:layout_constraintStart_toStartOf  ="parent"
         app:layout_constraintEnd_toEndOf      ="parent"
-        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop   ="16dp"
+        android:layout_marginBottom="8dp"
 
         android:src="@drawable/icon_play"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_time_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+
+        android:text="0:00"
+        style="@style/media_player_time_code_font"
     />
 
     <ImageView
@@ -120,7 +135,7 @@
 
         app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
         android:layout_marginEnd="16dp"
         android:src="@drawable/icon_like"
