@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:background="@color/settings_screen_background"
+    android:background="@color/search_screen_background"
     tools:context=".MediaActivity">
 
     <ImageView
