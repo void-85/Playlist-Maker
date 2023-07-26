@@ -59,13 +59,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd  ="16dp"
 
-        android:text="song title text"
+        android:text="..."
         style="@style/media_player_big_font"
         android:textColor="@color/search_screen_header"
     />
 
     <TextView
-        android:id="@+id/media_screen_song_album"
+        android:id="@+id/media_screen_song_artist"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd  ="16dp"
 
-        android:text="song title album"
+        android:text="..."
         style="@style/media_player_medium_font"
         android:textColor="@color/search_screen_header"
     />
@@ -89,7 +89,7 @@
         android:layout_width ="48dp"
         android:layout_height="48dp"
 
-        app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
+        app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist"
         app:layout_constraintStart_toStartOf  ="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
@@ -106,7 +106,7 @@
         android:layout_width ="80dp"
         android:layout_height="80dp"
 
-        app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
+        app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist"
         app:layout_constraintStart_toStartOf  ="parent"
         app:layout_constraintEnd_toEndOf      ="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
@@ -139,7 +139,7 @@
         android:layout_width ="48dp"
         android:layout_height="48dp"
 
-        app:layout_constraintTop_toBottomOf="@id/media_screen_song_album"
+        app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
@@ -236,7 +236,7 @@
         app:layout_constraintBottom_toTopOf="@id/media_screen_details_3_line"
         android:layout_marginBottom="16dp"
 
-        android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        android:text="..."
         style="@style/media_player_details_font"
         android:textColor="@color/search_screen_header"
     />
@@ -274,7 +274,7 @@
         app:layout_constraintBottom_toTopOf="@id/media_screen_details_4_line"
         android:layout_marginBottom="16dp"
 
-        android:text="2049"
+        android:text="..."
         style="@style/media_player_details_font"
         android:textColor="@color/search_screen_header"
     />
@@ -322,7 +322,7 @@
         app:layout_constraintBottom_toTopOf="@id/media_screen_details_5_line"
         android:layout_marginBottom="16dp"
 
-        android:text="Альбомfffffffffffffffffffffffffffffffffffffff"
+        android:text="..."
         style="@style/media_player_details_font"
         android:textColor="@color/search_screen_header"
     />
@@ -370,7 +370,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
 
-        android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        android:text="..."
         style="@style/media_player_details_font"
         android:textColor="@color/search_screen_header"
     />

@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
 
+
+import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-
+import androidx.appcompat.app.AppCompatActivity
 
 
 class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView) {
@@ -74,9 +76,20 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
 
             sharedPrefs
                 .edit()
-                .putString ( App.SEARCH_HISTORY_KEY,      Gson().toJson(historyData) )
-                .putBoolean( App.IS_SEARCH_HISTORY_EMPTY, false                      )
+
+                .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
+                .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
+
+                .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
+
                 .apply()
+
+
+
+            //SearchActivity
+
+
+
         }
     }
 }
