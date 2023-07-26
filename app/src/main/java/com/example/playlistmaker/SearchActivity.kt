@@ -2,7 +2,7 @@ package com.example.playlistmaker
 
 
 import android.content.Context
-import android.content.Intent
+
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +16,6 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -66,6 +65,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noNetworkUpdateButton :Button
 
     private var data = ArrayList<Track>()
+
 
 
 
