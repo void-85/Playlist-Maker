@@ -40,9 +40,9 @@
         app:layout_constrainedHeight="true"
         app:layout_constraintDimensionRatio="H, 1:1"
 
-        android:layout_marginTop  ="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd  ="16dp"
+        android:layout_marginTop  ="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd  ="8dp"
     />
 
     <TextView
@@ -55,12 +55,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf    ="parent"
 
-        android:layout_marginTop  ="16dp"
+        android:layout_marginTop  ="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd  ="16dp"
 
         android:text="song title text"
         style="@style/media_player_big_font"
+        android:textColor="@color/search_screen_header"
     />
 
     <TextView
@@ -79,6 +80,7 @@
 
         android:text="song title album"
         style="@style/media_player_medium_font"
+        android:textColor="@color/search_screen_header"
     />
     
     <ImageView
@@ -91,7 +93,10 @@
         app:layout_constraintStart_toStartOf  ="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
+        android:layout_marginTop   ="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
+
         android:src="@drawable/icon_add2playlist"
     />
 
@@ -106,7 +111,7 @@
         app:layout_constraintEnd_toEndOf      ="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
-        android:layout_marginTop   ="16dp"
+        android:layout_marginTop   ="8dp"
         android:layout_marginBottom="8dp"
 
         android:src="@drawable/icon_play"
@@ -125,6 +130,7 @@
 
         android:text="0:00"
         style="@style/media_player_time_code_font"
+        android:textColor="@color/search_screen_header"
     />
 
     <ImageView
@@ -137,7 +143,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/media_screen_time_code"
 
+        android:layout_marginTop   ="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
+
         android:src="@drawable/icon_like"
     />
 
@@ -160,6 +169,7 @@
 
         android:text="Длительность"
         style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
     />
 
     <TextView
@@ -176,6 +186,7 @@
 
         android:text="0:00"
         style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
     />
 
 
@@ -198,6 +209,7 @@
 
         android:text="Альбом"
         style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
     />
 
     <TextView
@@ -226,6 +238,7 @@
 
         android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
         style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
     />
 
 
@@ -246,6 +259,7 @@
 
         android:text="Год"
         style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
     />
 
     <TextView
@@ -262,6 +276,7 @@
 
         android:text="2049"
         style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
     />
 
 
@@ -282,6 +297,7 @@
 
         android:text="Жанр"
         style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
     />
 
     <TextView
@@ -308,6 +324,7 @@
 
         android:text="Альбомfffffffffffffffffffffffffffffffffffffff"
         style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
     />
 
 
@@ -328,6 +345,7 @@
 
         android:text="Страна"
         style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
     />
 
     <TextView
@@ -354,6 +372,7 @@
 
         android:text="Альбомffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
         style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
     />
 
 
