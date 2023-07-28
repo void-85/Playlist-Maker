@@ -1,18 +1,19 @@
 package com.example.playlistmaker
 
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchTrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<SearchTrackViewHolder>() {
+
+class SearchTrackAdapter(private val tracks: List<Track>, private val switchActivityAction: ()->(Unit)) : RecyclerView.Adapter<SearchTrackViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return SearchTrackViewHolder(view)
+        return SearchTrackViewHolder(view, switchActivityAction)
     }
 
 
@@ -20,7 +21,9 @@ class SearchTrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter
 
         holder.bind(tracks[position])
         holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim)
+            AnimationUtils.loadAnimation(
+                holder.itemView.context, R.anim.anim
+            )
     }
 
 

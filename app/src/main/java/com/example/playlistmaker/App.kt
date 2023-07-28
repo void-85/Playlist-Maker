@@ -19,8 +19,6 @@ class App :Application() {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
     }
 
-
-
     private var darkTheme = false
 
 

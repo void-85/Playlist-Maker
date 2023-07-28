@@ -1,9 +1,6 @@
 package com.example.playlistmaker
 
 
-
-
-import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,7 +11,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 
 
-class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView) {
+class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Unit) ) :RecyclerView.ViewHolder(itemView) {
+
 
     private val trackName  :TextView  = itemView.findViewById( R.id.track_view_track_name  )
     private val artistName :TextView  = itemView.findViewById( R.id.track_view_artist_name )
@@ -35,8 +33,9 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
             .transform(
                 CenterCrop(),
                 RoundedCorners(
-                    itemView.resources.displayMetrics.density.toInt() *
-                    itemView.resources.getInteger(R.integer.search_track_view_artwork_corner_radius)
+                    itemView.resources.getDimensionPixelSize(
+                        R.dimen.search_track_view_artwork_corner_radius
+                    )
                 )
             )
             .into(artworkUrl)
@@ -76,19 +75,12 @@ class SearchTrackViewHolder( itemView :View ) :RecyclerView.ViewHolder(itemView)
 
             sharedPrefs
                 .edit()
-
                 .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
                 .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
-
                 .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
-
                 .apply()
 
-
-
-            //wtf
-            itemView.context.startActivity( Intent(itemView.context, MediaActivity::class.java) )
-
+            switchActivity()
         }
     }
 }

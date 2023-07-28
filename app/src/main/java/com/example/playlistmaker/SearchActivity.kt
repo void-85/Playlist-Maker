@@ -2,7 +2,7 @@ package com.example.playlistmaker
 
 
 import android.content.Context
-
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,8 +24,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -68,14 +66,10 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
+    fun switchToPlayer(){
+        val mediaIntent = Intent( this, MediaActivity::class.java )
+        startActivity(mediaIntent)
+    }
 
     private fun showHistory() {
 
@@ -108,6 +102,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
+
     private fun onSearchEntered() {
 
         searchAPIService.getTracksByTerm(editTextId.text.toString())
@@ -129,7 +124,7 @@ class SearchActivity : AppCompatActivity() {
                                     trackName     = it.trackName     ,
                                     artistName    = it.artistName    ,
                                     artworkUrl100 = it.artworkUrl100 ,
-                                    trackTime     = SimpleDateFormat("mm:ss", Locale.getDefault() ).format(it.trackTimeMillis),
+                                    trackTime     = it.trackTimeMillis.millisToMinSec(),
 
                                     collectionName    = it.collectionName   ,
                                     releaseDate       = it.releaseDate      ,
@@ -148,9 +143,11 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(
-                    call :Call<ResponseData> ,
-                    t    :Throwable          )
-                { showNoNetwork() }
+                    call: Call<ResponseData>,
+                    t: Throwable
+                ) {
+                    showNoNetwork()
+                }
         })
     }
 
@@ -162,7 +159,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
-        historyRView.adapter = SearchTrackAdapter(historyData)
+        historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
 
         sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
         isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
@@ -219,7 +216,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
-        recyclerView.adapter = SearchTrackAdapter(data)
+        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer )
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
 
@@ -253,7 +250,7 @@ class SearchActivity : AppCompatActivity() {
         editTextId.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onSearchEntered()
-                true
+                //true
             }
             false
         }

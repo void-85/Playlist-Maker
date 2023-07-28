@@ -10,8 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.text.SimpleDateFormat
-import java.util.Locale
+
 
 class MediaActivity : AppCompatActivity() {
 
@@ -67,8 +66,9 @@ class MediaActivity : AppCompatActivity() {
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
-                        this.resources.displayMetrics.density.toInt() *
-                        this.resources.getInteger(R.integer.media_screen_artwork_corner_radius)
+                        resources.getDimensionPixelSize(
+                            R.dimen.media_screen_artwork_corner_radius
+                        )
                     )
                 )
                 .into(mediaArtwork)
@@ -84,7 +84,7 @@ class MediaActivity : AppCompatActivity() {
                 mediaAlbumHdr.visibility = View.GONE
             }
 
-            mediaDate.text    = data.releaseDate.substring(0,4)
+            mediaDate.text    = data.releaseDate.substringBefore("-")
             mediaGenre.text   = data.primaryGenreName
             mediaCountry.text = data.country
 
