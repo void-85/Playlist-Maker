@@ -31,9 +31,9 @@
         app:layout_constraintBottom_toTopOf="@id/media_screen_song_title"
         app:layout_constrainedHeight="true"
         app:layout_constraintDimensionRatio="H, 1:1"
-        android:layout_marginTop  ="@dimen/media_screen_main_margin"
-        android:layout_marginStart="@dimen/media_screen_main_margin"
-        android:layout_marginEnd  ="@dimen/media_screen_main_margin"
+        android:layout_marginTop  ="@dimen/media_screen_large_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
     />
 
     <TextView
@@ -43,9 +43,9 @@
         app:layout_constraintTop_toBottomOf ="@id/media_screen_artwork"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf    ="parent"
-        android:layout_marginTop  ="@dimen/media_screen_small_margin"
-        android:layout_marginStart="@dimen/media_screen_main_margin"
-        android:layout_marginEnd  ="@dimen/media_screen_main_margin"
+        android:layout_marginTop  ="@dimen/media_screen_large_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
         android:text="@string/media_initial_text"
         style="@style/media_player_big_font"
         android:textColor="@color/search_screen_header"
@@ -58,9 +58,9 @@
         app:layout_constraintTop_toBottomOf ="@id/media_screen_song_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf    ="parent"
-        android:layout_marginTop  ="@dimen/media_screen_small_margin"
-        android:layout_marginStart="@dimen/media_screen_main_margin"
-        android:layout_marginEnd  ="@dimen/media_screen_main_margin"
+        android:layout_marginTop  ="@dimen/media_screen_main_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
         android:text="@string/media_initial_text"
         style="@style/media_player_medium_font"
         android:textColor="@color/search_screen_header"
@@ -75,7 +75,7 @@
         app:layout_constraintBottom_toTopOf ="@id/media_screen_details_1_line"
         android:layout_marginTop   ="@dimen/media_screen_small_margin"
         android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-        android:layout_marginStart="@dimen/media_screen_main_margin"
+        android:layout_marginStart ="@dimen/media_screen_large_margin"
         android:src="@drawable/icon_add2playlist"
     />
 
@@ -114,7 +114,7 @@
         app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
         android:layout_marginTop   ="@dimen/media_screen_small_margin"
         android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-        android:layout_marginEnd   ="@dimen/media_screen_main_margin"
+        android:layout_marginEnd   ="@dimen/media_screen_large_margin"
         android:src="@drawable/icon_like"
     />
 

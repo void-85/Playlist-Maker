@@ -84,6 +84,7 @@
     <dimen name="media_screen_artwork_corner_radius">  8dp </dimen>
     <dimen name="media_screen_back_button_size">      16dp </dimen>
     <dimen name="media_screen_margin_with_timecode">  24dp </dimen>
+    <dimen name="media_screen_large_margin">          24dp </dimen>
     <dimen name="media_screen_main_margin">           16dp </dimen>
     <dimen name="media_screen_small_margin">           8dp </dimen>
     <dimen name="media_small_button_size">            48dp </dimen>
