@@ -14,10 +14,10 @@ class App :Application() {
         const val CURRENT_THEME_KEY       = "current_theme_key"
         const val SEARCH_HISTORY_KEY      = "search_history_key"
         const val IS_SEARCH_HISTORY_EMPTY = "is_search_history_empty"
+        const val CURRENTLY_PLAYING_KEY   = "currently_playing_key"
 
         const val SEARCH_HISTORY_MAX_LENGTH = 10
     }
-
 
     private var darkTheme = false
 

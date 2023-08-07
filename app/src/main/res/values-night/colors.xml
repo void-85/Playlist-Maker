@@ -51,4 +51,6 @@
     <color name="search_track_view_track_name">                   #FFFFFF </color>
     <color name="search_track_view_artist_point_duration_select"> #FFFFFF </color>
 
+    <color name="media_screen_type_text"> #AEAFB4 </color>
+
 </resources>

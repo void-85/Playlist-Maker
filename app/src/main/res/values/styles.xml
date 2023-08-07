@@ -50,6 +50,46 @@
 
 
 
+    <!-- MEDIAPLAYER FONTS, NO COLOR -->
+    <style name="media_player_big_font">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- MEDIAPLAYER FONTS, NO COLOR -->
+    <style name="media_player_medium_font">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- MEDIAPLAYER FONTS, NO COLOR -->
+    <style name="media_player_time_code_font">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- MEDIAPLAYER FONTS, NO COLOR -->
+    <style name="media_player_details_font">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
+
+
+
+
+
+
+
 
 
     <style name="main_screen_button"

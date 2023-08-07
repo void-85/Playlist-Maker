@@ -1,21 +1,279 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MediaActivity"
+    android:layout_width ="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen_is_under_development"
-    tools:context=".MediaActivity">
+    android:background="@color/search_screen_background">
+
+
+
+    <ImageView
+        android:id="@+id/media_screen_back_button"
+        android:layout_width ="@dimen/media_screen_back_button_size"
+        android:layout_height="@dimen/media_screen_back_button_size"
+        android:src="@drawable/back_icon"
+        app:layout_constraintTop_toTopOf    ="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop  ="@dimen/media_screen_main_margin"
+        android:layout_marginStart="@dimen/media_screen_main_margin"
+    />
+    
+    <ImageView
+        android:id="@+id/media_screen_artwork"
+        android:layout_width ="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/spiral"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_song_title"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        android:layout_marginTop  ="@dimen/media_screen_large_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
+    />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ЭКРАН МЕДИАТЕКИ\nВ РАЗРАБОТКЕ"
-        android:textColor="@color/black"
+        android:id="@+id/media_screen_song_title"
+        android:layout_width ="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_artwork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        android:layout_marginTop  ="@dimen/media_screen_large_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_big_font"
+        android:textColor="@color/search_screen_header"
+    />
 
-        android:gravity="center"
-        android:rotation="-45"
-        android:textSize="50sp"
-        android:textFontWeight="700"
-        />
+    <TextView
+        android:id="@+id/media_screen_song_artist"
+        android:layout_width ="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_song_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        android:layout_marginTop  ="@dimen/media_screen_main_margin"
+        android:layout_marginStart="@dimen/media_screen_large_margin"
+        android:layout_marginEnd  ="@dimen/media_screen_large_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_medium_font"
+        android:textColor="@color/search_screen_header"
+    />
+    
+    <ImageView
+        android:id="@+id/media_screen_add_to_playlist"
+        android:layout_width ="@dimen/media_small_button_size"
+        android:layout_height="@dimen/media_small_button_size"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_song_artist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_1_line"
+        android:layout_marginTop   ="@dimen/media_screen_small_margin"
+        android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
+        android:layout_marginStart ="@dimen/media_screen_large_margin"
+        android:src="@drawable/icon_add2playlist"
+    />
+
+    <ImageView
+        android:id="@+id/media_screen_play"
+        android:layout_width ="@dimen/media_medium_button_size"
+        android:layout_height="@dimen/media_medium_button_size"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_song_artist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_1_line"
+        android:layout_marginTop   ="@dimen/media_screen_small_margin"
+        android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
+        android:src="@drawable/icon_play"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_time_code"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf ="@id/media_screen_play"
+        android:layout_marginTop            ="@dimen/media_screen_small_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        android:text="@string/media_initial_time"
+        style="@style/media_player_time_code_font"
+        android:textColor="@color/search_screen_header"
+    />
+
+    <ImageView
+        android:id="@+id/media_screen_like"
+        android:layout_width ="@dimen/media_small_button_size"
+        android:layout_height="@dimen/media_small_button_size"
+        app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist"
+        app:layout_constraintEnd_toEndOf   ="parent"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        android:layout_marginTop   ="@dimen/media_screen_small_margin"
+        android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
+        android:layout_marginEnd   ="@dimen/media_screen_large_margin"
+        android:src="@drawable/icon_like"
+    />
+
+
+
+
+
+    <TextView
+        android:id="@+id/media_screen_details_1_line"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart          ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_2_line"
+        android:layout_marginBottom         ="@dimen/media_screen_main_margin"
+        android:text="@string/media_details_duration"
+        style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_1_line_data"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf   ="parent"
+        android:layout_marginEnd           ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_2_line"
+        android:layout_marginBottom        ="@dimen/media_screen_main_margin"
+        android:text="@string/media_initial_time"
+        style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
+    />
+
+
+    <TextView
+        android:id="@+id/media_screen_details_2_line"
+        android:visibility="visible"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart          ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_3_line"
+        android:layout_marginBottom         ="@dimen/media_screen_main_margin"
+        android:text="@string/media_details_album"
+        style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_2_line_data"
+        android:visibility="visible"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf  ="parent"
+        android:layout_marginEnd          ="@dimen/media_screen_main_margin"
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_2_line"
+        android:layout_marginStart        ="@dimen/media_screen_small_margin"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        android:maxLines="1"
+        android:ellipsize="start"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_3_line"
+        android:layout_marginBottom        ="@dimen/media_screen_main_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
+    />
+
+
+    <TextView
+        android:id="@+id/media_screen_details_3_line"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart          ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_4_line"
+        android:layout_marginBottom         ="@dimen/media_screen_main_margin"
+        android:text="@string/media_details_year"
+        style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_3_line_data"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf   ="parent"
+        android:layout_marginEnd           ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_4_line"
+        android:layout_marginBottom        ="@dimen/media_screen_main_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
+    />
+
+
+    <TextView
+        android:id="@+id/media_screen_details_4_line"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart          ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toTopOf ="@id/media_screen_details_5_line"
+        android:layout_marginBottom         ="@dimen/media_screen_main_margin"
+        android:text="@string/media_details_genre"
+        style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_4_line_data"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf  ="parent"
+        android:layout_marginEnd          ="@dimen/media_screen_main_margin"
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_4_line"
+        android:layout_marginStart        ="@dimen/media_screen_small_margin"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        android:maxLines="1"
+        android:ellipsize="start"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_5_line"
+        android:layout_marginBottom        ="@dimen/media_screen_main_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
+    />
+
+
+    <TextView
+        android:id="@+id/media_screen_details_5_line"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf  ="parent"
+        android:layout_marginStart            ="@dimen/media_screen_main_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom           ="@dimen/media_screen_main_margin"
+        android:text="@string/media_details_country"
+        style="@style/media_player_details_font"
+        android:textColor="@color/media_screen_type_text"
+    />
+
+    <TextView
+        android:id="@+id/media_screen_details_5_line_data"
+        android:layout_width ="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf  ="parent"
+        android:layout_marginEnd          ="@dimen/media_screen_main_margin"
+        app:layout_constraintStart_toEndOf="@id/media_screen_details_5_line"
+        android:layout_marginStart        ="@dimen/media_screen_small_margin"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        android:maxLines="1"
+        android:ellipsize="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom           ="@dimen/media_screen_main_margin"
+        android:text="@string/media_initial_text"
+        style="@style/media_player_details_font"
+        android:textColor="@color/search_screen_header"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
