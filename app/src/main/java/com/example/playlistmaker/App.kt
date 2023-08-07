@@ -16,7 +16,9 @@ class App :Application() {
         const val IS_SEARCH_HISTORY_EMPTY = "is_search_history_empty"
         const val CURRENTLY_PLAYING_KEY   = "currently_playing_key"
 
-        const val SEARCH_HISTORY_MAX_LENGTH = 10
+        const val SEARCH_HISTORY_MAX_LENGTH   =    10
+        const val SEARCH_DEBOUNCE_DELAY       = 2_000L
+        const val SEARCH_DEBOUNCE_REQ_MIN_LEN =     3
     }
 
     private var darkTheme = false

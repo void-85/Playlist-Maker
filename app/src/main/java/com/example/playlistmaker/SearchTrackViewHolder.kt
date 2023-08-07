@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
 
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +21,17 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
     private val trackTime  :TextView  = itemView.findViewById( R.id.track_view_track_time  )
     private val artworkUrl :ImageView = itemView.findViewById( R.id.track_view_artwork_url )
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, App.SEARCH_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 
     fun bind( model :Track ){
 
@@ -75,12 +88,12 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
             sharedPrefs
                 .edit()
-                .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
-                .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
-                .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
+                    .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
+                    .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
+                    .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
                 .apply()
 
-            switchActivity()
+            if( clickDebounce() ) switchActivity()
         }
     }
 }

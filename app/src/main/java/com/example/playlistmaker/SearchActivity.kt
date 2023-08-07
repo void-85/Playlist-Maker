@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -16,6 +18,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -62,9 +65,25 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noNetworkFrame        :FrameLayout
     private lateinit var noNetworkUpdateButton :Button
 
+    private lateinit var progressBar :ProgressBar
+
+
+
     private var data = ArrayList<Track>()
 
 
+
+    private val handler = Handler( Looper.getMainLooper() )
+    private val searchRunnable =
+        Runnable {
+            // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
+            if (editTextId.text.length >= App.SEARCH_DEBOUNCE_REQ_MIN_LEN)
+                onSearchEntered()
+        }
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed    (searchRunnable, App.SEARCH_DEBOUNCE_DELAY)
+    }
 
     fun switchToPlayer(){
         val mediaIntent = Intent( this, MediaActivity::class.java )
@@ -77,6 +96,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility   = View.GONE
         noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.GONE
+        progressBar.visibility    = View.GONE
     }
 
     private fun showTracks() {
@@ -85,6 +105,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility   = View.VISIBLE
         noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.GONE
+        progressBar.visibility    = View.GONE
     }
 
     private fun showNoData() {
@@ -92,6 +113,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility   = View.GONE
         noDataFrame.visibility    = View.VISIBLE
         noNetworkFrame.visibility = View.GONE
+        progressBar.visibility    = View.GONE
     }
 
     private fun showNoNetwork() {
@@ -99,11 +121,14 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility   = View.GONE
         noDataFrame.visibility    = View.GONE
         noNetworkFrame.visibility = View.VISIBLE
+        progressBar.visibility    = View.GONE
     }
 
 
 
     private fun onSearchEntered() {
+
+        progressBar.visibility = View.VISIBLE
 
         searchAPIService.getTracksByTerm(editTextId.text.toString())
             .enqueue(object : Callback<ResponseData> {
@@ -156,6 +181,8 @@ class SearchActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        progressBar = findViewById( R.id.search_progress_bar )
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
@@ -278,6 +305,7 @@ class SearchActivity : AppCompatActivity() {
 
                 } else {
 
+                    searchDebounce()
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
 
