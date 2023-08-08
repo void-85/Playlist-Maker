@@ -1,10 +1,15 @@
 package com.example.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
+import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -26,11 +31,78 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var mediaGenre   :TextView
     private lateinit var mediaCountry :TextView
 
+    private lateinit var playPauseButton :ImageSwitcher
+
+
+
+    private var playOrPause :Boolean = true
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
+
+
+        playPauseButton = findViewById( R.id.media_screen_play )
+        playPauseButton.setFactory {
+
+            val myView = ImageView(applicationContext)
+            myView.scaleType = ImageView.ScaleType.FIT_CENTER
+            myView.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            myView
+        }
+
+        playPauseButton.inAnimation  = AnimationUtils.loadAnimation(this, R.anim.switches_in  )
+        playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out )
+
+        // activity init drawable
+        when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> { playPauseButton.setImageResource(R.drawable.icon_play_dark) }
+            else ->                             { playPauseButton.setImageResource(R.drawable.icon_play)      }
+        }
+
+        playPauseButton.setOnClickListener {
+
+            playOrPause = !playOrPause
+
+            when( AppCompatDelegate.getDefaultNightMode() )
+            {
+                AppCompatDelegate.MODE_NIGHT_YES -> {
+                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
+                    else             { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
+                }
+
+                else -> {
+                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
+                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+                }
+            }
+
+            /*when (applicationContext.resources
+                    ?.configuration
+                    ?.uiMode
+                    ?.and(Configuration.UI_MODE_NIGHT_MASK))
+            {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
+                    else             { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
+                }
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
+                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+                }
+                Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
+                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+                }
+            }*/
+        }
+
 
 
         mediaArtwork = findViewById(R.id.media_screen_artwork)

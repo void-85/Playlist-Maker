@@ -39,9 +39,9 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
     fun bind( model :Track ){
 
-        trackName.text = model.trackName
+        trackName.text  = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text  = model.trackTime
 
         Glide
             .with(itemView)

@@ -154,7 +154,9 @@ class SearchActivity : AppCompatActivity() {
                                     collectionName    = it.collectionName   ,
                                     releaseDate       = it.releaseDate      ,
                                     primaryGenreName  = it.primaryGenreName ,
-                                    country           = it.country          )
+                                    country           = it.country          ,
+
+                                    previewUrl        = it.previewUrl       )
                                 )
                             }
 
