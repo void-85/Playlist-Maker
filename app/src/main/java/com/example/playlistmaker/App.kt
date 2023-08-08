@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatDelegate
 class App :Application() {
 
 
-    companion object{
-        const val PLAYLIST_PREFERENCES = "playlist_preferences"
+    companion object {
+        const val PLAYLIST_PREFERENCES    = "playlist_preferences"
 
         const val CURRENT_THEME_KEY       = "current_theme_key"
         const val SEARCH_HISTORY_KEY      = "search_history_key"

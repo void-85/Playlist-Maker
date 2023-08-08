@@ -21,6 +21,8 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
     private val trackTime  :TextView  = itemView.findViewById( R.id.track_view_track_time  )
     private val artworkUrl :ImageView = itemView.findViewById( R.id.track_view_artwork_url )
 
+
+
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
@@ -32,6 +34,8 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
         }
         return current
     }
+
+
 
     fun bind( model :Track ){
 
