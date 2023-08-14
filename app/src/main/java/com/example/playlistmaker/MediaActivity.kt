@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -21,6 +22,8 @@ import com.google.gson.reflect.TypeToken
 
 
 class MediaActivity : AppCompatActivity() {
+
+    private lateinit var sharedPrefs :SharedPreferences
 
     private lateinit var goBackButton :ImageView
     private lateinit var mediaArtwork :ImageView
@@ -221,7 +224,7 @@ class MediaActivity : AppCompatActivity() {
         goBackButton.setOnClickListener { exitActivity() }
 
 
-        val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
 
 
 
@@ -275,7 +278,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
 
         super.onDestroy()
-        clearSchedule()
+
 
         if( playerState == STATE_PLAYING ) {
             pausePlayer()
@@ -293,6 +296,7 @@ class MediaActivity : AppCompatActivity() {
                 .apply()
         }
 
+        clearSchedule()
         mediaPlayer.release()
     }
 }
