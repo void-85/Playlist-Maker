@@ -70,6 +70,7 @@ class MediaActivity : AppCompatActivity() {
 
 
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed(){
         exitActivity()
     }
@@ -110,6 +111,8 @@ class MediaActivity : AppCompatActivity() {
 
     private fun pausePlayer() {
 
+        clearSchedule()
+
         mediaPlayer.pause()
 
         playPauseButtonState = true
@@ -117,7 +120,6 @@ class MediaActivity : AppCompatActivity() {
 
         playerState = STATE_PAUSED
 
-        clearSchedule()
     }
 
     private fun preparePlayer( url :String ) {
@@ -137,6 +139,8 @@ class MediaActivity : AppCompatActivity() {
 
         mediaPlayer.setOnCompletionListener {
 
+            clearSchedule()
+
             sharedPrefs
                 .edit()
                 .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
@@ -148,7 +152,7 @@ class MediaActivity : AppCompatActivity() {
 
             playerState = STATE_PREPARED
 
-            clearSchedule()
+
             mediaTimeCode.text = getString( R.string.media_initial_time )
         }
     }
@@ -270,6 +274,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
 
         super.onDestroy()
+        clearSchedule()
 
         if( playerState == STATE_PLAYING ) {
             pausePlayer()
@@ -287,7 +292,6 @@ class MediaActivity : AppCompatActivity() {
                 .apply()
         }
 
-        clearSchedule()
         mediaPlayer.release()
     }
 }
