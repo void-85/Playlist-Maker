@@ -40,14 +40,12 @@ class MediaActivity : AppCompatActivity() {
 
 
     private var mediaPlayer = MediaPlayer()
-
     companion object {
         private const val STATE_DEFAULT  = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING  = 2
         private const val STATE_PAUSED   = 3
     }
-
     private var playerState = STATE_DEFAULT
 
     private var resumePlayOnCreate   :Boolean = false
@@ -66,16 +64,15 @@ class MediaActivity : AppCompatActivity() {
     private fun schedulePosUpdate(){
         handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
     }
-
     private fun clearSchedule(){
         handler.removeCallbacks(updatePosRunnable)
     }
 
 
+
     override fun onBackPressed(){
         exitActivity()
     }
-
     private fun exitActivity(){
         if( playerState == STATE_PLAYING ) { pausePlayer() }
         finish()
@@ -154,6 +151,13 @@ class MediaActivity : AppCompatActivity() {
             clearSchedule()
             mediaTimeCode.text = getString( R.string.media_initial_time )
         }
+    }
+
+
+
+    override fun onStop() {
+        super.onStop()
+        if( playerState == STATE_PLAYING ) { pausePlayer() }
     }
 
 
