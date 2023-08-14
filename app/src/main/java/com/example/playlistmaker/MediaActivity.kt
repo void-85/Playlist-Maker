@@ -1,6 +1,9 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -22,6 +25,7 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var goBackButton :ImageView
     private lateinit var mediaArtwork :ImageView
 
+    private lateinit var mediaTimeCode:TextView
     private lateinit var mediaTitle   :TextView
     private lateinit var mediaArtist  :TextView
     private lateinit var mediaLength  :TextView
@@ -35,12 +39,127 @@ class MediaActivity : AppCompatActivity() {
 
 
 
-    private var playOrPause :Boolean = true
+    private var mediaPlayer = MediaPlayer()
+
+    companion object {
+        private const val STATE_DEFAULT  = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING  = 2
+        private const val STATE_PAUSED   = 3
+    }
+
+    private var playerState = STATE_DEFAULT
+
+    private var resumePlayOnCreate   :Boolean = false
+    private var playPauseButtonState :Boolean = true
+    private var playPosition         :Long    = 0L
+
+
+
+    private val handler = Handler( Looper.getMainLooper() )
+    private val updatePosRunnable =
+        Runnable {
+            mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
+            schedulePosUpdate()
+        }
+
+    private fun schedulePosUpdate(){
+        handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
+    }
+
+    private fun clearSchedule(){
+        handler.removeCallbacks(updatePosRunnable)
+    }
+
+
+    override fun onBackPressed(){
+        exitActivity()
+    }
+
+    private fun exitActivity(){
+        if( playerState == STATE_PLAYING ) { pausePlayer() }
+        finish()
+    }
+
+
+
+    private fun updatePlayPauseButtonStateFromVar(){
+
+        when( AppCompatDelegate.getDefaultNightMode() )
+        {
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                if (playPauseButtonState) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
+                else                      { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
+            }
+
+            else -> {
+                if (playPauseButtonState) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
+                else                      { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+            }
+        }
+    }
+
+    private fun startPlayer() {
+
+        mediaPlayer.start()
+
+        playPauseButtonState = false
+        updatePlayPauseButtonStateFromVar()
+
+        playerState = STATE_PLAYING
+
+        schedulePosUpdate()
+    }
+
+    private fun pausePlayer() {
+
+        mediaPlayer.pause()
+
+        playPauseButtonState = true
+        updatePlayPauseButtonStateFromVar()
+
+        playerState = STATE_PAUSED
+
+        clearSchedule()
+    }
+
+    private fun preparePlayer( url :String ) {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+
+        mediaPlayer.setOnPreparedListener {
+
+            playerState = STATE_PREPARED
+
+            if( resumePlayOnCreate ) {
+
+                mediaPlayer.seekTo( playPosition.toInt() )
+                startPlayer()
+            }
+        }
+
+        mediaPlayer.setOnCompletionListener {
+
+            sharedPrefs
+                .edit()
+                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
+                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
+                .apply()
+
+            playPauseButtonState = true
+            updatePlayPauseButtonStateFromVar()
+
+            playerState = STATE_PREPARED
+
+            clearSchedule()
+            mediaTimeCode.text = getString( R.string.media_initial_time )
+        }
+    }
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(null) //savedInstanceState)
         setContentView(R.layout.activity_media)
 
 
@@ -68,60 +187,37 @@ class MediaActivity : AppCompatActivity() {
 
         playPauseButton.setOnClickListener {
 
-            playOrPause = !playOrPause
-
-            when( AppCompatDelegate.getDefaultNightMode() )
-            {
-                AppCompatDelegate.MODE_NIGHT_YES -> {
-                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
-                    else             { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
-                }
-
-                else -> {
-                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
-                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
-                }
+            when(playerState) {
+                STATE_PLAYING                -> { pausePlayer() }
+                STATE_PREPARED, STATE_PAUSED -> { startPlayer() }
             }
-
-            /*when (applicationContext.resources
-                    ?.configuration
-                    ?.uiMode
-                    ?.and(Configuration.UI_MODE_NIGHT_MASK))
-            {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
-                    else             { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
-                }
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
-                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
-                }
-                Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                    if (playOrPause) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
-                    else             { playPauseButton.setImageResource(R.drawable.icon_pause ) }
-                }
-            }*/
         }
 
 
 
+        mediaTimeCode= findViewById(R.id.media_screen_time_code)
+
         mediaArtwork = findViewById(R.id.media_screen_artwork)
         mediaTitle   = findViewById(R.id.media_screen_song_title)
         mediaArtist  = findViewById(R.id.media_screen_song_artist)
-        mediaLength  = findViewById(R.id.media_screen_details_1_line_data)
 
+        mediaLength  = findViewById(R.id.media_screen_details_1_line_data)
         mediaAlbum   = findViewById(R.id.media_screen_details_2_line_data)
         mediaAlbumHdr= findViewById(R.id.media_screen_details_2_line)
-
         mediaDate    = findViewById(R.id.media_screen_details_3_line_data)
         mediaGenre   = findViewById(R.id.media_screen_details_4_line_data)
         mediaCountry = findViewById(R.id.media_screen_details_5_line_data)
 
-
         goBackButton = findViewById(R.id.media_screen_back_button)
-        goBackButton.setOnClickListener { finish() }
+        goBackButton.setOnClickListener { exitActivity() }
+
 
         val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+
+
+
+        resumePlayOnCreate = sharedPrefs.getBoolean( App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
+        playPosition       = sharedPrefs.getLong   ( App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
 
         val json = sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
         if (json.isNotEmpty()) {
@@ -145,9 +241,9 @@ class MediaActivity : AppCompatActivity() {
                 )
                 .into(mediaArtwork)
 
-            mediaTitle.text   = data.trackName
-            mediaArtist.text  = data.artistName
-            mediaLength.text  = data.trackTime
+            mediaTitle.text  = data.trackName
+            mediaArtist.text = data.artistName
+            mediaLength.text = data.trackTime
 
             if(data.collectionName.isNotEmpty()){
                 mediaAlbum.text = data.collectionName
@@ -160,7 +256,34 @@ class MediaActivity : AppCompatActivity() {
             mediaGenre.text   = data.primaryGenreName
             mediaCountry.text = data.country
 
+            preparePlayer( data.previewUrl )
+
         }
 
+    }
+
+
+    override fun onDestroy() {
+
+        super.onDestroy()
+
+        if( playerState == STATE_PLAYING ) {
+            pausePlayer()
+            playPosition = mediaPlayer.currentPosition.toLong()
+            sharedPrefs
+                .edit()
+                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, true         )
+                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    playPosition )
+                .apply()
+        }else{
+            sharedPrefs
+                .edit()
+                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
+                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
+                .apply()
+        }
+
+        clearSchedule()
+        mediaPlayer.release()
     }
 }
