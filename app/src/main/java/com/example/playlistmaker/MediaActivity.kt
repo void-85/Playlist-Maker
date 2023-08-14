@@ -61,6 +61,7 @@ class MediaActivity : AppCompatActivity() {
             schedulePosUpdate()
         }
 
+
     private fun schedulePosUpdate(){
         handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
     }
