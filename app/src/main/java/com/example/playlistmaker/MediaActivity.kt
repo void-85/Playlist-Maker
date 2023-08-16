@@ -48,8 +48,8 @@ class MediaActivity : AppCompatActivity() {
     }
     private var playerState = STATE_DEFAULT
 
-    private var showPlayButtonElsePauseButton :Boolean = true
-    private var intentionalExit               :Boolean = false
+    private var showPlayButtonElsePauseButton: Boolean = true
+    private var intentionalExit: Boolean = false
 
 
 
