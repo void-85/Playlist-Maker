@@ -157,11 +157,31 @@ class MediaActivity : AppCompatActivity() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
 
-    /*override fun onStop() {
+        if( sharedPrefs.getBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false) ){
+            startPlayer()
+        }
+
+    }
+
+    override fun onStop() {
         super.onStop()
-        //if( playerState == STATE_PLAYING ) { pausePlayer() }
-    }*/
+
+        val resumePlay = (playerState == STATE_PLAYING)
+        pausePlayer()
+
+        synchronized(sharedPrefs) {
+            sharedPrefs
+                .edit()
+                .putBoolean(
+                    App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,
+                    resumePlay
+                )
+                .apply()
+        }
+    }
 
 
 
@@ -288,7 +308,7 @@ class MediaActivity : AppCompatActivity() {
 
         }else{
 
-            val resumePlay = (playerState == STATE_PLAYING)
+            //val resumePlay = (playerState == STATE_PLAYING)
 
             synchronized(sharedPrefs) {
                 sharedPrefs
@@ -297,10 +317,10 @@ class MediaActivity : AppCompatActivity() {
                         App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,
                         mediaPlayer.currentPosition.toLong()
                     )
-                    .putBoolean(
+                    /*.putBoolean(
                         App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,
                         resumePlay
-                    )
+                    )*/
                     .apply()
 
             }
