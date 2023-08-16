@@ -3,7 +3,6 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -31,7 +30,7 @@ import kotlin.collections.ArrayList
 
 
 
-lateinit var sharedPrefs: SharedPreferences
+
 lateinit var historyRView: RecyclerView
 
 val historyData = ArrayList<Track>()

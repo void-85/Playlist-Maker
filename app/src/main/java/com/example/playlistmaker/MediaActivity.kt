@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -22,8 +21,6 @@ import com.google.gson.reflect.TypeToken
 
 
 class MediaActivity : AppCompatActivity() {
-
-    private lateinit var sharedPrefs :SharedPreferences
 
     private lateinit var goBackButton :ImageView
     private lateinit var mediaArtwork :ImageView
@@ -51,9 +48,8 @@ class MediaActivity : AppCompatActivity() {
     }
     private var playerState = STATE_DEFAULT
 
-    private var resumePlayOnCreate   :Boolean = false
-    private var playPauseButtonState :Boolean = true
-    private var playPosition         :Long    = 0L
+    private var showPlayButtonElsePauseButton :Boolean = true
+    private var intentionalExit               :Boolean = false
 
 
 
@@ -61,11 +57,11 @@ class MediaActivity : AppCompatActivity() {
     private val updatePosRunnable =
         Runnable {
             mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
-            schedulePosUpdate()
+            schedulePositionUpdate()
         }
 
 
-    private fun schedulePosUpdate(){
+    private fun schedulePositionUpdate(){
         handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
     }
     private fun clearSchedule(){
@@ -74,14 +70,12 @@ class MediaActivity : AppCompatActivity() {
 
 
 
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed(){
-        exitActivity()
-    }
-    private fun exitActivity(){
-        if( playerState == STATE_PLAYING ) { pausePlayer() }
+        intentionalExit = true
+        clearSchedule()
         finish()
     }
+
 
 
 
@@ -90,13 +84,13 @@ class MediaActivity : AppCompatActivity() {
         when( AppCompatDelegate.getDefaultNightMode() )
         {
             AppCompatDelegate.MODE_NIGHT_YES -> {
-                if (playPauseButtonState) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
-                else                      { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
+                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
+                else                               { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
             }
 
             else -> {
-                if (playPauseButtonState) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
-                else                      { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
+                else                               { playPauseButton.setImageResource(R.drawable.icon_pause ) }
             }
         }
     }
@@ -105,12 +99,12 @@ class MediaActivity : AppCompatActivity() {
 
         mediaPlayer.start()
 
-        playPauseButtonState = false
+        showPlayButtonElsePauseButton = false
         updatePlayPauseButtonStateFromVar()
 
         playerState = STATE_PLAYING
 
-        schedulePosUpdate()
+        schedulePositionUpdate()
     }
 
     private fun pausePlayer() {
@@ -119,7 +113,7 @@ class MediaActivity : AppCompatActivity() {
 
         mediaPlayer.pause()
 
-        playPauseButtonState = true
+        showPlayButtonElsePauseButton = true
         updatePlayPauseButtonStateFromVar()
 
         playerState = STATE_PAUSED
@@ -134,28 +128,29 @@ class MediaActivity : AppCompatActivity() {
 
             playerState = STATE_PREPARED
 
-            if( resumePlayOnCreate ) {
-
-                mediaPlayer.seekTo( playPosition.toInt() )
-                startPlayer()
+            var playPosition = 0
+            var resumePlay   = false
+            synchronized(sharedPrefs) {
+                playPosition =
+                    sharedPrefs.getLong(App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L).toInt()
+                resumePlay =
+                    sharedPrefs.getBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false)
             }
+
+            mediaPlayer.seekTo( playPosition )
+            mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
+            if( resumePlay ) startPlayer()
+
         }
 
         mediaPlayer.setOnCompletionListener {
 
-            clearSchedule()
-
-            sharedPrefs
-                .edit()
-                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
-                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
-                .apply()
-
-            playPauseButtonState = true
-            updatePlayPauseButtonStateFromVar()
-
             playerState = STATE_PREPARED
 
+            clearSchedule()
+
+            showPlayButtonElsePauseButton = true
+            updatePlayPauseButtonStateFromVar()
 
             mediaTimeCode.text = getString( R.string.media_initial_time )
         }
@@ -163,10 +158,10 @@ class MediaActivity : AppCompatActivity() {
 
 
 
-    override fun onStop() {
+    /*override fun onStop() {
         super.onStop()
-        if( playerState == STATE_PLAYING ) { pausePlayer() }
-    }
+        //if( playerState == STATE_PLAYING ) { pausePlayer() }
+    }*/
 
 
 
@@ -174,6 +169,7 @@ class MediaActivity : AppCompatActivity() {
         super.onCreate(null) //savedInstanceState)
         setContentView(R.layout.activity_media)
 
+        //sharedPrefsMA = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
 
         playPauseButton = findViewById( R.id.media_screen_play )
         playPauseButton.setFactory {
@@ -221,17 +217,17 @@ class MediaActivity : AppCompatActivity() {
         mediaCountry = findViewById(R.id.media_screen_details_5_line_data)
 
         goBackButton = findViewById(R.id.media_screen_back_button)
-        goBackButton.setOnClickListener { exitActivity() }
+        goBackButton.setOnClickListener {
+            intentionalExit = true
+            clearSchedule()
+            finish()
+        }
 
 
-        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
-
-
-
-        resumePlayOnCreate = sharedPrefs.getBoolean( App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
-        playPosition       = sharedPrefs.getLong   ( App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
-
-        val json = sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
+        var json :String = ""
+        synchronized(sharedPrefs) {
+            json = sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
+        }
         if (json.isNotEmpty()) {
 
             val data = Gson().fromJson<Track>(
@@ -278,25 +274,39 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
 
         super.onDestroy()
+        clearSchedule()
 
+        if(intentionalExit){
 
-        if( playerState == STATE_PLAYING ) {
-            pausePlayer()
-            playPosition = mediaPlayer.currentPosition.toLong()
-            sharedPrefs
-                .edit()
-                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, true         )
-                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    playPosition )
-                .apply()
+            synchronized(sharedPrefs) {
+                sharedPrefs
+                    .edit()
+                    .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L   )
+                    .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,  false)
+                    .apply()
+            }
+
         }else{
-            sharedPrefs
-                .edit()
-                .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY, false )
-                .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,    0L    )
-                .apply()
+
+            val resumePlay = (playerState == STATE_PLAYING)
+
+            synchronized(sharedPrefs) {
+                sharedPrefs
+                    .edit()
+                    .putLong(
+                        App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,
+                        mediaPlayer.currentPosition.toLong()
+                    )
+                    .putBoolean(
+                        App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,
+                        resumePlay
+                    )
+                    .apply()
+
+            }
         }
 
-        clearSchedule()
         mediaPlayer.release()
+
     }
 }

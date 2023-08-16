@@ -1,7 +1,12 @@
 package com.example.playlistmaker
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+
+
+
+lateinit var sharedPrefs: SharedPreferences
 
 
 
@@ -20,10 +25,10 @@ class App :Application() {
         const val SEARCH_DEBOUNCE_DELAY       = 2_000L
         const val SEARCH_DEBOUNCE_REQ_MIN_LEN =     3
 
-        const val MEDIA_PLAYER_RESUME_PLAY_ON_CREATE_KEY = "media_player_resume_play_on_create_key"
-        const val MEDIA_PLAYER_LAST_POSITION_LONG_KEY    = "media_player_last_position_long_key"
+        const val MEDIA_PLAYER_LAST_POSITION_LONG_KEY = "media_player_last_position_long_key"
+        const val MEDIA_PLAYER_RESUME_PLAY_ON_CREATE  = "media_player_resume_play_on_create"
 
-        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 300L
+        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 500L
     }
 
     private var darkTheme = false
@@ -34,7 +39,7 @@ class App :Application() {
 
         super.onCreate()
 
-        val sharedPrefs = getSharedPreferences(PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences(PLAYLIST_PREFERENCES, MODE_PRIVATE)
         switchTheme( sharedPrefs.getBoolean(CURRENT_THEME_KEY, false) )
 
     }
