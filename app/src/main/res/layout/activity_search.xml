@@ -129,6 +129,18 @@
     >
 
 
+        <!-- PROGRESS BAR -->
+        <ProgressBar
+            android:id="@+id/search_progress_bar"
+            android:layout_width      =  "48dp"
+            android:layout_height     =  "48dp"
+            android:layout_marginTop  = "160dp"
+            android:layout_gravity    = "center_horizontal"
+            android:indeterminateTint = "#3772E7"
+            android:visibility        = "gone"
+        />
+
+
         <!-- TRACKS -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rView"

@@ -7,7 +7,10 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 
 
-class SearchTrackAdapter(private val tracks: List<Track>, private val switchActivityAction: ()->(Unit)) : RecyclerView.Adapter<SearchTrackViewHolder>() {
+class SearchTrackAdapter(
+    private val tracks: List<Track>,
+    private val switchActivityAction: () -> (Unit)
+) : RecyclerView.Adapter<SearchTrackViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
