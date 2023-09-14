@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.level_4_ui.search
 
 
 import android.os.Handler
@@ -12,14 +12,21 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.sharedPrefs
+
+
+
 
 class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Unit) ) :RecyclerView.ViewHolder(itemView) {
 
 
-    private val trackName  :TextView  = itemView.findViewById( R.id.track_view_track_name  )
-    private val artistName :TextView  = itemView.findViewById( R.id.track_view_artist_name )
-    private val trackTime  :TextView  = itemView.findViewById( R.id.track_view_track_time  )
-    private val artworkUrl :ImageView = itemView.findViewById( R.id.track_view_artwork_url )
+    private val trackName  :TextView  = itemView.findViewById(R.id.track_view_track_name)
+    private val artistName :TextView  = itemView.findViewById(R.id.track_view_artist_name)
+    private val trackTime  :TextView  = itemView.findViewById(R.id.track_view_track_time)
+    private val artworkUrl :ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
 
 
@@ -37,7 +44,7 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
 
 
-    fun bind( model :Track ){
+    fun bind( model : Track){
 
         trackName.text  = model.trackName
         artistName.text = model.artistName
@@ -92,9 +99,9 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
             sharedPrefs
                 .edit()
-                    .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
-                    .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
-                    .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
+                    .putString (App.SEARCH_HISTORY_KEY, Gson().toJson(historyData) )
+                    .putBoolean(App.IS_SEARCH_HISTORY_EMPTY, false                      )
+                    .putString (App.CURRENTLY_PLAYING_KEY, Gson().toJson(model)       )
                 .apply()
 
             if( clickDebounce() ) switchActivity()

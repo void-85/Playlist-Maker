@@ -10,7 +10,7 @@
 
     android:orientation="vertical"
     android:background="@color/main_screen_background"
-    tools:context=".MainActivity">
+    tools:context=".presentation.level_4_ui.MainActivity">
 
 
 

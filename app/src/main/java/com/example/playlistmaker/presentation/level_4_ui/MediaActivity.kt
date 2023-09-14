@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.level_4_ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -16,6 +16,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
+import com.example.playlistmaker.sharedPrefs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -84,13 +89,13 @@ class MediaActivity : AppCompatActivity() {
         when( AppCompatDelegate.getDefaultNightMode() )
         {
             AppCompatDelegate.MODE_NIGHT_YES -> {
-                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play_dark  ) }
-                else                               { playPauseButton.setImageResource(R.drawable.icon_pause_dark ) }
+                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play_dark) }
+                else                               { playPauseButton.setImageResource(R.drawable.icon_pause_dark) }
             }
 
             else -> {
-                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play  ) }
-                else                               { playPauseButton.setImageResource(R.drawable.icon_pause ) }
+                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play) }
+                else                               { playPauseButton.setImageResource(R.drawable.icon_pause) }
             }
         }
     }
@@ -152,7 +157,7 @@ class MediaActivity : AppCompatActivity() {
             showPlayButtonElsePauseButton = true
             updatePlayPauseButtonStateFromVar()
 
-            mediaTimeCode.text = getString( R.string.media_initial_time )
+            mediaTimeCode.text = getString(R.string.media_initial_time)
         }
     }
 
@@ -191,7 +196,7 @@ class MediaActivity : AppCompatActivity() {
 
         //sharedPrefsMA = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
 
-        playPauseButton = findViewById( R.id.media_screen_play )
+        playPauseButton = findViewById(R.id.media_screen_play)
         playPauseButton.setFactory {
 
             val myView = ImageView(applicationContext)
@@ -204,8 +209,8 @@ class MediaActivity : AppCompatActivity() {
             myView
         }
 
-        playPauseButton.inAnimation  = AnimationUtils.loadAnimation(this, R.anim.switches_in  )
-        playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out )
+        playPauseButton.inAnimation  = AnimationUtils.loadAnimation(this, R.anim.switches_in)
+        playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
 
         // activity init drawable
         when (AppCompatDelegate.getDefaultNightMode()) {

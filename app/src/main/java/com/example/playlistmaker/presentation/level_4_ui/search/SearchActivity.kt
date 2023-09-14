@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.level_4_ui.search
 
 
 import android.content.Context
@@ -19,6 +19,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.DTO.ResponseData
+import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.data.level_4_web.SearchAPIService
+import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
+import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
+import com.example.playlistmaker.sharedPrefs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -183,13 +191,13 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        progressBar = findViewById( R.id.search_progress_bar )
+        progressBar = findViewById(R.id.search_progress_bar)
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
         historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
 
-        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        //sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
         isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
         if (!isSearchHistoryEmpty) {
 
