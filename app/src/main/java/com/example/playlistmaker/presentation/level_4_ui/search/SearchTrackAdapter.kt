@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.level_1_entities.Track
 

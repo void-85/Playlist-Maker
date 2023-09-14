@@ -5,10 +5,12 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
+import com.google.android.material.switchmaterial.SwitchMaterial
+
+
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.sharedPrefs
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.example.playlistmaker.interactor
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -28,15 +30,12 @@ class SettingsActivity : AppCompatActivity() {
         //val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
 
         settingsThemeSwitcher = findViewById<SwitchMaterial>(R.id.settings_theme_switcher)
-        settingsThemeSwitcher.isChecked = sharedPrefs.getBoolean(App.CURRENT_THEME_KEY, false)
+        settingsThemeSwitcher.isChecked = interactor.isThemeDark()
         settingsThemeSwitcher.setOnCheckedChangeListener {
 
             _, checked -> run{
                 (applicationContext as App).switchTheme(checked)
-                sharedPrefs
-                    .edit()
-                    .putBoolean(App.CURRENT_THEME_KEY, checked)
-                    .apply()
+                interactor.setDarkTheme( checked )
             }
         }
 
