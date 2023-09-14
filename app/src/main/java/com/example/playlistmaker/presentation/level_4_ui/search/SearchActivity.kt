@@ -19,14 +19,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.App
-import com.example.playlistmaker.R
-import com.example.playlistmaker.data.DTO.ResponseData
-import com.example.playlistmaker.domain.level_1_entities.Track
-import com.example.playlistmaker.data.level_4_web.SearchAPIService
-import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
-import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
-import com.example.playlistmaker.sharedPrefs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -35,6 +27,17 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
+
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.DTO.ResponseData
+import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.data.level_4_web.SearchAPIService
+import com.example.playlistmaker.interactor
+import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
+import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
+
+
 
 
 
@@ -197,11 +200,10 @@ class SearchActivity : AppCompatActivity() {
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
         historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
 
-        //sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
-        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
+        isSearchHistoryEmpty = interactor.isSearchHistoryEmpty()
         if (!isSearchHistoryEmpty) {
 
-            val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
+            val json = interactor.getSearchHistory()
             //Log.d("JSON", json)
 
             if (json.isNotEmpty()) {
@@ -247,7 +249,7 @@ class SearchActivity : AppCompatActivity() {
             isSearchHistoryEmpty = true
             showHistory()
 
-            sharedPrefs.edit().putBoolean(App.IS_SEARCH_HISTORY_EMPTY, true).apply()
+            interactor.setSearchHistoryEmpty(true)
         }
 
 

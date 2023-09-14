@@ -13,4 +13,10 @@ interface AppPrefsRepository {
 
     fun getCurrentlyPlaying(): String
     fun setCurrentlyPlaying(text: String)
+
+    fun getMediaPlayerLastPosition(): Long
+    fun setMediaPlayerLastPosition(position: Long)
+
+    fun isMediaPlayerToResumeOnCreate(): Boolean
+    fun setMediaPlayerToResumeOnCreate(resume: Boolean)
 }

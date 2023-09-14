@@ -16,13 +16,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.interactor
 import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
-import com.example.playlistmaker.sharedPrefs
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+
+
 
 
 class MediaActivity : AppCompatActivity() {
@@ -135,12 +138,9 @@ class MediaActivity : AppCompatActivity() {
 
             var playPosition = 0
             var resumePlay   = false
-            synchronized(sharedPrefs) {
-                playPosition =
-                    sharedPrefs.getLong(App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L).toInt()
-                resumePlay =
-                    sharedPrefs.getBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false)
-            }
+
+            playPosition = interactor.getMediaPlayerLastPosition().toInt()
+            resumePlay   = interactor.isMediaPlayerToResumeOnCreate()
 
             mediaPlayer.seekTo( playPosition )
             mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
@@ -165,7 +165,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        if( sharedPrefs.getBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false) ){
+        if (interactor.isMediaPlayerToResumeOnCreate()) {
             startPlayer()
         }
 
@@ -177,15 +177,7 @@ class MediaActivity : AppCompatActivity() {
         val resumePlay = (playerState == STATE_PLAYING)
         pausePlayer()
 
-        synchronized(sharedPrefs) {
-            sharedPrefs
-                .edit()
-                .putBoolean(
-                    App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,
-                    resumePlay
-                )
-                .apply()
-        }
+        interactor.setMediaPlayerToResumeOnCreate( resumePlay )
     }
 
 
@@ -249,10 +241,8 @@ class MediaActivity : AppCompatActivity() {
         }
 
 
-        var json :String = ""
-        synchronized(sharedPrefs) {
-            json = sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
-        }
+        val json :String = interactor.getCurrentlyPlaying()
+
         if (json.isNotEmpty()) {
 
             val data = Gson().fromJson<Track>(
@@ -303,32 +293,13 @@ class MediaActivity : AppCompatActivity() {
 
         if(intentionalExit){
 
-            synchronized(sharedPrefs) {
-                sharedPrefs
-                    .edit()
-                    .putLong   (App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L   )
-                    .putBoolean(App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,  false)
-                    .apply()
-            }
+            interactor.setMediaPlayerLastPosition(0L)
+            interactor.setMediaPlayerToResumeOnCreate(false)
 
         }else{
 
-            //val resumePlay = (playerState == STATE_PLAYING)
+            interactor.setMediaPlayerLastPosition( mediaPlayer.currentPosition.toLong() )
 
-            synchronized(sharedPrefs) {
-                sharedPrefs
-                    .edit()
-                    .putLong(
-                        App.MEDIA_PLAYER_LAST_POSITION_LONG_KEY,
-                        mediaPlayer.currentPosition.toLong()
-                    )
-                    /*.putBoolean(
-                        App.MEDIA_PLAYER_RESUME_PLAY_ON_CREATE,
-                        resumePlay
-                    )*/
-                    .apply()
-
-            }
         }
 
         mediaPlayer.release()

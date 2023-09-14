@@ -15,8 +15,7 @@ import com.google.gson.Gson
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.level_1_entities.Track
-
-
+import com.example.playlistmaker.interactor
 
 
 class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Unit) ) :RecyclerView.ViewHolder(itemView) {
@@ -96,12 +95,9 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
             isSearchHistoryEmpty = false
 
-            sharedPrefs
-                .edit()
-                    .putString (App.SEARCH_HISTORY_KEY, Gson().toJson(historyData) )
-                    .putBoolean(App.IS_SEARCH_HISTORY_EMPTY, false                      )
-                    .putString (App.CURRENTLY_PLAYING_KEY, Gson().toJson(model)       )
-                .apply()
+            interactor.setSearchHistory(Gson().toJson(historyData))
+            interactor.setSearchHistoryEmpty(false)
+            interactor.setCurrentlyPlaying(Gson().toJson(model))
 
             if( clickDebounce() ) switchActivity()
         }
