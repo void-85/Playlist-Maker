@@ -44,7 +44,7 @@ class App :Application() {
 
         super.onCreate()
 
-        interactor = Creator.provideInteractor()
+        interactor = Creator.provideInteractor( applicationContext )
         switchTheme( interactor.isThemeDark() )
     }
 
