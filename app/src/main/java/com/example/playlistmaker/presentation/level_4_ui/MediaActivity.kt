@@ -1,9 +1,6 @@
 package com.example.playlistmaker.presentation.level_4_ui
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -19,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.level_1_entities.Track
 import com.example.playlistmaker.interactor
@@ -45,45 +41,8 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var playPauseButton :ImageSwitcher
 
-
-
-    private var mediaPlayer = MediaPlayer()
-    companion object {
-        private const val STATE_DEFAULT  = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING  = 2
-        private const val STATE_PAUSED   = 3
-    }
-    private var playerState = STATE_DEFAULT
-
     private var showPlayButtonElsePauseButton: Boolean = true
     private var intentionalExit: Boolean = false
-
-
-
-    private val handler = Handler( Looper.getMainLooper() )
-    private val updatePosRunnable =
-        Runnable {
-            mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
-            schedulePositionUpdate()
-        }
-
-
-    private fun schedulePositionUpdate(){
-        handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
-    }
-    private fun clearSchedule(){
-        handler.removeCallbacks(updatePosRunnable)
-    }
-
-
-
-    override fun onBackPressed(){
-        intentionalExit = true
-        clearSchedule()
-        finish()
-    }
-
 
 
 
@@ -103,81 +62,38 @@ class MediaActivity : AppCompatActivity() {
         }
     }
 
-    private fun startPlayer() {
-
-        mediaPlayer.start()
-
+    private fun onPlayFun() {
         showPlayButtonElsePauseButton = false
         updatePlayPauseButtonStateFromVar()
-
-        playerState = STATE_PLAYING
-
-        schedulePositionUpdate()
     }
-
-    private fun pausePlayer() {
-
-        clearSchedule()
-
-        mediaPlayer.pause()
-
+    private fun onPauseFun() {
+        showPlayButtonElsePauseButton = true
+        updatePlayPauseButtonStateFromVar()
+    }
+    private fun onCompletionFun() {
         showPlayButtonElsePauseButton = true
         updatePlayPauseButtonStateFromVar()
 
-        playerState = STATE_PAUSED
-
+        mediaTimeCode.text = getString(R.string.media_initial_time)
+    }
+    private fun updateFun() {
+        mediaTimeCode.text = interactor.getCurrentPosition()
+            .millisToMinSec()
     }
 
-    private fun preparePlayer( url :String ) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-
-        mediaPlayer.setOnPreparedListener {
-
-            playerState = STATE_PREPARED
-
-            var playPosition = 0
-            var resumePlay   = false
-
-            playPosition = interactor.getMediaPlayerLastPosition().toInt()
-            resumePlay   = interactor.isMediaPlayerToResumeOnCreate()
-
-            mediaPlayer.seekTo( playPosition )
-            mediaTimeCode.text = mediaPlayer.currentPosition.toLong().millisToMinSec()
-            if( resumePlay ) startPlayer()
-
-        }
-
-        mediaPlayer.setOnCompletionListener {
-
-            playerState = STATE_PREPARED
-
-            clearSchedule()
-
-            showPlayButtonElsePauseButton = true
-            updatePlayPauseButtonStateFromVar()
-
-            mediaTimeCode.text = getString(R.string.media_initial_time)
-        }
-    }
 
 
     override fun onStart() {
         super.onStart()
 
-        if (interactor.isMediaPlayerToResumeOnCreate()) {
-            startPlayer()
-        }
+        if (interactor.isMediaPlayerToResumeOnCreate()) { interactor.start() }
 
     }
 
     override fun onStop() {
         super.onStop()
 
-        val resumePlay = (playerState == STATE_PLAYING)
-        pausePlayer()
-
-        interactor.setMediaPlayerToResumeOnCreate( resumePlay )
+        interactor.setMediaPlayerToResumeOnCreate( interactor.isPlaying() )
     }
 
 
@@ -185,8 +101,6 @@ class MediaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null) //savedInstanceState)
         setContentView(R.layout.activity_media)
-
-        //sharedPrefsMA = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
 
         playPauseButton = findViewById(R.id.media_screen_play)
         playPauseButton.setFactory {
@@ -212,10 +126,8 @@ class MediaActivity : AppCompatActivity() {
 
         playPauseButton.setOnClickListener {
 
-            when(playerState) {
-                STATE_PLAYING                -> { pausePlayer() }
-                STATE_PREPARED, STATE_PAUSED -> { startPlayer() }
-            }
+            if( interactor.isPlaying() ) interactor.pause()
+            else                         interactor.start()
         }
 
 
@@ -236,13 +148,12 @@ class MediaActivity : AppCompatActivity() {
         goBackButton = findViewById(R.id.media_screen_back_button)
         goBackButton.setOnClickListener {
             intentionalExit = true
-            clearSchedule()
+            interactor.pause()
             finish()
         }
 
 
         val json :String = interactor.getCurrentlyPlaying()
-
         if (json.isNotEmpty()) {
 
             val data = Gson().fromJson<Track>(
@@ -279,8 +190,14 @@ class MediaActivity : AppCompatActivity() {
             mediaGenre.text   = data.primaryGenreName
             mediaCountry.text = data.country
 
-            preparePlayer( data.previewUrl )
-
+            interactor.prepare (
+                data.previewUrl   ,
+                interactor.getMediaPlayerLastPosition().toInt() ,
+                interactor.isMediaPlayerToResumeOnCreate()      ,
+                ::updateFun       ,
+                ::onCompletionFun ,
+                ::onPlayFun       ,
+                ::onPauseFun      )
         }
 
     }
@@ -289,7 +206,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
 
         super.onDestroy()
-        clearSchedule()
+        interactor.pause()
 
         if(intentionalExit){
 
@@ -298,11 +215,11 @@ class MediaActivity : AppCompatActivity() {
 
         }else{
 
-            interactor.setMediaPlayerLastPosition( mediaPlayer.currentPosition.toLong() )
+            interactor.setMediaPlayerLastPosition( interactor.getCurrentPosition() /*mediaPlayer.currentPosition.toLong()*/ )
 
         }
 
-        mediaPlayer.release()
+        interactor.release()
 
     }
 }

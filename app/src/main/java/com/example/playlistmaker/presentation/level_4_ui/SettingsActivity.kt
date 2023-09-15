@@ -34,7 +34,7 @@ class SettingsActivity : AppCompatActivity() {
         settingsThemeSwitcher.setOnCheckedChangeListener {
 
             _, checked -> run{
-                (applicationContext as App).switchTheme(checked)
+                (applicationContext as App).setTheme(checked)
                 interactor.setDarkTheme( checked )
             }
         }

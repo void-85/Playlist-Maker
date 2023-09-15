@@ -30,29 +30,20 @@ class App :Application() {
         const val SEARCH_DEBOUNCE_DELAY       = 2_000L
         const val SEARCH_DEBOUNCE_REQ_MIN_LEN =     3
 
-
         const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 500L
     }
-
-    private var darkTheme = false
-
-
-
 
 
     override fun onCreate(){
 
         super.onCreate()
 
-        interactor = Creator.provideInteractor( applicationContext )
-        switchTheme( interactor.isThemeDark() )
+        interactor = Creator.provideInteractor(applicationContext)
+        setTheme(interactor.isThemeDark())
     }
 
 
-
-    fun switchTheme( darkThemeEnabled :Boolean ){
-
-        darkTheme = darkThemeEnabled
+    fun setTheme(darkThemeEnabled :Boolean ){
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) { AppCompatDelegate.MODE_NIGHT_YES }

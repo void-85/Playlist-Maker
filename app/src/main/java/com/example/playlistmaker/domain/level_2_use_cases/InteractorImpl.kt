@@ -1,10 +1,19 @@
 package com.example.playlistmaker.domain.level_2_use_cases
 
+
 import com.example.playlistmaker.domain.level_1_entities.AppPrefsRepository
+import com.example.playlistmaker.domain.level_1_entities.AudioRepository
 import com.example.playlistmaker.domain.level_1_entities.Interactor
+import com.example.playlistmaker.domain.level_1_entities.TracksRepository
 
-class InteractorImpl( private val appPrefsRepositoryImpl: AppPrefsRepository) :Interactor {
 
+class InteractorImpl (
+    private val appPrefsRepositoryImpl :AppPrefsRepository ,
+    private val tracksRepositoryImpl   :TracksRepository   ,
+    private val audioRepositoryImpl    :AudioRepository    ) :Interactor
+{
+
+    // APP PREFS REPOSITORY ---------------------------------------------------------------
     override fun isThemeDark(): Boolean {
         return appPrefsRepositoryImpl.isThemeDark()
     }
@@ -51,4 +60,60 @@ class InteractorImpl( private val appPrefsRepositoryImpl: AppPrefsRepository) :I
     override fun setMediaPlayerToResumeOnCreate(resume: Boolean) {
         appPrefsRepositoryImpl.setMediaPlayerToResumeOnCreate(resume)
     }
+    // APP PREFS REPOSITORY ---------------------------------------------------------------
+
+
+
+    // TRACKS REPOSITORY ------------------------------------------------------------------
+    override fun searchTracks(searchText: String, consumer: Interactor.TracksConsumer) {
+
+        val t = Thread{ consumer.consume( tracksRepositoryImpl.searchTracks( searchText ) ) }
+        t.start()
+        t.join()
+    }
+    // TRACKS REPOSITORY ------------------------------------------------------------------
+
+
+
+    // AUDIO REPOSITORY -------------------------------------------------------------------
+    override fun getCurrentPosition(): Long {
+        return audioRepositoryImpl.getCurrentPosition()
+    }
+
+    override fun isPlaying(): Boolean {
+        return audioRepositoryImpl.isPlaying()
+    }
+
+    override fun prepare(
+        url: String,
+        seekToWhenPrepared: Int,
+        autoPlay: Boolean,
+        updateFun: () -> Unit,
+        onCompletionFun: () -> Unit,
+        onPlayFun: () -> Unit,
+        onPauseFun: () -> Unit
+    ) {
+        audioRepositoryImpl.prepare(
+            url,
+            seekToWhenPrepared,
+            autoPlay,
+            updateFun,
+            onCompletionFun,
+            onPlayFun,
+            onPauseFun
+        )
+    }
+
+    override fun start() {
+        audioRepositoryImpl.start()
+    }
+
+    override fun pause() {
+        audioRepositoryImpl.pause()
+    }
+
+    override fun release() {
+        audioRepositoryImpl.release()
+    }
+    // AUDIO REPOSITORY -------------------------------------------------------------------
 }

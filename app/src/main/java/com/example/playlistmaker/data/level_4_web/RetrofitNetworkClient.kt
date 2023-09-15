@@ -1,10 +1,13 @@
 package com.example.playlistmaker.data.level_4_web
 
+
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 import com.example.playlistmaker.data.DTO.GeneralResponse
 import com.example.playlistmaker.data.DTO.RequestData
 import com.example.playlistmaker.data.NetworkClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class RetrofitNetworkClient : NetworkClient {
 
@@ -33,7 +36,6 @@ class RetrofitNetworkClient : NetworkClient {
 
             else -> { return GeneralResponse().apply{ responseCode = 400 } }
         }
-
     }
 
 }

@@ -21,20 +21,13 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.DTO.ResponseData
 import com.example.playlistmaker.domain.level_1_entities.Track
-import com.example.playlistmaker.data.level_4_web.SearchAPIService
+import com.example.playlistmaker.domain.level_1_entities.Interactor
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
 import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
 
 
@@ -55,11 +48,11 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
 
-    private val retrofit = Retrofit.Builder()
+    /*private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
+    private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)*/
 
     private lateinit var goBackButtonId    :FrameLayout
     private lateinit var clearTextButtonId :ImageView
@@ -139,8 +132,30 @@ class SearchActivity : AppCompatActivity() {
     private fun onSearchEntered() {
 
         progressBar.visibility = View.VISIBLE
+        data.clear()
 
-        searchAPIService.getTracksByTerm(editTextId.text.toString())
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        interactor.searchTracks(
+            editTextId.text.toString(),
+            object : Interactor.TracksConsumer {
+                override fun consume(foundTracks: List<Track>) {
+                    foundTracks.forEach { data.add(it) }
+                }
+            }
+        )
+
+        if( data.isNotEmpty() ){
+            showTracks()
+        }else if( data.isEmpty() ){
+            showNoData()
+        }else{
+            showNoNetwork()
+        }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        recyclerView.adapter?.notifyDataSetChanged()
+
+        /*searchAPIService.getTracksByTerm(editTextId.text.toString())
             .enqueue(object : Callback<ResponseData> {
 
                 override fun onResponse(
@@ -185,7 +200,7 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     showNoNetwork()
                 }
-        })
+        })*/
     }
 
 
