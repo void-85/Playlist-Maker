@@ -17,9 +17,10 @@ import com.example.playlistmaker.domain.level_2_use_cases.InteractorImpl
 object Creator {
 
     private fun getAppPrefsRepository(context: Context): AppPrefsRepository {
-        val x = AppPrefsRepositoryImpl()
-        x.init(context)
-        return x
+        val appPrefsRepositoryImpl = AppPrefsRepositoryImpl()
+        appPrefsRepositoryImpl.init(context)
+
+        return appPrefsRepositoryImpl
     }
 
     private fun getTracksRepository(): TracksRepository {
@@ -31,10 +32,11 @@ object Creator {
     }
 
     fun provideInteractor(context: Context): Interactor {
-        return InteractorImpl (
-            getAppPrefsRepository(context) ,
-            getTracksRepository()          ,
-            getAudioRepository()           )
+        return InteractorImpl(
+            getAppPrefsRepository(context),
+            getTracksRepository(),
+            getAudioRepository()
+        )
     }
 
 }

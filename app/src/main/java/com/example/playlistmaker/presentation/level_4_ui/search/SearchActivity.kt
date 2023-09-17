@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.level_4_ui.search
 
-
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -30,17 +29,10 @@ import com.example.playlistmaker.domain.level_1_entities.Interactor
 import com.example.playlistmaker.interactor
 import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
 
-
-
-
-
-
 lateinit var historyRView: RecyclerView
 
 val historyData = ArrayList<Track>()
 var isSearchHistoryEmpty = true
-
-
 
 class SearchActivity : AppCompatActivity() {
 

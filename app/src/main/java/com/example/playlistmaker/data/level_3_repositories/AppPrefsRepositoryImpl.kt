@@ -1,15 +1,11 @@
 package com.example.playlistmaker.data.level_3_repositories
 
-
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
-
 import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.level_1_entities.AppPrefsRepository
-
-
 
 class AppPrefsRepositoryImpl() :AppPrefsRepository {
 
@@ -33,7 +29,7 @@ class AppPrefsRepositoryImpl() :AppPrefsRepository {
 
 
     override fun getSearchHistory(): String {
-        return sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
+        return sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "").orEmpty()
     }
     override fun setSearchHistory(text: String) {
         synchronized(sharedPrefs) {

@@ -21,9 +21,6 @@ import com.example.playlistmaker.domain.level_1_entities.Track
 import com.example.playlistmaker.interactor
 import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
 
-
-
-
 class MediaActivity : AppCompatActivity() {
 
     private lateinit var goBackButton :ImageView
@@ -48,16 +45,22 @@ class MediaActivity : AppCompatActivity() {
 
     private fun updatePlayPauseButtonStateFromVar(){
 
-        when( AppCompatDelegate.getDefaultNightMode() )
-        {
+        when (AppCompatDelegate.getDefaultNightMode()) {
+
             AppCompatDelegate.MODE_NIGHT_YES -> {
-                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play_dark) }
-                else                               { playPauseButton.setImageResource(R.drawable.icon_pause_dark) }
+                if (showPlayButtonElsePauseButton) {
+                    playPauseButton.setImageResource(R.drawable.icon_play_dark)
+                } else {
+                    playPauseButton.setImageResource(R.drawable.icon_pause_dark)
+                }
             }
 
             else -> {
-                if (showPlayButtonElsePauseButton) { playPauseButton.setImageResource(R.drawable.icon_play) }
-                else                               { playPauseButton.setImageResource(R.drawable.icon_pause) }
+                if (showPlayButtonElsePauseButton) {
+                    playPauseButton.setImageResource(R.drawable.icon_play)
+                } else {
+                    playPauseButton.setImageResource(R.drawable.icon_pause)
+                }
             }
         }
     }
