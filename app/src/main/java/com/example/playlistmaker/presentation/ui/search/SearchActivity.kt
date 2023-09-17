@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.level_4_ui.search
+package com.example.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -24,10 +24,10 @@ import kotlin.collections.ArrayList
 
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.level_1_entities.Track
-import com.example.playlistmaker.domain.level_1_entities.Interactor
+import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.domain.api.Interactor
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.presentation.level_4_ui.MediaActivity
+import com.example.playlistmaker.presentation.ui.MediaActivity
 
 lateinit var historyRView: RecyclerView
 
@@ -35,10 +35,6 @@ val historyData = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
 class SearchActivity : AppCompatActivity() {
-
-    private companion object {
-        const val SEARCH_REQUEST = "SEARCH_REQUEST"
-    }
 
     private lateinit var goBackButtonId    :FrameLayout
     private lateinit var clearTextButtonId :ImageView
@@ -57,7 +53,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var progressBar :ProgressBar
 
     private var data = ArrayList<Track>()
-
 
     private val handler = Handler( Looper.getMainLooper() )
     private val searchRunnable =
@@ -230,7 +225,6 @@ class SearchActivity : AppCompatActivity() {
             interactor.setSearchHistoryEmpty(true)
         }
 
-
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer )
 
@@ -306,6 +300,7 @@ class SearchActivity : AppCompatActivity() {
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
 
+
         savedInstanceState?.let {
             val s = savedInstanceState.getString(SEARCH_REQUEST, "")
             if (s != "") {
@@ -321,5 +316,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_REQUEST, editTextId.text.toString())
+    }
+
+    private companion object {
+        const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
 }

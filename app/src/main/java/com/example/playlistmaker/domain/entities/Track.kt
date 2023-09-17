@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.level_1_entities
+package com.example.playlistmaker.domain.entities
 
 data class Track (
 

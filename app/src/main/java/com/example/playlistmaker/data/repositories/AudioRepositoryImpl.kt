@@ -1,11 +1,11 @@
-package com.example.playlistmaker.data.level_3_repositories
+package com.example.playlistmaker.data.repositories
 
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
 import com.example.playlistmaker.App
-import com.example.playlistmaker.domain.level_1_entities.AudioRepository
+import com.example.playlistmaker.domain.api.AudioRepository
 
 class AudioRepositoryImpl : AudioRepository {
 

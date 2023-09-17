@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.level_4_web
+package com.example.playlistmaker.data.web
 
 
 import retrofit2.Retrofit
@@ -6,7 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 import com.example.playlistmaker.data.DTO.GeneralResponse
 import com.example.playlistmaker.data.DTO.RequestData
-import com.example.playlistmaker.data.NetworkClient
+import com.example.playlistmaker.data.api.NetworkClient
+import com.example.playlistmaker.data.api.SearchAPIService
 
 
 class RetrofitNetworkClient : NetworkClient {

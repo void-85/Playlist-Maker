@@ -4,10 +4,10 @@ package com.example.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 
-import com.example.playlistmaker.domain.level_1_entities.Interactor
+import com.example.playlistmaker.domain.api.Interactor
 
 
-lateinit var interactor :Interactor
+lateinit var interactor : Interactor
 
 
 class App :Application() {

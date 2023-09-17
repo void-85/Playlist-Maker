@@ -1,5 +1,4 @@
-package com.example.playlistmaker.presentation.level_4_ui.search
-
+package com.example.playlistmaker.presentation.ui.search
 
 import android.os.Handler
 import android.os.Looper
@@ -14,19 +13,18 @@ import com.google.gson.Gson
 
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.interactor
 
-
-class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Unit) ) :RecyclerView.ViewHolder(itemView) {
-
+class SearchTrackViewHolder(
+    itemView: View,
+    private val switchActivity: () -> (Unit)
+) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName  :TextView  = itemView.findViewById(R.id.track_view_track_name)
     private val artistName :TextView  = itemView.findViewById(R.id.track_view_artist_name)
     private val trackTime  :TextView  = itemView.findViewById(R.id.track_view_track_time)
     private val artworkUrl :ImageView = itemView.findViewById(R.id.track_view_artwork_url)
-
-
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -39,8 +37,6 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
         }
         return current
     }
-
-
 
     fun bind( model : Track){
 
@@ -61,7 +57,6 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
                 )
             )
             .into(artworkUrl)
-
 
         // ? excess amount of listeners
         itemView.setOnClickListener {
@@ -89,7 +84,6 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
                     historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
                     historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
-
                 }
             }
 

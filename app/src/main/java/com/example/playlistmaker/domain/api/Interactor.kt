@@ -1,4 +1,6 @@
-package com.example.playlistmaker.domain.level_1_entities
+package com.example.playlistmaker.domain.api
+
+import com.example.playlistmaker.domain.entities.Track
 
 interface Interactor {
 
@@ -25,7 +27,7 @@ interface Interactor {
 
 
     // TRACKS REPOSITORY ------------------------------------------------------------------
-    fun searchTracks( searchText :String, consumer :TracksConsumer )
+    fun searchTracks( searchText :String, consumer : TracksConsumer)
 
     interface TracksConsumer{ fun consume( foundTracks :List<Track> ) }
     // TRACKS REPOSITORY ------------------------------------------------------------------

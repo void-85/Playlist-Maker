@@ -1,6 +1,5 @@
-package com.example.playlistmaker.presentation.level_4_ui
+package com.example.playlistmaker.presentation.ui
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +17,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.level_1_entities.Track
+import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
+import com.example.playlistmaker.presentation.presenters.millisToMinSec
 
 class MediaActivity : AppCompatActivity() {
 
@@ -149,8 +148,6 @@ class MediaActivity : AppCompatActivity() {
             }
         }
 
-
-
         mediaTimeCode = findViewById(R.id.media_screen_time_code)
 
         mediaArtwork  = findViewById(R.id.media_screen_artwork)
@@ -170,7 +167,6 @@ class MediaActivity : AppCompatActivity() {
             interactor.pause()
             finish()
         }
-
 
         val json: String = interactor.getCurrentlyPlaying()
         if (json.isNotEmpty()) {

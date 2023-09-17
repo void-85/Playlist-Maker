@@ -3,15 +3,15 @@ package com.example.playlistmaker
 
 import android.content.Context
 
-import com.example.playlistmaker.data.level_3_repositories.AppPrefsRepositoryImpl
-import com.example.playlistmaker.data.level_3_repositories.AudioRepositoryImpl
-import com.example.playlistmaker.data.level_3_repositories.TracksRepositoryImpl
-import com.example.playlistmaker.data.level_4_web.RetrofitNetworkClient
-import com.example.playlistmaker.domain.level_1_entities.AppPrefsRepository
-import com.example.playlistmaker.domain.level_1_entities.AudioRepository
-import com.example.playlistmaker.domain.level_1_entities.Interactor
-import com.example.playlistmaker.domain.level_1_entities.TracksRepository
-import com.example.playlistmaker.domain.level_2_use_cases.InteractorImpl
+import com.example.playlistmaker.data.repositories.AppPrefsRepositoryImpl
+import com.example.playlistmaker.data.repositories.AudioRepositoryImpl
+import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
+import com.example.playlistmaker.data.web.RetrofitNetworkClient
+import com.example.playlistmaker.domain.api.AppPrefsRepository
+import com.example.playlistmaker.domain.api.AudioRepository
+import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.useCases.InteractorImpl
 
 
 object Creator {

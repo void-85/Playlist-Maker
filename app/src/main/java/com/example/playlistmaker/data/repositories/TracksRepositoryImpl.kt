@@ -1,13 +1,13 @@
-package com.example.playlistmaker.data.level_3_repositories
+package com.example.playlistmaker.data.repositories
 
 import com.example.playlistmaker.data.DTO.RequestData
 import com.example.playlistmaker.data.DTO.ResponseData
-import com.example.playlistmaker.data.NetworkClient
-import com.example.playlistmaker.domain.level_1_entities.Track
-import com.example.playlistmaker.domain.level_1_entities.TracksRepository
-import com.example.playlistmaker.presentation.level_3_presenters.millisToMinSec
+import com.example.playlistmaker.data.api.NetworkClient
+import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.presentation.presenters.millisToMinSec
 
-class TracksRepositoryImpl( private val networkClient : NetworkClient) :TracksRepository {
+class TracksRepositoryImpl( private val networkClient : NetworkClient) : TracksRepository {
 
     override fun searchTracks(searchText: String): List<Track> {
         val response = networkClient.makeRequest( RequestData( searchText ) )

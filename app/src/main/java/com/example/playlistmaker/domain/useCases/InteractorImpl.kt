@@ -1,16 +1,17 @@
-package com.example.playlistmaker.domain.level_2_use_cases
+package com.example.playlistmaker.domain.useCases
 
 
-import com.example.playlistmaker.domain.level_1_entities.AppPrefsRepository
-import com.example.playlistmaker.domain.level_1_entities.AudioRepository
-import com.example.playlistmaker.domain.level_1_entities.Interactor
-import com.example.playlistmaker.domain.level_1_entities.TracksRepository
+import com.example.playlistmaker.domain.api.AppPrefsRepository
+import com.example.playlistmaker.domain.api.AudioRepository
+import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.domain.api.TracksRepository
 
 
 class InteractorImpl (
-    private val appPrefsRepositoryImpl :AppPrefsRepository ,
-    private val tracksRepositoryImpl   :TracksRepository   ,
-    private val audioRepositoryImpl    :AudioRepository    ) :Interactor
+    private val appPrefsRepositoryImpl : AppPrefsRepository,
+    private val tracksRepositoryImpl   : TracksRepository,
+    private val audioRepositoryImpl    : AudioRepository
+) : Interactor
 {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------

@@ -1,13 +1,13 @@
-package com.example.playlistmaker.data.level_3_repositories
+package com.example.playlistmaker.data.repositories
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
 import com.example.playlistmaker.App
-import com.example.playlistmaker.domain.level_1_entities.AppPrefsRepository
+import com.example.playlistmaker.domain.api.AppPrefsRepository
 
-class AppPrefsRepositoryImpl() :AppPrefsRepository {
+class AppPrefsRepositoryImpl() : AppPrefsRepository {
 
     private lateinit var sharedPrefs: SharedPreferences
     fun init(context: Context) {

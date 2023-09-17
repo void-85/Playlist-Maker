@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.level_3_presenters
+package com.example.playlistmaker.presentation.presenters
 
 import java.text.SimpleDateFormat
 import java.util.Locale

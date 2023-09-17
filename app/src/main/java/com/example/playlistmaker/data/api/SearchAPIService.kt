@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.level_4_web
+package com.example.playlistmaker.data.api
 
 
 import com.example.playlistmaker.data.DTO.ResponseData
