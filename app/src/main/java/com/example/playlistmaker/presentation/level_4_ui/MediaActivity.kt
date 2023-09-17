@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.level_4_ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -97,9 +98,17 @@ class MediaActivity : AppCompatActivity() {
         super.onStop()
 
         interactor.setMediaPlayerToResumeOnCreate( interactor.isPlaying() )
+        interactor.pause()
     }
 
 
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        intentionalExit = true
+        interactor.pause()
+        finish()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null) //savedInstanceState)
@@ -123,30 +132,37 @@ class MediaActivity : AppCompatActivity() {
 
         // activity init drawable
         when (AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.MODE_NIGHT_YES -> { playPauseButton.setImageResource(R.drawable.icon_play_dark) }
-            else ->                             { playPauseButton.setImageResource(R.drawable.icon_play)      }
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                playPauseButton.setImageResource(R.drawable.icon_play_dark)
+            }
+            else -> {
+                playPauseButton.setImageResource(R.drawable.icon_play)
+            }
         }
 
         playPauseButton.setOnClickListener {
 
-            if( interactor.isPlaying() ) interactor.pause()
-            else                         interactor.start()
+            if (interactor.isPlaying()) {
+                interactor.pause()
+            } else {
+                interactor.start()
+            }
         }
 
 
 
-        mediaTimeCode= findViewById(R.id.media_screen_time_code)
+        mediaTimeCode = findViewById(R.id.media_screen_time_code)
 
-        mediaArtwork = findViewById(R.id.media_screen_artwork)
-        mediaTitle   = findViewById(R.id.media_screen_song_title)
-        mediaArtist  = findViewById(R.id.media_screen_song_artist)
+        mediaArtwork  = findViewById(R.id.media_screen_artwork)
+        mediaTitle    = findViewById(R.id.media_screen_song_title)
+        mediaArtist   = findViewById(R.id.media_screen_song_artist)
 
-        mediaLength  = findViewById(R.id.media_screen_details_1_line_data)
-        mediaAlbum   = findViewById(R.id.media_screen_details_2_line_data)
-        mediaAlbumHdr= findViewById(R.id.media_screen_details_2_line)
-        mediaDate    = findViewById(R.id.media_screen_details_3_line_data)
-        mediaGenre   = findViewById(R.id.media_screen_details_4_line_data)
-        mediaCountry = findViewById(R.id.media_screen_details_5_line_data)
+        mediaLength   = findViewById(R.id.media_screen_details_1_line_data)
+        mediaAlbum    = findViewById(R.id.media_screen_details_2_line_data)
+        mediaAlbumHdr = findViewById(R.id.media_screen_details_2_line)
+        mediaDate     = findViewById(R.id.media_screen_details_3_line_data)
+        mediaGenre    = findViewById(R.id.media_screen_details_4_line_data)
+        mediaCountry  = findViewById(R.id.media_screen_details_5_line_data)
 
         goBackButton = findViewById(R.id.media_screen_back_button)
         goBackButton.setOnClickListener {
@@ -156,7 +172,7 @@ class MediaActivity : AppCompatActivity() {
         }
 
 
-        val json :String = interactor.getCurrentlyPlaying()
+        val json: String = interactor.getCurrentlyPlaying()
         if (json.isNotEmpty()) {
 
             val data = Gson().fromJson<Track>(
@@ -209,7 +225,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
 
         super.onDestroy()
-        interactor.pause()
+        //interactor.pause()
 
         if(intentionalExit){
 
@@ -223,6 +239,5 @@ class MediaActivity : AppCompatActivity() {
         }
 
         interactor.release()
-
     }
 }

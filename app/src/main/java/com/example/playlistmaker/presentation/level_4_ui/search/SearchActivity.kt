@@ -40,12 +40,6 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
 
-    /*private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)*/
-
     private lateinit var goBackButtonId    :FrameLayout
     private lateinit var clearTextButtonId :ImageView
     private lateinit var editTextId        :EditText
@@ -62,10 +56,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var progressBar :ProgressBar
 
-
-
     private var data = ArrayList<Track>()
-
 
 
     private val handler = Handler( Looper.getMainLooper() )
@@ -217,26 +208,6 @@ class SearchActivity : AppCompatActivity() {
 
                 historyData.clear()
 
-
-                //------------------------------------------------------------------------------------------
-                /* <!> ОШИБКА:
-                java.lang.ClassCastException:
-                    com.google.gson.internal.LinkedTreeMap cannot be cast to com.example.playlistmaker.Track
-
-                Gson().fromJson(json, ArrayList<Track>()::class.java).forEach {
-                    history_data.add( it )
-                }*/
-                //------------------------------------------------------------------------------------------
-                /*Gson().fromJson(json, ArrayList<LinkedTreeMap<String,String>>()::class.java)
-                    .forEach {
-                        history_data.add( Track(
-                            artistName    = it["artistName"]    ?: "ERROR" ,
-                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR" ,
-                            trackName     = it["trackName"]     ?: "ERROR" ,
-                            trackTime     = it["trackTime"]     ?: "ERROR" )
-                        )}*/
-                //------------------------------------------------------------------------------------------
-
                 Gson().fromJson<ArrayList<Track>>(
                     json,
                     object : TypeToken<ArrayList<Track>>() {}.type
@@ -307,11 +278,11 @@ class SearchActivity : AppCompatActivity() {
         val simpleTextWatcher = object : TextWatcher {
 
             override fun beforeTextChanged(
-                s     :CharSequence? ,
-                start :Int           ,
-                count :Int           ,
-                after :Int           )
-            {
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
                 /* empty */
             }
 
@@ -326,18 +297,14 @@ class SearchActivity : AppCompatActivity() {
                     searchDebounce()
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
-
                 }
             }
 
-            override fun afterTextChanged(s: Editable?)
-            {
+            override fun afterTextChanged(s: Editable?) {
                 /* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
-
-
 
         savedInstanceState?.let {
             val s = savedInstanceState.getString(SEARCH_REQUEST, "")
@@ -350,8 +317,6 @@ class SearchActivity : AppCompatActivity() {
         //1st to show
         showHistory()
     }
-
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
