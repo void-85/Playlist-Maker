@@ -1,9 +1,11 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.api
 
-import okhttp3.ResponseBody
+
+import com.example.playlistmaker.data.DTO.ResponseData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+
 
 interface SearchAPIService {
 

@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import com.google.android.material.switchmaterial.SwitchMaterial
+
+
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.interactor
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -22,17 +27,15 @@ class SettingsActivity : AppCompatActivity() {
 
 
         // Exception ? to get SharedPrefs
-        val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+        //val sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
+
         settingsThemeSwitcher = findViewById<SwitchMaterial>(R.id.settings_theme_switcher)
-        settingsThemeSwitcher.isChecked = sharedPrefs.getBoolean(App.CURRENT_THEME_KEY, false)
+        settingsThemeSwitcher.isChecked = interactor.isThemeDark()
         settingsThemeSwitcher.setOnCheckedChangeListener {
 
             _, checked -> run{
-                (applicationContext as App).switchTheme(checked)
-                sharedPrefs
-                    .edit()
-                    .putBoolean(App.CURRENT_THEME_KEY, checked)
-                    .apply()
+                (applicationContext as App).setTheme(checked)
+                interactor.setDarkTheme( checked )
             }
         }
 
@@ -51,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
             val sendIntent = Intent().apply{
                 action = Intent.ACTION_SEND
                 type   = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getString( R.string.settings_share_app_link ))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_share_app_link))
             }
             startActivity(Intent.createChooser(sendIntent, null))
         }
@@ -63,9 +66,9 @@ class SettingsActivity : AppCompatActivity() {
             val sendIntent = Intent().apply{
                 action = Intent.ACTION_SENDTO
                 data   = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf( getString( R.string.settings_support_email )))
-                putExtra(Intent.EXTRA_SUBJECT,        getString( R.string.settings_support_subject ))
-                putExtra(Intent.EXTRA_TEXT,           getString( R.string.settings_support_text ))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf( getString(R.string.settings_support_email)))
+                putExtra(Intent.EXTRA_SUBJECT,        getString(R.string.settings_support_subject))
+                putExtra(Intent.EXTRA_TEXT,           getString(R.string.settings_support_text))
             }
             startActivity(Intent.createChooser(sendIntent, null))
         }
@@ -76,7 +79,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val sendIntent = Intent().apply{
                 action = Intent.ACTION_VIEW
-                data   = Uri.parse( getString( R.string.settings_user_agreement_link ))
+                data   = Uri.parse( getString(R.string.settings_user_agreement_link))
             }
             startActivity(Intent.createChooser(sendIntent, null))
         }

@@ -1,5 +1,4 @@
-package com.example.playlistmaker
-
+package com.example.playlistmaker.presentation.ui.search
 
 import android.os.Handler
 import android.os.Looper
@@ -12,16 +11,20 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.interactor
 
-class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Unit) ) :RecyclerView.ViewHolder(itemView) {
+class SearchTrackViewHolder(
+    itemView: View,
+    private val switchActivity: () -> (Unit)
+) : RecyclerView.ViewHolder(itemView) {
 
-
-    private val trackName  :TextView  = itemView.findViewById( R.id.track_view_track_name  )
-    private val artistName :TextView  = itemView.findViewById( R.id.track_view_artist_name )
-    private val trackTime  :TextView  = itemView.findViewById( R.id.track_view_track_time  )
-    private val artworkUrl :ImageView = itemView.findViewById( R.id.track_view_artwork_url )
-
-
+    private val trackName  :TextView  = itemView.findViewById(R.id.track_view_track_name)
+    private val artistName :TextView  = itemView.findViewById(R.id.track_view_artist_name)
+    private val trackTime  :TextView  = itemView.findViewById(R.id.track_view_track_time)
+    private val artworkUrl :ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -35,9 +38,7 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
         return current
     }
 
-
-
-    fun bind( model :Track ){
+    fun bind( model : Track){
 
         trackName.text  = model.trackName
         artistName.text = model.artistName
@@ -56,7 +57,6 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
                 )
             )
             .into(artworkUrl)
-
 
         // ? excess amount of listeners
         itemView.setOnClickListener {
@@ -84,18 +84,14 @@ class SearchTrackViewHolder( itemView :View, private val switchActivity: ()->(Un
 
                     historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
                     historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
-
                 }
             }
 
             isSearchHistoryEmpty = false
 
-            sharedPrefs
-                .edit()
-                    .putString ( App.SEARCH_HISTORY_KEY      , Gson().toJson(historyData) )
-                    .putBoolean( App.IS_SEARCH_HISTORY_EMPTY , false                      )
-                    .putString ( App.CURRENTLY_PLAYING_KEY   , Gson().toJson(model)       )
-                .apply()
+            interactor.setSearchHistory(Gson().toJson(historyData))
+            interactor.setSearchHistoryEmpty(false)
+            interactor.setCurrentlyPlaying(Gson().toJson(model))
 
             if( clickDebounce() ) switchActivity()
         }

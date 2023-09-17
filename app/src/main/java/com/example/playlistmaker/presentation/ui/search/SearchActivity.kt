@@ -1,5 +1,4 @@
-package com.example.playlistmaker
-
+package com.example.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -21,34 +20,21 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 
-
-
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.interactor
+import com.example.playlistmaker.presentation.ui.MediaActivity
 
 lateinit var historyRView: RecyclerView
 
 val historyData = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
-
-
 class SearchActivity : AppCompatActivity() {
-
-    private companion object {
-        const val SEARCH_REQUEST = "SEARCH_REQUEST"
-    }
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
 
     private lateinit var goBackButtonId    :FrameLayout
     private lateinit var clearTextButtonId :ImageView
@@ -66,11 +52,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var progressBar :ProgressBar
 
-
-
     private var data = ArrayList<Track>()
-
-
 
     private val handler = Handler( Looper.getMainLooper() )
     private val searchRunnable =
@@ -128,8 +110,30 @@ class SearchActivity : AppCompatActivity() {
     private fun onSearchEntered() {
 
         progressBar.visibility = View.VISIBLE
+        data.clear()
 
-        searchAPIService.getTracksByTerm(editTextId.text.toString())
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        interactor.searchTracks(
+            editTextId.text.toString(),
+            object : Interactor.TracksConsumer {
+                override fun consume(foundTracks: List<Track>) {
+                    foundTracks.forEach { data.add(it) }
+                }
+            }
+        )
+
+        if( data.isNotEmpty() ){
+            showTracks()
+        }else if( data.isEmpty() ){
+            showNoData()
+        }else{
+            showNoNetwork()
+        }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        recyclerView.adapter?.notifyDataSetChanged()
+
+        /*searchAPIService.getTracksByTerm(editTextId.text.toString())
             .enqueue(object : Callback<ResponseData> {
 
                 override fun onResponse(
@@ -174,7 +178,7 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     showNoNetwork()
                 }
-        })
+        })*/
     }
 
 
@@ -183,42 +187,21 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        progressBar = findViewById( R.id.search_progress_bar )
+        progressBar = findViewById(R.id.search_progress_bar)
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
         historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
 
-        sharedPrefs = getSharedPreferences(App.PLAYLIST_PREFERENCES, MODE_PRIVATE)
-        isSearchHistoryEmpty = sharedPrefs.getBoolean(App.IS_SEARCH_HISTORY_EMPTY, true)
+        isSearchHistoryEmpty = interactor.isSearchHistoryEmpty()
         if (!isSearchHistoryEmpty) {
 
-            val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "") ?: ""
+            val json = interactor.getSearchHistory()
             //Log.d("JSON", json)
 
             if (json.isNotEmpty()) {
 
                 historyData.clear()
-
-
-                //------------------------------------------------------------------------------------------
-                /* <!> ОШИБКА:
-                java.lang.ClassCastException:
-                    com.google.gson.internal.LinkedTreeMap cannot be cast to com.example.playlistmaker.Track
-
-                Gson().fromJson(json, ArrayList<Track>()::class.java).forEach {
-                    history_data.add( it )
-                }*/
-                //------------------------------------------------------------------------------------------
-                /*Gson().fromJson(json, ArrayList<LinkedTreeMap<String,String>>()::class.java)
-                    .forEach {
-                        history_data.add( Track(
-                            artistName    = it["artistName"]    ?: "ERROR" ,
-                            artworkUrl100 = it["artworkUrl100"] ?: "ERROR" ,
-                            trackName     = it["trackName"]     ?: "ERROR" ,
-                            trackTime     = it["trackTime"]     ?: "ERROR" )
-                        )}*/
-                //------------------------------------------------------------------------------------------
 
                 Gson().fromJson<ArrayList<Track>>(
                     json,
@@ -239,9 +222,8 @@ class SearchActivity : AppCompatActivity() {
             isSearchHistoryEmpty = true
             showHistory()
 
-            sharedPrefs.edit().putBoolean(App.IS_SEARCH_HISTORY_EMPTY, true).apply()
+            interactor.setSearchHistoryEmpty(true)
         }
-
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer )
@@ -290,11 +272,11 @@ class SearchActivity : AppCompatActivity() {
         val simpleTextWatcher = object : TextWatcher {
 
             override fun beforeTextChanged(
-                s     :CharSequence? ,
-                start :Int           ,
-                count :Int           ,
-                after :Int           )
-            {
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
                 /* empty */
             }
 
@@ -309,17 +291,14 @@ class SearchActivity : AppCompatActivity() {
                     searchDebounce()
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
-
                 }
             }
 
-            override fun afterTextChanged(s: Editable?)
-            {
+            override fun afterTextChanged(s: Editable?) {
                 /* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
-
 
 
         savedInstanceState?.let {
@@ -334,10 +313,12 @@ class SearchActivity : AppCompatActivity() {
         showHistory()
     }
 
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_REQUEST, editTextId.text.toString())
+    }
+
+    private companion object {
+        const val SEARCH_REQUEST = "SEARCH_REQUEST"
     }
 }
