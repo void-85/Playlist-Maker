@@ -1,5 +1,7 @@
 package com.example.playlistmaker.domain.api
 
+
+
 interface AudioRepository {
 
     fun getCurrentPosition() :Long
@@ -17,5 +19,4 @@ interface AudioRepository {
     fun start()
     fun pause()
     fun release()
-
 }

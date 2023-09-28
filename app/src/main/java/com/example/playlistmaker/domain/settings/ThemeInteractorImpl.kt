@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.useCases
+package com.example.playlistmaker.domain.settings
 
 
 
