@@ -15,14 +15,6 @@ class InteractorImpl (
 {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
-    override fun isThemeDark(): Boolean {
-        return appPrefsRepositoryImpl.isThemeDark()
-    }
-    override fun setDarkTheme(darkThemeEnabled: Boolean) {
-        appPrefsRepositoryImpl.setDarkTheme(darkThemeEnabled)
-    }
-
-
     override fun getSearchHistory(): String {
         return appPrefsRepositoryImpl.getSearchHistory()
     }

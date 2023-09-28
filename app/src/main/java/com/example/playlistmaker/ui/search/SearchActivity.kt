@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui.search
+package com.example.playlistmaker.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -27,7 +27,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.domain.api.Interactor
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.presentation.ui.MediaActivity
+import com.example.playlistmaker.ui.player.MediaActivity
 
 lateinit var historyRView: RecyclerView
 

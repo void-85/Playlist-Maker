@@ -5,9 +5,6 @@ import com.example.playlistmaker.domain.entities.Track
 interface Interactor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
-    fun isThemeDark(): Boolean
-    fun setDarkTheme(darkThemeEnabled: Boolean)
-
     fun getSearchHistory(): String
     fun setSearchHistory(text: String)
 
@@ -22,6 +19,7 @@ interface Interactor {
 
     fun isMediaPlayerToResumeOnCreate(): Boolean
     fun setMediaPlayerToResumeOnCreate(resume: Boolean)
+
     // APP PREFS REPOSITORY ---------------------------------------------------------------
 
 

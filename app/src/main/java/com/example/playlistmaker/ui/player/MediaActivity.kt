@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.ui.player
 
 import android.os.Bundle
 import android.view.View
@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.presentation.presenters.millisToMinSec
+import com.example.playlistmaker.ui.millisToMinSec
 
 class MediaActivity : AppCompatActivity() {
 

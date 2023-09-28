@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.creator
 
 
 import android.content.Context
@@ -10,8 +10,10 @@ import com.example.playlistmaker.data.web.RetrofitNetworkClient
 import com.example.playlistmaker.domain.api.AppPrefsRepository
 import com.example.playlistmaker.domain.api.AudioRepository
 import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.domain.api.ThemeInteractor
 import com.example.playlistmaker.domain.api.TracksRepository
 import com.example.playlistmaker.domain.useCases.InteractorImpl
+import com.example.playlistmaker.domain.useCases.ThemeInteractorImpl
 
 
 object Creator {
@@ -39,4 +41,13 @@ object Creator {
         )
     }
 
+    fun provideThemeInteractor(
+        context: Context,
+        setThemeFun: (Boolean) -> Unit,
+    ): ThemeInteractor {
+        return ThemeInteractorImpl(
+            getAppPrefsRepository(context),
+            setThemeFun
+        )
+    }
 }
