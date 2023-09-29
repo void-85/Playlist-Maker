@@ -1,51 +1,36 @@
 package com.example.playlistmaker.ui.main.vm
 
+
+
 import android.content.Intent
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+
 import com.example.playlistmaker.domain.api.IntentInteractor
-
-import com.example.playlistmaker.domain.api.ThemeInteractor
 import com.example.playlistmaker.intentInteractor
-import com.example.playlistmaker.themeInteractor
 
 
-class MainActivityViewModel (
-    private val themeInteractor: ThemeInteractor,
+
+class MainActivityViewModel(
     private val intentInteractor: IntentInteractor
-):ViewModel() {
-
-    private var switchedToDarkTheme = MutableLiveData(false)
+) : ViewModel() {
 
     init {
-        switchedToDarkTheme.postValue(themeInteractor.isThemeDark())
+
     }
 
-    fun getSwitchToDarkThemeState(): LiveData<Boolean> = switchedToDarkTheme
-    fun setSwitchToDarkThemeState(darkThemeEnabled: Boolean) {
-        switchedToDarkTheme.postValue(darkThemeEnabled)
-        themeInteractor.setTheme(darkThemeEnabled)
-    }
-
-    fun sendIntentWithChooser(intent: Intent) {
-        intentInteractor.sendIntentWithChooser(intent)
-    }
     fun sendIntent(intent: Intent) {
         intentInteractor.sendIntent(intent)
     }
 
     companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MainActivityViewModel(
-                    themeInteractor,
-                    intentInteractor
-                )
+        fun getViewModelFactory(): ViewModelProvider.Factory =
+            viewModelFactory {
+                initializer {
+                    MainActivityViewModel(intentInteractor)
+                }
             }
-        }
     }
 }
