@@ -6,7 +6,6 @@ import com.example.playlistmaker.domain.api.IntentInteractor
 import com.example.playlistmaker.domain.api.IntentRepository
 
 
-
 class IntentInteractorImpl(
     private val intentRepository: IntentRepository
 ) : IntentInteractor {

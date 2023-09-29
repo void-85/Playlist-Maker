@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings.vm
+package com.example.playlistmaker.ui.main.vm
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
@@ -14,7 +14,7 @@ import com.example.playlistmaker.intentInteractor
 import com.example.playlistmaker.themeInteractor
 
 
-class SettingsActivityViewModel (
+class MainActivityViewModel (
     private val themeInteractor: ThemeInteractor,
     private val intentInteractor: IntentInteractor
 ):ViewModel() {
@@ -41,7 +41,7 @@ class SettingsActivityViewModel (
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SettingsActivityViewModel(
+                MainActivityViewModel(
                     themeInteractor,
                     intentInteractor
                 )

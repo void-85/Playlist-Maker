@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.ui.millisToMinSec
+import com.example.playlistmaker.ui.utils.millisToMinSec
 
 class MediaActivity : AppCompatActivity() {
 

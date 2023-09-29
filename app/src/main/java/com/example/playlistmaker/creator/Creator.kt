@@ -23,7 +23,9 @@ import com.example.playlistmaker.domain.settings.ThemeInteractorImpl
 
 object Creator {
 
-    private fun getAppPrefsRepository(context: Context): AppPrefsRepository {
+    private fun getAppPrefsRepository(
+        context: Context
+    ): AppPrefsRepository {
         val appPrefsRepositoryImpl = AppPrefsRepositoryImpl()
         appPrefsRepositoryImpl.init(context)
 
@@ -38,10 +40,11 @@ object Creator {
         return AudioRepositoryImpl()
     }
 
-    private fun getIntentRepository(context: Context): IntentRepository {
+    private fun getIntentRepository(
+        context: Context
+    ): IntentRepository {
         return IntentRepositoryImpl(context)
     }
-
 
 
 

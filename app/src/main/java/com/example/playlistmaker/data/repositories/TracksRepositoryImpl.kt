@@ -5,7 +5,7 @@ import com.example.playlistmaker.data.DTO.ResponseData
 import com.example.playlistmaker.data.api.NetworkClient
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.domain.api.TracksRepository
-import com.example.playlistmaker.ui.millisToMinSec
+import com.example.playlistmaker.ui.utils.millisToMinSec
 
 class TracksRepositoryImpl( private val networkClient : NetworkClient) : TracksRepository {
 

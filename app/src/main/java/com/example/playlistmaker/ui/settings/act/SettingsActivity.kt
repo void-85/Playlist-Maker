@@ -12,7 +12,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.intentInteractor
 import com.example.playlistmaker.ui.settings.vm.SettingsActivityViewModel
 
 
@@ -59,9 +58,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_share_app_link))
                 flags = FLAG_ACTIVITY_NEW_TASK
             }
-            //intentInteractor.sendIntent(sendIntent)
-            intentInteractor.sendIntentWithChooser(sendIntent)
-            //startActivity(Intent.createChooser(sendIntent, null))
+            viewModel.sendIntentWithChooser(sendIntent)
         }
 
 
@@ -75,9 +72,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_support_subject))
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_support_text))
             }
-            //intentInteractor.sendIntent(sendIntent)
-            intentInteractor.sendIntentWithChooser(sendIntent)
-            //startActivity(Intent.createChooser(sendIntent, null))
+            viewModel.sendIntentWithChooser(sendIntent)
         }
 
 
@@ -88,9 +83,7 @@ class SettingsActivity : AppCompatActivity() {
                 action = Intent.ACTION_VIEW
                 data = Uri.parse(getString(R.string.settings_user_agreement_link))
             }
-            //intentInteractor.sendIntent(sendIntent)
-            intentInteractor.sendIntentWithChooser(sendIntent)
-            //startActivity(Intent.createChooser(sendIntent, null))
+            viewModel.sendIntentWithChooser(sendIntent)
         }
     }
 
