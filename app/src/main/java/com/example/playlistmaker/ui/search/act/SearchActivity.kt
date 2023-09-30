@@ -76,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
 
     fun switchToPlayer(){
         val mediaIntent = Intent( this, MediaActivity::class.java )
-        startActivity(mediaIntent)
+        viewModel.sendIntent(mediaIntent)
     }
 
     private fun showHistory() {

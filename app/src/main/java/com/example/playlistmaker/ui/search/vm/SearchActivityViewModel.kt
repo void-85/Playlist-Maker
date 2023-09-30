@@ -2,23 +2,27 @@ package com.example.playlistmaker.ui.search.vm
 
 
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.domain.api.IntentInteractor
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.intentInteractor
 import com.example.playlistmaker.searchInteractor
 
 
 
 class SearchActivityViewModel(
-    private val searchInteractor: SearchInteractor
+    private val searchInteractor: SearchInteractor,
+    private val intentInteractor: IntentInteractor
 ) : ViewModel() {
 
     private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
@@ -52,6 +56,10 @@ class SearchActivityViewModel(
         searchInteractor.setSearchHistory("")
     }
 
+    fun sendIntent(intent: Intent) {
+        intentInteractor.sendIntent(intent)
+    }
+
     fun searchTracks( searchText:String ){
 
         screenUpdate.postValue( SearchActivityUpdate.Loading )
@@ -83,7 +91,7 @@ class SearchActivityViewModel(
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
-                    SearchActivityViewModel(searchInteractor)
+                    SearchActivityViewModel(searchInteractor, intentInteractor)
                 }
             }
     }
