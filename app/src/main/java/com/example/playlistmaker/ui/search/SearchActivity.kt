@@ -27,7 +27,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.domain.api.Interactor
 import com.example.playlistmaker.interactor
-import com.example.playlistmaker.ui.player.MediaActivity
+import com.example.playlistmaker.ui.player.act.MediaActivity
 
 lateinit var historyRView: RecyclerView
 

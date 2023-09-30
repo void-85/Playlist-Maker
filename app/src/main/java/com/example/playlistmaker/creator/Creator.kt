@@ -15,8 +15,10 @@ import com.example.playlistmaker.domain.api.AudioRepository
 import com.example.playlistmaker.domain.api.IntentInteractor
 import com.example.playlistmaker.domain.api.IntentRepository
 import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.api.ThemeInteractor
 import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.player.MediaInteractorImpl
 import com.example.playlistmaker.domain.useCases.InteractorImpl
 import com.example.playlistmaker.domain.settings.ThemeInteractorImpl
 
@@ -71,6 +73,15 @@ object Creator {
     ): IntentInteractor {
         return IntentInteractorImpl(
             getIntentRepository(context)
+        )
+    }
+
+    fun provideMediaInteractor(
+        context: Context
+    ): MediaInteractor {
+        return MediaInteractorImpl(
+            getAppPrefsRepository(context),
+            getAudioRepository()
         )
     }
 }

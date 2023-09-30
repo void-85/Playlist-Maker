@@ -8,14 +8,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.api.IntentInteractor
 import com.example.playlistmaker.domain.api.Interactor
+import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.player.MediaInteractorImpl
 
 
-
-lateinit var interactor: Interactor
+lateinit var interactor: Interactor //2delete
 
 lateinit var themeInteractor: ThemeInteractor
 lateinit var intentInteractor: IntentInteractor
+lateinit var mediaInteractor: MediaInteractor
 
 
 class App :Application() {
@@ -50,6 +52,8 @@ class App :Application() {
         themeInteractor.setTheme( themeInteractor.isThemeDark() )
 
         intentInteractor = Creator.provideIntentInteractor(applicationContext)
+
+        mediaInteractor = Creator.provideMediaInteractor(applicationContext)
     }
 
 

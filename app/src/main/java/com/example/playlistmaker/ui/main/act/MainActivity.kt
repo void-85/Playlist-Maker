@@ -8,7 +8,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.ui.player.MediaActivity
+import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.search.SearchActivity
 import com.example.playlistmaker.ui.settings.act.SettingsActivity
 
