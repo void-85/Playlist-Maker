@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search
+package com.example.playlistmaker.ui.search.act
 
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +14,6 @@ import com.google.gson.Gson
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.interactor
 
 class SearchTrackViewHolder(
     itemView: View,
@@ -89,9 +88,10 @@ class SearchTrackViewHolder(
 
             isSearchHistoryEmpty = false
 
-            interactor.setSearchHistory(Gson().toJson(historyData))
-            interactor.setSearchHistoryEmpty(false)
-            interactor.setCurrentlyPlaying(Gson().toJson(model))
+            viewModel.saveSearchHistoryAndCurrentlyplaying(
+                Gson().toJson(historyData),
+                Gson().toJson(model)
+            )
 
             if( clickDebounce() ) switchActivity()
         }

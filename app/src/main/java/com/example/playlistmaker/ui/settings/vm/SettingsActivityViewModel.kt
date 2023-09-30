@@ -29,6 +29,7 @@ class SettingsActivityViewModel (
     }
 
     fun getSwitchToDarkThemeState(): LiveData<Boolean> = switchedToDarkTheme
+
     fun setSwitchToDarkThemeState(darkThemeEnabled: Boolean) {
         switchedToDarkTheme.postValue(darkThemeEnabled)
         themeInteractor.setTheme(darkThemeEnabled)

@@ -173,18 +173,7 @@ class MediaActivity : AppCompatActivity() {
         playPauseButton.inAnimation  = AnimationUtils.loadAnimation(this, R.anim.switches_in)
         playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
 
-        // activity init drawable
         updatePlayPauseButtonStateFromVar()
-        /*when (AppCompatDelegate.getDefaultNightMode()) {
-
-            AppCompatDelegate.MODE_NIGHT_YES -> {
-                playPauseButton.setImageResource(R.drawable.icon_play_dark)
-            }
-
-            else -> {
-                playPauseButton.setImageResource(R.drawable.icon_play)
-            }
-        }*/
 
         playPauseButton.setOnClickListener {
 

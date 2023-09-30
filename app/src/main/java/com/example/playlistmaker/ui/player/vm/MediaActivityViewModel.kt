@@ -3,8 +3,6 @@ package com.example.playlistmaker.ui.player.vm
 
 
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 
-import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.mediaInteractor
@@ -34,7 +31,7 @@ class MediaActivityViewModel(
                 "-",
                 "-",
                 "-",
-                "-",
+                "_",
                 "-",
                 "-",
                 true
@@ -62,7 +59,7 @@ class MediaActivityViewModel(
 
             screenData.postValue(
                 MediaActivityScreenUpdate.AllData(
-                    mediaTimeCode = 0L                    ,
+                    timeCode = 0L                    ,
                     artworkUrl100 = data.artworkUrl100    ,
                     mediaTitle    = data.trackName        ,
                     mediaArtist   = data.artistName       ,
@@ -78,16 +75,24 @@ class MediaActivityViewModel(
     }
 
     private fun onPlayFun() {
-        screenData.postValue(MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(false))
+        screenData.postValue(
+            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(false)
+        )
     }
 
     private fun onPauseFun() {
-        screenData.postValue(MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true))
+        screenData.postValue(
+            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
+        )
     }
 
     private fun onCompletionFun() {
-        screenData.postValue(MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true))
-        screenData.postValue(MediaActivityScreenUpdate.TimeCodeOnly(0))
+        screenData.postValue(
+            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
+        )
+        screenData.postValue(
+            MediaActivityScreenUpdate.TimeCodeOnly(0)
+        )
     }
 
     private fun updateFun() {
@@ -101,10 +106,14 @@ class MediaActivityViewModel(
 
 
 
-    fun getState(): LiveData<MediaActivityScreenUpdate> = screenData
+    fun getState(): LiveData<MediaActivityScreenUpdate> {
+        return screenData
+    }
 
     fun onStartActivity(){
-        if (mediaInteractor.isMediaPlayerToResumeOnCreate()) { mediaInteractor.start() }
+        if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
+            mediaInteractor.start()
+        }
     }
 
     fun onStopActivity(){
@@ -130,8 +139,13 @@ class MediaActivityViewModel(
     }
 
     fun playPauseButtonPressed(){
-        if (mediaInteractor.isPlaying()) { mediaInteractor.pause() }
-        else                             { mediaInteractor.start() }
+        if (mediaInteractor.isPlaying()) {
+            mediaInteractor.pause()
+        } else {
+            if (mediaInteractor.getCurrentlyPlaying().isNotEmpty()) {
+                mediaInteractor.start()
+            }
+        }
     }
 
     companion object {
@@ -157,7 +171,7 @@ sealed class MediaActivityScreenUpdate {
     ) :MediaActivityScreenUpdate()
 
     data class AllData(
-        val mediaTimeCode :Long,
+        val timeCode      :Long,
         val artworkUrl100 :String,
         val mediaTitle    :String,
         val mediaArtist   :String,

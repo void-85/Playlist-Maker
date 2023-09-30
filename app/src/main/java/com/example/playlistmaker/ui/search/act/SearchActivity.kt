@@ -1,4 +1,6 @@
-package com.example.playlistmaker.ui.search
+package com.example.playlistmaker.ui.search.act
+
+
 
 import android.content.Context
 import android.content.Intent
@@ -17,20 +19,22 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlin.collections.ArrayList
 
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.domain.api.Interactor
-import com.example.playlistmaker.interactor
 import com.example.playlistmaker.ui.player.act.MediaActivity
+import com.example.playlistmaker.ui.search.vm.SearchActivityUpdate
+import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
+
+
+
+lateinit var viewModel: SearchActivityViewModel
 
 lateinit var historyRView: RecyclerView
-
 val historyData = ArrayList<Track>()
 var isSearchHistoryEmpty = true
 
@@ -51,6 +55,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noNetworkUpdateButton :Button
 
     private lateinit var progressBar :ProgressBar
+
+
+
+
 
     private var data = ArrayList<Track>()
 
@@ -109,29 +117,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onSearchEntered() {
 
-        progressBar.visibility = View.VISIBLE
-        data.clear()
+        viewModel.searchTracks( editTextId.text.toString() )
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        interactor.searchTracks(
-            editTextId.text.toString(),
-            object : Interactor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>) {
-                    foundTracks.forEach { data.add(it) }
-                }
-            }
-        )
 
-        if( data.isNotEmpty() ){
-            showTracks()
-        }else if( data.isEmpty() ){
-            showNoData()
-        }else{
-            showNoNetwork()
-        }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        recyclerView.adapter?.notifyDataSetChanged()
 
         /*searchAPIService.getTracksByTerm(editTextId.text.toString())
             .enqueue(object : Callback<ResponseData> {
@@ -187,32 +175,54 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        viewModel = ViewModelProvider(
+            this,
+            SearchActivityViewModel.getViewModelFactory()
+        )[SearchActivityViewModel::class.java]
+
+        viewModel.getState().observe(this){
+            when(it){
+                is SearchActivityUpdate.Loading -> {
+
+                    progressBar.visibility = View.VISIBLE
+                    data.clear()
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
+
+                is SearchActivityUpdate.SearchResult -> {
+
+                    data.clear()
+                    if (it.tracks.isEmpty()) {
+                        showNoData()
+                    } else {
+                        data.addAll(it.tracks)
+                        showTracks()
+                    }
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
+
+                is SearchActivityUpdate.SearchHistoryData -> {
+
+                    historyData.clear()
+
+                    if (it.tracks.isEmpty()) {
+                        isSearchHistoryEmpty = true
+                    } else {
+                        isSearchHistoryEmpty = false
+                        historyData.addAll(it.tracks)
+                    }
+
+                    historyRView.adapter?.notifyDataSetChanged()
+                    showHistory()
+                }
+            }
+        }
+
         progressBar = findViewById(R.id.search_progress_bar)
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
         historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
-
-        isSearchHistoryEmpty = interactor.isSearchHistoryEmpty()
-        if (!isSearchHistoryEmpty) {
-
-            val json = interactor.getSearchHistory()
-            //Log.d("JSON", json)
-
-            if (json.isNotEmpty()) {
-
-                historyData.clear()
-
-                Gson().fromJson<ArrayList<Track>>(
-                    json,
-                    object : TypeToken<ArrayList<Track>>() {}.type
-                ).forEach {
-                    historyData.add(it)
-                }
-
-                historyRView.adapter?.notifyDataSetChanged()
-            }
-        }
 
         clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory.setOnClickListener {
@@ -221,8 +231,7 @@ class SearchActivity : AppCompatActivity() {
             historyRView.adapter?.notifyDataSetChanged()
             isSearchHistoryEmpty = true
             showHistory()
-
-            interactor.setSearchHistoryEmpty(true)
+            viewModel.clearSearchHistory()
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
@@ -264,9 +273,6 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        /*editTextId.setOnFocusChangeListener { _, hasFocus ->
-
-        }*/
 
 
         val simpleTextWatcher = object : TextWatcher {
