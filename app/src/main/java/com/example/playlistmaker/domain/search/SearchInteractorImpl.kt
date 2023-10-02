@@ -17,12 +17,12 @@ class SearchInteractorImpl(
         return appPrefsRepositoryImpl.getSearchHistory()
     }
 
-    override fun setSearchHistory(text: String) {
-        appPrefsRepositoryImpl.setSearchHistory(text)
+    override fun setSearchHistory(tracks: List<Track>) {
+        appPrefsRepositoryImpl.setSearchHistory(tracks)
     }
 
-    override fun setCurrentlyPlaying(text: String) {
-        appPrefsRepositoryImpl.setCurrentlyPlaying(text)
+    override fun setCurrentlyPlaying(track: Track) {
+        appPrefsRepositoryImpl.setCurrentlyPlaying(track)
     }
     // APP PREFS REPOSITORY ---------------------------------------------------------------
 

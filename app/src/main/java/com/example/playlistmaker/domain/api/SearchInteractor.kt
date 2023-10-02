@@ -5,12 +5,9 @@ interface SearchInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
     fun getSearchHistory(): List<Track>
-    fun setSearchHistory(text: String)
+    fun setSearchHistory(tracks: List<Track>)
 
-    //fun isSearchHistoryEmpty(): Boolean
-    //fun setSearchHistoryEmpty(isEmpty: Boolean)
-
-    fun setCurrentlyPlaying(text: String)
+    fun setCurrentlyPlaying(track: Track)
     // APP PREFS REPOSITORY ---------------------------------------------------------------
 
 

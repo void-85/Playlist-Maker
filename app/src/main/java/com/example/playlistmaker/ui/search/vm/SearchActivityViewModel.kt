@@ -44,7 +44,7 @@ class SearchActivityViewModel(
     }
 
     fun clearSearchHistory() {
-        searchInteractor.setSearchHistory("")
+        searchInteractor.setSearchHistory(emptyList())
     }
 
     fun searchTracks(searchText: String) {
@@ -67,8 +67,8 @@ class SearchActivityViewModel(
     }
 
     fun saveSearchHistoryAndCurrentlyPlaying(
-        historyData: String,
-        currentlyPlaying: String
+        historyData: List<Track>,
+        currentlyPlaying: Track
     ) {
         searchInteractor.setSearchHistory(historyData)
         searchInteractor.setCurrentlyPlaying(currentlyPlaying)

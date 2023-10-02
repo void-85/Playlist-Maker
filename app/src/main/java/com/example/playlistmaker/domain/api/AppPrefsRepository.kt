@@ -8,13 +8,13 @@ interface AppPrefsRepository {
     fun setDarkTheme(darkThemeEnabled: Boolean)
 
     fun getSearchHistory(): List<Track>
-    fun setSearchHistory(text: String)
+    fun setSearchHistory(tracks: List<Track>)
 
-    fun isSearchHistoryEmpty(): Boolean
-    fun setSearchHistoryEmpty(isEmpty: Boolean)
+    //fun isSearchHistoryEmpty(): Boolean
+    //fun setSearchHistoryEmpty(isEmpty: Boolean)
 
     fun getCurrentlyPlaying(): Track?
-    fun setCurrentlyPlaying(text: String)
+    fun setCurrentlyPlaying(track: Track)
 
     fun getMediaPlayerLastPosition(): Long
     fun setMediaPlayerLastPosition(position: Long)

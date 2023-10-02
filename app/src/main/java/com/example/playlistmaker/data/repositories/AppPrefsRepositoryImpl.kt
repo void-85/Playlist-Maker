@@ -63,17 +63,17 @@ class AppPrefsRepositoryImpl : AppPrefsRepository {
         }
     }
 
-    override fun setSearchHistory(text: String) {
+    override fun setSearchHistory(tracks: List<Track>) {
         synchronized(sharedPrefs) {
             sharedPrefs
                 .edit()
-                .putString(SEARCH_HISTORY_KEY, text)
+                .putString(SEARCH_HISTORY_KEY, Gson().toJson(tracks))
                 .apply()
         }
     }
 
 
-    override fun isSearchHistoryEmpty(): Boolean {
+    /*override fun isSearchHistoryEmpty(): Boolean {
         return sharedPrefs.getBoolean(IS_SEARCH_HISTORY_EMPTY, true)
     }
 
@@ -84,7 +84,7 @@ class AppPrefsRepositoryImpl : AppPrefsRepository {
                 .putBoolean(IS_SEARCH_HISTORY_EMPTY, isEmpty)
                 .apply()
         }
-    }
+    }*/
 
 
     override fun getCurrentlyPlaying(): Track? {
@@ -103,11 +103,11 @@ class AppPrefsRepositoryImpl : AppPrefsRepository {
         }
     }
 
-    override fun setCurrentlyPlaying(text: String) {
+    override fun setCurrentlyPlaying(track: Track) {
         synchronized(sharedPrefs) {
             sharedPrefs
                 .edit()
-                .putString(CURRENTLY_PLAYING_KEY, text)
+                .putString(CURRENTLY_PLAYING_KEY, Gson().toJson(track) )
                 .apply()
         }
     }

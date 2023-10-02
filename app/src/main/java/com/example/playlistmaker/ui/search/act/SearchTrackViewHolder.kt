@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
@@ -89,8 +88,8 @@ class SearchTrackViewHolder(
             isSearchHistoryEmpty = false
 
             viewModel.saveSearchHistoryAndCurrentlyPlaying(
-                Gson().toJson(historyData),
-                Gson().toJson(model)
+                historyData,
+                model
             )
 
             if (clickDebounce()) switchActivity()
