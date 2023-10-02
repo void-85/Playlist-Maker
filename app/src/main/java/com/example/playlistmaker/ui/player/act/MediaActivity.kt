@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.player.act
 
 
-
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -24,23 +23,22 @@ import com.example.playlistmaker.ui.player.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.utils.millisToMinSec
 
 
-
 class MediaActivity : AppCompatActivity() {
 
-    private lateinit var goBackButton :ImageView
-    private lateinit var mediaArtwork :ImageView
+    private lateinit var goBackButton: ImageView
+    private lateinit var mediaArtwork: ImageView
 
-    private lateinit var mediaTimeCode:TextView
-    private lateinit var mediaTitle   :TextView
-    private lateinit var mediaArtist  :TextView
-    private lateinit var mediaLength  :TextView
-    private lateinit var mediaAlbum   :TextView
-    private lateinit var mediaAlbumHdr:TextView
-    private lateinit var mediaDate    :TextView
-    private lateinit var mediaGenre   :TextView
-    private lateinit var mediaCountry :TextView
+    private lateinit var mediaTimeCode: TextView
+    private lateinit var mediaTitle: TextView
+    private lateinit var mediaArtist: TextView
+    private lateinit var mediaLength: TextView
+    private lateinit var mediaAlbum: TextView
+    private lateinit var mediaAlbumHdr: TextView
+    private lateinit var mediaDate: TextView
+    private lateinit var mediaGenre: TextView
+    private lateinit var mediaCountry: TextView
 
-    private lateinit var playPauseButton :ImageSwitcher
+    private lateinit var playPauseButton: ImageSwitcher
 
     private lateinit var binding: ActivityMediaBinding
     private lateinit var viewModel: MediaActivityViewModel
@@ -48,7 +46,7 @@ class MediaActivity : AppCompatActivity() {
 
     private var intentionalExit: Boolean = false
     private var showPlayButtonElsePauseButton: Boolean = true
-    private fun updatePlayPauseButtonStateFromVar(){
+    private fun updatePlayPauseButtonStateFromVar() {
 
         when (AppCompatDelegate.getDefaultNightMode()) {
 
@@ -87,15 +85,18 @@ class MediaActivity : AppCompatActivity() {
         super.onBackPressed()
 
         intentionalExit = true
-        viewModel.pause()
+        //viewModel.pause()
         finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        if (intentionalExit) { viewModel.setMediaPlayerLastPositionToStart() }
-        else                 { viewModel.setMediaPlayerLastPosition()        }
+        if (intentionalExit) {
+            viewModel.setMediaPlayerLastPositionToStart()
+        } else {
+            viewModel.setMediaPlayerLastPosition()
+        }
 
         viewModel.release()
     }
@@ -111,14 +112,14 @@ class MediaActivity : AppCompatActivity() {
             this,
             MediaActivityViewModel.getViewModelFactory()
         )[MediaActivityViewModel::class.java]
-        viewModel.getState().observe(this){
+        viewModel.getState().observe(this) {
 
-            when(it){
+            when (it) {
                 is MediaActivityScreenUpdate.AllData -> {
 
                     Glide
-                        .with( this)
-                        .load( it.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg") )
+                        .with(this)
+                        .load(it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                         .placeholder(R.drawable.spiral)
                         .transform(
                             CenterCrop(),
@@ -130,19 +131,19 @@ class MediaActivity : AppCompatActivity() {
                         )
                         .into(mediaArtwork)
 
-                    mediaTitle.text  = it.mediaTitle
+                    mediaTitle.text = it.mediaTitle
                     mediaArtist.text = it.mediaArtist
                     mediaLength.text = it.mediaLength
 
-                    if(it.mediaAlbum.isNotEmpty()){
+                    if (it.mediaAlbum.isNotEmpty()) {
                         mediaAlbum.text = it.mediaAlbum
-                    }else{
-                        mediaAlbum.visibility    = View.GONE
+                    } else {
+                        mediaAlbum.visibility = View.GONE
                         mediaAlbumHdr.visibility = View.GONE
                     }
 
-                    mediaDate.text    = it.mediaDate.substringBefore("-")
-                    mediaGenre.text   = it.mediaGenre
+                    mediaDate.text = it.mediaDate.substringBefore("-")
+                    mediaGenre.text = it.mediaGenre
                     mediaCountry.text = it.mediaCountry
                 }
 
@@ -170,7 +171,7 @@ class MediaActivity : AppCompatActivity() {
 
             myView
         }
-        playPauseButton.inAnimation  = AnimationUtils.loadAnimation(this, R.anim.switches_in)
+        playPauseButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_in)
         playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
 
         updatePlayPauseButtonStateFromVar()
@@ -182,16 +183,16 @@ class MediaActivity : AppCompatActivity() {
 
         mediaTimeCode = binding.mediaScreenTimeCode
 
-        mediaArtwork  = binding.mediaScreenArtwork
-        mediaTitle    = binding.mediaScreenSongTitle
-        mediaArtist   = binding.mediaScreenSongArtist
+        mediaArtwork = binding.mediaScreenArtwork
+        mediaTitle = binding.mediaScreenSongTitle
+        mediaArtist = binding.mediaScreenSongArtist
 
-        mediaLength   = binding.mediaScreenDetails1LineData
-        mediaAlbum    = binding.mediaScreenDetails2LineData
+        mediaLength = binding.mediaScreenDetails1LineData
+        mediaAlbum = binding.mediaScreenDetails2LineData
         mediaAlbumHdr = binding.mediaScreenDetails2Line
-        mediaDate     = binding.mediaScreenDetails3LineData
-        mediaGenre    = binding.mediaScreenDetails4LineData
-        mediaCountry  = binding.mediaScreenDetails5LineData
+        mediaDate = binding.mediaScreenDetails3LineData
+        mediaGenre = binding.mediaScreenDetails4LineData
+        mediaCountry = binding.mediaScreenDetails5LineData
 
         goBackButton = binding.mediaScreenBackButton
         goBackButton.setOnClickListener {

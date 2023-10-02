@@ -36,6 +36,7 @@ class AudioRepositoryImpl : AudioRepository {
     private fun scheduleFunUpdate() {
         handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
     }
+
     private fun clearSchedule() {
         handler.removeCallbacks(updatePosRunnable)
     }

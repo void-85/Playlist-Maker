@@ -20,15 +20,15 @@ class SearchTrackViewHolder(
     private val switchActivity: () -> (Unit)
 ) : RecyclerView.ViewHolder(itemView) {
 
-    private val trackName  :TextView  = itemView.findViewById(R.id.track_view_track_name)
-    private val artistName :TextView  = itemView.findViewById(R.id.track_view_artist_name)
-    private val trackTime  :TextView  = itemView.findViewById(R.id.track_view_track_time)
-    private val artworkUrl :ImageView = itemView.findViewById(R.id.track_view_artwork_url)
+    private val trackName: TextView = itemView.findViewById(R.id.track_view_track_name)
+    private val artistName: TextView = itemView.findViewById(R.id.track_view_artist_name)
+    private val trackTime: TextView = itemView.findViewById(R.id.track_view_track_time)
+    private val artworkUrl: ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -37,11 +37,11 @@ class SearchTrackViewHolder(
         return current
     }
 
-    fun bind( model : Track){
+    fun bind(model: Track) {
 
-        trackName.text  = model.trackName
+        trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text  = model.trackTime
+        trackTime.text = model.trackTime
 
         Glide
             .with(itemView)
@@ -71,7 +71,7 @@ class SearchTrackViewHolder(
                 historyRView.adapter?.notifyItemMoved(oldPos, 0)
                 historyRView.scrollToPosition(0)
 
-            // insert new item
+                // insert new item
             } else {
 
                 historyData.add(0, model)
@@ -93,7 +93,7 @@ class SearchTrackViewHolder(
                 Gson().toJson(model)
             )
 
-            if( clickDebounce() ) switchActivity()
+            if (clickDebounce()) switchActivity()
         }
     }
 }

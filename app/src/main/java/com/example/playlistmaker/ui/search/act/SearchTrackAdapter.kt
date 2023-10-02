@@ -28,5 +28,5 @@ class SearchTrackAdapter(
             )
     }
 
-    override fun getItemCount() :Int = tracks.size
+    override fun getItemCount(): Int = tracks.size
 }

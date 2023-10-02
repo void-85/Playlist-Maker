@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.search.act
 
 
-
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +30,6 @@ import com.example.playlistmaker.ui.search.vm.SearchActivityUpdate
 import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
 
 
-
 lateinit var viewModel: SearchActivityViewModel
 
 lateinit var historyRView: RecyclerView
@@ -40,85 +38,81 @@ var isSearchHistoryEmpty = true
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var goBackButtonId    :FrameLayout
-    private lateinit var clearTextButtonId :ImageView
-    private lateinit var editTextId        :EditText
+    private lateinit var goBackButtonId: FrameLayout
+    private lateinit var clearTextButtonId: ImageView
+    private lateinit var editTextId: EditText
 
-    private lateinit var searchHistory :LinearLayout
-    private lateinit var clearHistory  :Button
+    private lateinit var searchHistory: LinearLayout
+    private lateinit var clearHistory: Button
 
-    private lateinit var recyclerView :RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
-    private lateinit var noDataFrame :FrameLayout
+    private lateinit var noDataFrame: FrameLayout
 
-    private lateinit var noNetworkFrame        :FrameLayout
-    private lateinit var noNetworkUpdateButton :Button
+    private lateinit var noNetworkFrame: FrameLayout
+    private lateinit var noNetworkUpdateButton: Button
 
-    private lateinit var progressBar :ProgressBar
-
-
-
+    private lateinit var progressBar: ProgressBar
 
 
     private var data = ArrayList<Track>()
 
-    private val handler = Handler( Looper.getMainLooper() )
+    private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable =
         Runnable {
             // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
             if (editTextId.text.length >= App.SEARCH_DEBOUNCE_REQ_MIN_LEN)
                 onSearchEntered()
         }
+
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed    (searchRunnable, App.SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(searchRunnable, App.SEARCH_DEBOUNCE_DELAY)
     }
 
-    fun switchToPlayer(){
-        val mediaIntent = Intent( this, MediaActivity::class.java )
-        viewModel.sendIntent(mediaIntent)
+    fun switchToPlayer() {
+        val mediaIntent = Intent(this, MediaActivity::class.java)
+        startActivity(mediaIntent)
     }
 
     private fun showHistory() {
 
-        searchHistory.visibility  = if(isSearchHistoryEmpty) View.GONE else View.VISIBLE
-        recyclerView.visibility   = View.GONE
-        noDataFrame.visibility    = View.GONE
+        searchHistory.visibility = if (isSearchHistoryEmpty) View.GONE else View.VISIBLE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
         noNetworkFrame.visibility = View.GONE
-        progressBar.visibility    = View.GONE
+        progressBar.visibility = View.GONE
     }
 
     private fun showTracks() {
 
-        searchHistory.visibility  = View.GONE
-        recyclerView.visibility   = View.VISIBLE
-        noDataFrame.visibility    = View.GONE
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        noDataFrame.visibility = View.GONE
         noNetworkFrame.visibility = View.GONE
-        progressBar.visibility    = View.GONE
+        progressBar.visibility = View.GONE
     }
 
     private fun showNoData() {
-        searchHistory.visibility  = View.GONE
-        recyclerView.visibility   = View.GONE
-        noDataFrame.visibility    = View.VISIBLE
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.VISIBLE
         noNetworkFrame.visibility = View.GONE
-        progressBar.visibility    = View.GONE
+        progressBar.visibility = View.GONE
     }
 
     private fun showNoNetwork() {
-        searchHistory.visibility  = View.GONE
-        recyclerView.visibility   = View.GONE
-        noDataFrame.visibility    = View.GONE
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
         noNetworkFrame.visibility = View.VISIBLE
-        progressBar.visibility    = View.GONE
+        progressBar.visibility = View.GONE
     }
-
 
 
     private fun onSearchEntered() {
 
-        viewModel.searchTracks( editTextId.text.toString() )
-
+        viewModel.searchTracks(editTextId.text.toString())
 
 
         /*searchAPIService.getTracksByTerm(editTextId.text.toString())
@@ -180,8 +174,8 @@ class SearchActivity : AppCompatActivity() {
             SearchActivityViewModel.getViewModelFactory()
         )[SearchActivityViewModel::class.java]
 
-        viewModel.getState().observe(this){
-            when(it){
+        viewModel.getState().observe(this) {
+            when (it) {
                 is SearchActivityUpdate.Loading -> {
 
                     progressBar.visibility = View.VISIBLE
@@ -235,7 +229,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
-        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer )
+        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer)
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
 

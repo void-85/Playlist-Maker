@@ -1,19 +1,14 @@
 package com.example.playlistmaker.creator
 
 
-
-import android.content.Context
+import android.app.Application
 
 import com.example.playlistmaker.data.repositories.AppPrefsRepositoryImpl
 import com.example.playlistmaker.data.repositories.AudioRepositoryImpl
-import com.example.playlistmaker.data.repositories.IntentRepositoryImpl
 import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
 import com.example.playlistmaker.data.web.RetrofitNetworkClient
-import com.example.playlistmaker.domain.IntentInteractorImpl
 import com.example.playlistmaker.domain.api.AppPrefsRepository
 import com.example.playlistmaker.domain.api.AudioRepository
-import com.example.playlistmaker.domain.api.IntentInteractor
-import com.example.playlistmaker.domain.api.IntentRepository
 import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.api.ThemeInteractor
@@ -23,14 +18,17 @@ import com.example.playlistmaker.domain.search.SearchInteractorImpl
 import com.example.playlistmaker.domain.settings.ThemeInteractorImpl
 
 
-
 object Creator {
 
-    private fun getAppPrefsRepository(
-        context: Context
-    ): AppPrefsRepository {
+    private lateinit var application: Application
+    fun init(app: Application) {
+        application = app
+    }
+
+
+    private fun getAppPrefsRepository(): AppPrefsRepository {
         val appPrefsRepositoryImpl = AppPrefsRepositoryImpl()
-        appPrefsRepositoryImpl.init(context)
+        appPrefsRepositoryImpl.init(application)
 
         return appPrefsRepositoryImpl
     }
@@ -43,44 +41,23 @@ object Creator {
         return AudioRepositoryImpl()
     }
 
-    private fun getIntentRepository(
-        context: Context
-    ): IntentRepository {
-        return IntentRepositoryImpl(context)
-    }
 
-
-
-    fun provideThemeInteractor(
-        context: Context,
-        setThemeFun: (Boolean) -> Unit,
-    ): ThemeInteractor {
+    fun provideThemeInteractor(): ThemeInteractor {
         return ThemeInteractorImpl(
-            getAppPrefsRepository(context),
-            setThemeFun
+            getAppPrefsRepository()
         )
     }
 
-    fun provideIntentInteractor(
-        context: Context
-    ): IntentInteractor {
-        return IntentInteractorImpl(
-            getIntentRepository(context)
-        )
-    }
-
-    fun provideMediaInteractor(
-        context: Context
-    ): MediaInteractor {
+    fun provideMediaInteractor(): MediaInteractor {
         return MediaInteractorImpl(
-            getAppPrefsRepository(context),
+            getAppPrefsRepository(),
             getAudioRepository()
         )
     }
 
-    fun provideSearchInteractor(context: Context): SearchInteractor {
+    fun provideSearchInteractor(): SearchInteractor {
         return SearchInteractorImpl(
-            getAppPrefsRepository(context),
+            getAppPrefsRepository(),
             getTracksRepository()
         )
     }

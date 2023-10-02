@@ -1,10 +1,10 @@
 package com.example.playlistmaker.ui.main.act
 
 
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.playlistmaker.databinding.ActivityMainBinding
@@ -21,6 +21,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel
 
 
+    private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkThemeEnabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,24 +43,26 @@ class MainActivity : AppCompatActivity() {
             this,
             MainActivityViewModel.getViewModelFactory()
         )[MainActivityViewModel::class.java]
+        viewModel.setThemeSwitchFun( setTheme )
+        viewModel.applyCurrentTheme()
 
 
         binding.searchButton.setOnClickListener {
 
             val searchIntent = Intent(this, SearchActivity::class.java)
-            viewModel.sendIntent(searchIntent)
+            startActivity(searchIntent)
         }
 
         binding.medialibraryButton.setOnClickListener {
 
             val mediaIntent = Intent(this, MediaActivity::class.java)
-            viewModel.sendIntent(mediaIntent)
+            startActivity(mediaIntent)
         }
 
         binding.settingsButton.setOnClickListener {
 
             val settingsIntent = Intent(this, SettingsActivity::class.java)
-            viewModel.sendIntent(settingsIntent)
+            startActivity(settingsIntent)
         }
     }
 }

@@ -1,21 +1,18 @@
 package com.example.playlistmaker.ui.player.vm
 
 
-
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.creator.Creator
 
 import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.mediaInteractor
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 
 
 class MediaActivityViewModel(
@@ -48,26 +45,27 @@ class MediaActivityViewModel(
                 object : TypeToken<Track>() {}.type
             )
 
-            mediaInteractor.prepare (
-                data.previewUrl   ,
-                mediaInteractor.getMediaPlayerLastPosition().toInt() ,
-                mediaInteractor.isMediaPlayerToResumeOnCreate()      ,
-                ::updateFun       ,
-                ::onCompletionFun ,
-                ::onPlayFun       ,
-                ::onPauseFun      )
+            mediaInteractor.prepare(
+                data.previewUrl,
+                mediaInteractor.getMediaPlayerLastPosition().toInt(),
+                mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                ::updateFun,
+                ::onCompletionFun,
+                ::onPlayFun,
+                ::onPauseFun
+            )
 
             screenData.postValue(
                 MediaActivityScreenUpdate.AllData(
-                    timeCode = 0L                    ,
-                    artworkUrl100 = data.artworkUrl100    ,
-                    mediaTitle    = data.trackName        ,
-                    mediaArtist   = data.artistName       ,
-                    mediaLength   = data.trackTime        ,
-                    mediaAlbum    = data.collectionName   ,
-                    mediaDate     = data.releaseDate      ,
-                    mediaGenre    = data.primaryGenreName ,
-                    mediaCountry  = data.country          ,
+                    timeCode = 0L,
+                    artworkUrl100 = data.artworkUrl100,
+                    mediaTitle = data.trackName,
+                    mediaArtist = data.artistName,
+                    mediaLength = data.trackTime,
+                    mediaAlbum = data.collectionName,
+                    mediaDate = data.releaseDate,
+                    mediaGenre = data.primaryGenreName,
+                    mediaCountry = data.country,
                     showPlayElsePauseButtonState = true
                 )
             )
@@ -105,27 +103,26 @@ class MediaActivityViewModel(
     }
 
 
-
     fun getState(): LiveData<MediaActivityScreenUpdate> {
         return screenData
     }
 
-    fun onStartActivity(){
+    fun onStartActivity() {
         if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
             mediaInteractor.start()
         }
     }
 
-    fun onStopActivity(){
-        mediaInteractor.setMediaPlayerToResumeOnCreate( mediaInteractor.isPlaying() )
+    fun onStopActivity() {
+        mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
         mediaInteractor.pause()
     }
 
-    fun pause(){
+    fun pause() {
         mediaInteractor.pause()
     }
 
-    fun release(){
+    fun release() {
         mediaInteractor.release()
     }
 
@@ -135,10 +132,10 @@ class MediaActivityViewModel(
     }
 
     fun setMediaPlayerLastPosition() {
-        mediaInteractor.setMediaPlayerLastPosition( mediaInteractor.getCurrentPosition() )
+        mediaInteractor.setMediaPlayerLastPosition(mediaInteractor.getCurrentPosition())
     }
 
-    fun playPauseButtonPressed(){
+    fun playPauseButtonPressed() {
         if (mediaInteractor.isPlaying()) {
             mediaInteractor.pause()
         } else {
@@ -152,34 +149,33 @@ class MediaActivityViewModel(
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
-                    MediaActivityViewModel(mediaInteractor)
+                    MediaActivityViewModel( Creator.provideMediaInteractor() )
                 }
             }
     }
 }
 
 
-
 sealed class MediaActivityScreenUpdate {
 
     data class TimeCodeOnly(
-        val timeCode      :Long
+        val timeCode: Long
     ) : MediaActivityScreenUpdate()
 
     data class ShowPlayElsePauseButtonStateOnly(
-        val state :Boolean
-    ) :MediaActivityScreenUpdate()
+        val state: Boolean
+    ) : MediaActivityScreenUpdate()
 
     data class AllData(
-        val timeCode      :Long,
-        val artworkUrl100 :String,
-        val mediaTitle    :String,
-        val mediaArtist   :String,
-        val mediaLength   :String,
-        val mediaAlbum    :String,
-        val mediaDate     :String,
-        val mediaGenre    :String,
-        val mediaCountry  :String,
-        val showPlayElsePauseButtonState :Boolean
+        val timeCode: Long,
+        val artworkUrl100: String,
+        val mediaTitle: String,
+        val mediaArtist: String,
+        val mediaLength: String,
+        val mediaAlbum: String,
+        val mediaDate: String,
+        val mediaGenre: String,
+        val mediaCountry: String,
+        val showPlayElsePauseButtonState: Boolean
     ) : MediaActivityScreenUpdate()
 }

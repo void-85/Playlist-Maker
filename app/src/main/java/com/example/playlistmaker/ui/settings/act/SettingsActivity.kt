@@ -1,12 +1,12 @@
 package com.example.playlistmaker.ui.settings.act
 
 
-
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -16,13 +16,21 @@ import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.ui.settings.vm.SettingsActivityViewModel
 
 
-
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var viewModel: SettingsActivityViewModel
 
+    private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkThemeEnabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,14 +43,15 @@ class SettingsActivity : AppCompatActivity() {
             this,
             SettingsActivityViewModel.getViewModelFactory()
         )[SettingsActivityViewModel::class.java]
-        viewModel.getSwitchToDarkThemeState().observe(this){
+        viewModel.setThemeSwitchFun( setTheme )
+        viewModel.getSwitchToDarkThemeState().observe(this) {
             settingsThemeSwitcher.isChecked = it
         }
 
 
         settingsThemeSwitcher = binding.settingsThemeSwitcher
         settingsThemeSwitcher.setOnCheckedChangeListener { _, checked ->
-            run { viewModel.setSwitchToDarkThemeState( checked ) }
+            run { viewModel.setSwitchToDarkThemeState(checked) }
         }
 
 
@@ -59,7 +68,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_share_app_link))
                 flags = FLAG_ACTIVITY_NEW_TASK
             }
-            viewModel.sendIntentWithChooser(sendIntent)
+            startActivity(Intent.createChooser(sendIntent, null))
         }
 
 
@@ -73,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_support_subject))
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_support_text))
             }
-            viewModel.sendIntentWithChooser(sendIntent)
+            startActivity( Intent.createChooser(sendIntent, null) )
         }
 
 
@@ -84,7 +93,7 @@ class SettingsActivity : AppCompatActivity() {
                 action = Intent.ACTION_VIEW
                 data = Uri.parse(getString(R.string.settings_user_agreement_link))
             }
-            viewModel.sendIntentWithChooser(sendIntent)
+            startActivity(Intent.createChooser(sendIntent, null))
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.playlistmaker.domain.player
 
 
-
 import com.example.playlistmaker.domain.api.AppPrefsRepository
 import com.example.playlistmaker.domain.api.AudioRepository
 import com.example.playlistmaker.domain.api.MediaInteractor
@@ -10,8 +9,7 @@ import com.example.playlistmaker.domain.api.MediaInteractor
 class MediaInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
     private val audioRepositoryImpl: AudioRepository
-) : MediaInteractor
-{
+) : MediaInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
     override fun getCurrentlyPlaying(): String {
@@ -22,6 +20,7 @@ class MediaInteractorImpl(
     override fun getMediaPlayerLastPosition(): Long {
         return appPrefsRepositoryImpl.getMediaPlayerLastPosition()
     }
+
     override fun setMediaPlayerLastPosition(position: Long) {
         appPrefsRepositoryImpl.setMediaPlayerLastPosition(position)
     }
@@ -30,6 +29,7 @@ class MediaInteractorImpl(
     override fun isMediaPlayerToResumeOnCreate(): Boolean {
         return appPrefsRepositoryImpl.isMediaPlayerToResumeOnCreate()
     }
+
     override fun setMediaPlayerToResumeOnCreate(resume: Boolean) {
         appPrefsRepositoryImpl.setMediaPlayerToResumeOnCreate(resume)
     }
