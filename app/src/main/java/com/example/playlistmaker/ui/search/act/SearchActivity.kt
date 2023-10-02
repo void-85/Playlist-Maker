@@ -22,8 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
-import com.example.playlistmaker.App
 import com.example.playlistmaker.R
+import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.search.vm.SearchActivityUpdate
@@ -61,13 +61,13 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable =
         Runnable {
             // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
-            if (editTextId.text.length >= App.SEARCH_DEBOUNCE_REQ_MIN_LEN)
+            if (editTextId.text.length >= TracksRepositoryImpl.SEARCH_DEBOUNCE_REQ_MIN_LEN)
                 onSearchEntered()
         }
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, App.SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(searchRunnable, TracksRepositoryImpl.SEARCH_DEBOUNCE_DELAY)
     }
 
     fun switchToPlayer() {
