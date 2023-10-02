@@ -1,6 +1,8 @@
 package com.example.playlistmaker.ui.search.vm
 
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 
 import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -26,6 +29,14 @@ class SearchActivityViewModel(
             )
         )
     }
+
+    private val handler = Handler(Looper.getMainLooper())
+    fun searchDebounce( runnable: Runnable) {
+        handler.removeCallbacks(runnable)
+        handler.postDelayed(runnable, TracksRepositoryImpl.SEARCH_DEBOUNCE_DELAY)
+    }
+
+
 
 
     fun getState(): LiveData<SearchActivityUpdate> {
@@ -55,7 +66,7 @@ class SearchActivityViewModel(
 
     }
 
-    fun saveSearchHistoryAndCurrentlyplaying(
+    fun saveSearchHistoryAndCurrentlyPlaying(
         historyData: String,
         currentlyPlaying: String
     ) {

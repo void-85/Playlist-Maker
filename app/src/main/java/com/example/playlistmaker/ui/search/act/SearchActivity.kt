@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -57,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var data = ArrayList<Track>()
 
-    private val handler = Handler(Looper.getMainLooper())
+
     private val searchRunnable =
         Runnable {
             // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
@@ -65,10 +63,7 @@ class SearchActivity : AppCompatActivity() {
                 onSearchEntered()
         }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, TracksRepositoryImpl.SEARCH_DEBOUNCE_DELAY)
-    }
+
 
     fun switchToPlayer() {
         val mediaIntent = Intent(this, MediaActivity::class.java)
@@ -287,7 +282,7 @@ class SearchActivity : AppCompatActivity() {
 
                 } else {
 
-                    searchDebounce()
+                    viewModel.searchDebounce(searchRunnable)
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
                 }

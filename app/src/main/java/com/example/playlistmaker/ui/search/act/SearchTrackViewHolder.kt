@@ -88,7 +88,7 @@ class SearchTrackViewHolder(
 
             isSearchHistoryEmpty = false
 
-            viewModel.saveSearchHistoryAndCurrentlyplaying(
+            viewModel.saveSearchHistoryAndCurrentlyPlaying(
                 Gson().toJson(historyData),
                 Gson().toJson(model)
             )
