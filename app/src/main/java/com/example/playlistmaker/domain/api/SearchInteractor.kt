@@ -1,11 +1,10 @@
 package com.example.playlistmaker.domain.api
-
 import com.example.playlistmaker.domain.entities.Track
 
 interface SearchInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
-    fun getSearchHistory(): String
+    fun getSearchHistory(): List<Track>
     fun setSearchHistory(text: String)
 
     //fun isSearchHistoryEmpty(): Boolean

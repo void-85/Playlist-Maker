@@ -7,7 +7,7 @@ interface AppPrefsRepository {
     fun isThemeDark(): Boolean
     fun setDarkTheme(darkThemeEnabled: Boolean)
 
-    fun getSearchHistory(): String
+    fun getSearchHistory(): List<Track>
     fun setSearchHistory(text: String)
 
     fun isSearchHistoryEmpty(): Boolean

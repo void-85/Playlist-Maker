@@ -114,7 +114,6 @@ class SearchActivity : AppCompatActivity() {
 
         viewModel.searchTracks(editTextId.text.toString())
 
-
         /*searchAPIService.getTracksByTerm(editTextId.text.toString())
             .enqueue(object : Callback<ResponseData> {
 

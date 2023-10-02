@@ -7,10 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -22,23 +20,11 @@ class SearchActivityViewModel(
     private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
 
     init {
-
-        val json = searchInteractor.getSearchHistory()
-        if (json.isNotEmpty()) {
-
-            val data = ArrayList<Track>()
-
-            Gson().fromJson<ArrayList<Track>>(
-                json,
-                object : TypeToken<ArrayList<Track>>() {}.type
-            ).forEach {
-                data.add(it)
-            }
-
-            screenUpdate.postValue(SearchActivityUpdate.SearchHistoryData(data))
-        } else {
-            screenUpdate.postValue(SearchActivityUpdate.SearchHistoryData(emptyList()))
-        }
+        screenUpdate.postValue(
+            SearchActivityUpdate.SearchHistoryData(
+                searchInteractor.getSearchHistory()
+            )
+        )
     }
 
 

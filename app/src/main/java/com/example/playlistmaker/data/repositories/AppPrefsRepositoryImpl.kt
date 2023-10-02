@@ -34,8 +34,22 @@ class AppPrefsRepositoryImpl : AppPrefsRepository {
     }
 
 
-    override fun getSearchHistory(): String {
-        return sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "").orEmpty()
+    override fun getSearchHistory(): List<Track> {
+
+        val json = sharedPrefs.getString(App.SEARCH_HISTORY_KEY, "").orEmpty()
+        return if (json.isNotEmpty()) {
+            val data = ArrayList<Track>()
+
+            Gson().fromJson<ArrayList<Track>>(
+                json,
+                object : TypeToken<ArrayList<Track>>() {}.type
+            ).forEach { data.add(it) }
+
+            data
+
+        }else{
+            emptyList()
+        }
     }
 
     override fun setSearchHistory(text: String) {
