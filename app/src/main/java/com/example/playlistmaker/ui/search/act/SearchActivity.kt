@@ -70,6 +70,11 @@ class SearchActivity : AppCompatActivity() {
         startActivity(mediaIntent)
     }
 
+    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> (Unit) =
+        { tracks, track ->
+            viewModel.saveSearchHistoryAndCurrentlyPlaying(tracks, track)
+        }
+
     private fun showHistory() {
 
         searchHistory.visibility = if (isSearchHistoryEmpty) View.GONE else View.VISIBLE
@@ -210,7 +215,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
-        historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer)
+        historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer, saveSearchHistoryAndCurrentlyPlayingFun)
 
         clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory.setOnClickListener {
@@ -223,7 +228,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
-        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer)
+        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer, saveSearchHistoryAndCurrentlyPlayingFun)
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
 

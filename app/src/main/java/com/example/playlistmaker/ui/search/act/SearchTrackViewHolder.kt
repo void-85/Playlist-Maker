@@ -16,7 +16,8 @@ import com.example.playlistmaker.domain.entities.Track
 
 class SearchTrackViewHolder(
     itemView: View,
-    private val switchActivity: () -> (Unit)
+    private val switchActivity: () -> (Unit),
+    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_view_track_name)
@@ -87,10 +88,11 @@ class SearchTrackViewHolder(
 
             isSearchHistoryEmpty = false
 
-            viewModel.saveSearchHistoryAndCurrentlyPlaying(
+            saveSearchHistoryAndCurrentlyPlayingFun(historyData, model)
+            /*viewModel.saveSearchHistoryAndCurrentlyPlaying(
                 historyData,
                 model
-            )
+            )*/
 
             if (clickDebounce()) switchActivity()
         }

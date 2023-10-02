@@ -10,13 +10,14 @@ import com.example.playlistmaker.domain.entities.Track
 
 class SearchTrackAdapter(
     private val tracks: List<Track>,
-    private val switchActivityAction: () -> (Unit)
+    private val switchActivityAction: () -> (Unit),
+    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit
 ) : RecyclerView.Adapter<SearchTrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return SearchTrackViewHolder(view, switchActivityAction)
+        return SearchTrackViewHolder(view, switchActivityAction, saveSearchHistoryAndCurrentlyPlayingFun)
     }
 
     override fun onBindViewHolder(holder: SearchTrackViewHolder, position: Int) {
