@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.App
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
 import com.example.playlistmaker.domain.entities.Track
 
 class SearchTrackViewHolder(
@@ -32,7 +32,7 @@ class SearchTrackViewHolder(
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, TracksRepositoryImpl.SEARCH_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, App.SEARCH_DEBOUNCE_DELAY)
         }
         return current
     }
@@ -79,10 +79,10 @@ class SearchTrackViewHolder(
                 historyRView.adapter?.notifyItemInserted(0)
                 historyRView.scrollToPosition(0)
 
-                if (historyData.size > TracksRepositoryImpl.SEARCH_HISTORY_MAX_LENGTH) {
+                if (historyData.size > App.SEARCH_HISTORY_MAX_LENGTH) {
 
-                    historyData.removeAt(TracksRepositoryImpl.SEARCH_HISTORY_MAX_LENGTH)
-                    historyRView.adapter?.notifyItemRemoved(TracksRepositoryImpl.SEARCH_HISTORY_MAX_LENGTH)
+                    historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
+                    historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
                 }
             }
 

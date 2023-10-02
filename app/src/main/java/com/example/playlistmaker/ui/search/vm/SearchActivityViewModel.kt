@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.App
 
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -33,7 +33,7 @@ class SearchActivityViewModel(
     private val handler = Handler(Looper.getMainLooper())
     fun searchDebounce( runnable: Runnable) {
         handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, TracksRepositoryImpl.SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(runnable, App.SEARCH_DEBOUNCE_DELAY)
     }
 
 
