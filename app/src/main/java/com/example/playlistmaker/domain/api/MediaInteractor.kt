@@ -31,7 +31,7 @@ interface MediaInteractor {
     fun getMediaPlayerLastPosition(): Long
     fun setMediaPlayerLastPosition(position: Long)
 
-    fun getCurrentlyPlaying(): String
+    fun getCurrentlyPlaying(): Track?
     // APP PREFS REPOSITORY ---------------------------------------------------------------
 }
 

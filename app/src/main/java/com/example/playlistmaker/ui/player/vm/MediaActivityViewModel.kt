@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 
 class MediaActivityViewModel(
@@ -37,16 +35,11 @@ class MediaActivityViewModel(
 
     init {
 
-        val json: String = mediaInteractor.getCurrentlyPlaying()
-        if (json.isNotEmpty()) {
-
-            val data = Gson().fromJson<Track>(
-                json,
-                object : TypeToken<Track>() {}.type
-            )
+        val track :Track? = mediaInteractor.getCurrentlyPlaying()
+        if( track is Track) {
 
             mediaInteractor.prepare(
-                data.previewUrl,
+                track.previewUrl,
                 mediaInteractor.getMediaPlayerLastPosition().toInt(),
                 mediaInteractor.isMediaPlayerToResumeOnCreate(),
                 ::updateFun,
@@ -54,18 +47,17 @@ class MediaActivityViewModel(
                 ::onPlayFun,
                 ::onPauseFun
             )
-
             screenData.postValue(
                 MediaActivityScreenUpdate.AllData(
                     timeCode = 0L,
-                    artworkUrl100 = data.artworkUrl100,
-                    mediaTitle = data.trackName,
-                    mediaArtist = data.artistName,
-                    mediaLength = data.trackTime,
-                    mediaAlbum = data.collectionName,
-                    mediaDate = data.releaseDate,
-                    mediaGenre = data.primaryGenreName,
-                    mediaCountry = data.country,
+                    artworkUrl100 = track.artworkUrl100,
+                    mediaTitle = track.trackName,
+                    mediaArtist = track.artistName,
+                    mediaLength = track.trackTime,
+                    mediaAlbum = track.collectionName,
+                    mediaDate = track.releaseDate,
+                    mediaGenre = track.primaryGenreName,
+                    mediaCountry = track.country,
                     showPlayElsePauseButtonState = true
                 )
             )
@@ -136,10 +128,10 @@ class MediaActivityViewModel(
     }
 
     fun playPauseButtonPressed() {
-        if (mediaInteractor.isPlaying()) {
+        if( mediaInteractor.isPlaying() ) {
             mediaInteractor.pause()
         } else {
-            if (mediaInteractor.getCurrentlyPlaying().isNotEmpty()) {
+            if (mediaInteractor.getCurrentlyPlaying() is Track) {
                 mediaInteractor.start()
             }
         }

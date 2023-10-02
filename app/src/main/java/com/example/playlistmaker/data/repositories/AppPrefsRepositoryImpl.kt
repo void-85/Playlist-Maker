@@ -4,9 +4,13 @@ package com.example.playlistmaker.data.repositories
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.api.AppPrefsRepository
+import com.example.playlistmaker.domain.entities.Track
+
 
 class AppPrefsRepositoryImpl : AppPrefsRepository {
 
@@ -58,8 +62,20 @@ class AppPrefsRepositoryImpl : AppPrefsRepository {
     }
 
 
-    override fun getCurrentlyPlaying(): String {
-        return sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
+    override fun getCurrentlyPlaying(): Track? {
+
+        val jsonTrack = sharedPrefs.getString(App.CURRENTLY_PLAYING_KEY, "") ?: ""
+        if( jsonTrack.isNotEmpty() ){
+
+            val data = Gson().fromJson<Track>(
+                jsonTrack,
+                object : TypeToken<Track>() {}.type
+            )
+            return data
+
+        }else{
+            return null
+        }
     }
 
     override fun setCurrentlyPlaying(text: String) {

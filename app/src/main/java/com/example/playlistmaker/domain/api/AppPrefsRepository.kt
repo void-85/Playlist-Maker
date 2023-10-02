@@ -1,5 +1,7 @@
 package com.example.playlistmaker.domain.api
 
+import com.example.playlistmaker.domain.entities.Track
+
 interface AppPrefsRepository {
 
     fun isThemeDark(): Boolean
@@ -11,7 +13,7 @@ interface AppPrefsRepository {
     fun isSearchHistoryEmpty(): Boolean
     fun setSearchHistoryEmpty(isEmpty: Boolean)
 
-    fun getCurrentlyPlaying(): String
+    fun getCurrentlyPlaying(): Track?
     fun setCurrentlyPlaying(text: String)
 
     fun getMediaPlayerLastPosition(): Long
