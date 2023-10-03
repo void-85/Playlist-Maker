@@ -1,7 +1,5 @@
 package com.example.playlistmaker.ui.search.act
 
-import android.os.Handler
-import android.os.Looper
 
 import android.view.View
 import android.widget.ImageView
@@ -10,15 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.App
 
+import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
+
 
 class SearchTrackViewHolder(
     itemView: View,
     private val switchActivity: () -> (Unit),
-    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit
+    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit,
+    private val historyRView: RecyclerView,
+    private val historyData: ArrayList<Track>,
+    private var isSearchHistoryEmpty: Boolean,
+    private val viewModel: SearchActivityViewModel
+
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_view_track_name)
@@ -26,24 +31,9 @@ class SearchTrackViewHolder(
     private val trackTime: TextView = itemView.findViewById(R.id.track_view_track_time)
     private val artworkUrl: ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
-
-
-
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, App.SEARCH_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
-
-
-
+    private val enableClick = Runnable { isClickAllowed = true }
+    private val disableClick = Runnable { isClickAllowed = false }
 
 
     fun bind(model: Track) {
@@ -79,7 +69,7 @@ class SearchTrackViewHolder(
                 historyRView.adapter?.notifyItemMoved(oldPos, 0)
                 historyRView.scrollToPosition(0)
 
-            // insert new item
+                // insert new item
             } else {
 
                 historyData.add(0, model)
@@ -98,7 +88,7 @@ class SearchTrackViewHolder(
 
             saveSearchHistoryAndCurrentlyPlayingFun(historyData, model)
 
-            if (clickDebounce()) switchActivity()
+            if (viewModel.clickDebounce(isClickAllowed, enableClick, disableClick)) switchActivity()
         }
     }
 }

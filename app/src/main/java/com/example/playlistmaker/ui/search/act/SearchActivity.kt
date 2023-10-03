@@ -110,53 +110,6 @@ class SearchActivity : AppCompatActivity() {
     private fun onSearchEntered() {
 
         viewModel.searchTracks(editTextId.text.toString())
-
-        /*searchAPIService.getTracksByTerm(editTextId.text.toString())
-            .enqueue(object : Callback<ResponseData> {
-
-                override fun onResponse(
-                    call: Call<ResponseData>,
-                    response: Response<ResponseData>
-                ) {
-                    if (response.code() == 200) {
-
-                        val responseData = response.body()?.results.orEmpty()
-                        data.clear()
-
-                        if (responseData.isNotEmpty()) {
-
-                            responseData.forEach {
-                                data.add( Track(
-                                    trackName     = it.trackName     ,
-                                    artistName    = it.artistName    ,
-                                    artworkUrl100 = it.artworkUrl100 ,
-                                    trackTime     = it.trackTimeMillis.millisToMinSec(),
-
-                                    collectionName    = it.collectionName   ,
-                                    releaseDate       = it.releaseDate      ,
-                                    primaryGenreName  = it.primaryGenreName ,
-                                    country           = it.country          ,
-
-                                    previewUrl        = it.previewUrl       )
-                                )
-                            }
-
-                            showTracks()
-
-                        } else { showNoData() }
-
-                        recyclerView.adapter?.notifyDataSetChanged()
-
-                    } else { showNoNetwork() }
-                }
-
-                override fun onFailure(
-                    call: Call<ResponseData>,
-                    t: Throwable
-                ) {
-                    showNoNetwork()
-                }
-        })*/
     }
 
 
@@ -212,7 +165,15 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistory = findViewById<LinearLayout>(R.id.search_history)
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
-        historyRView.adapter = SearchTrackAdapter(historyData, ::switchToPlayer, saveSearchHistoryAndCurrentlyPlayingFun)
+        historyRView.adapter = SearchTrackAdapter(
+            historyData,
+            ::switchToPlayer,
+            saveSearchHistoryAndCurrentlyPlayingFun,
+            historyRView,
+            historyData,
+            isSearchHistoryEmpty,
+            viewModel
+        )
 
         clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory.setOnClickListener {
@@ -225,7 +186,15 @@ class SearchActivity : AppCompatActivity() {
         }
 
         recyclerView = findViewById<RecyclerView>(R.id.rView)
-        recyclerView.adapter = SearchTrackAdapter(data, ::switchToPlayer, saveSearchHistoryAndCurrentlyPlayingFun)
+        recyclerView.adapter = SearchTrackAdapter(
+            data,
+            ::switchToPlayer,
+            saveSearchHistoryAndCurrentlyPlayingFun,
+            historyRView,
+            historyData,
+            isSearchHistoryEmpty,
+            viewModel
+        )
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
 

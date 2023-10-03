@@ -31,12 +31,20 @@ class SearchActivityViewModel(
     }
 
     private val handler = Handler(Looper.getMainLooper())
+
     fun searchDebounce( runnable: Runnable) {
         handler.removeCallbacks(runnable)
         handler.postDelayed(runnable, App.SEARCH_DEBOUNCE_DELAY)
     }
 
-
+    fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            handler.post( disableClick )
+            handler.postDelayed(enableClick, App.CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 
 
     fun getState(): LiveData<SearchActivityUpdate> {
