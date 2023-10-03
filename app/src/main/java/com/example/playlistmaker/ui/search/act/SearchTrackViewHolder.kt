@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui.search.act
 
 import android.os.Handler
 import android.os.Looper
+
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,6 +26,9 @@ class SearchTrackViewHolder(
     private val trackTime: TextView = itemView.findViewById(R.id.track_view_track_time)
     private val artworkUrl: ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
+
+
+
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
@@ -36,6 +40,11 @@ class SearchTrackViewHolder(
         }
         return current
     }
+
+
+
+
+
 
     fun bind(model: Track) {
 
@@ -57,9 +66,8 @@ class SearchTrackViewHolder(
             )
             .into(artworkUrl)
 
-        // ? excess amount of listeners
+
         itemView.setOnClickListener {
-            //Toast.makeText(itemView.context, "${model.trackName} clicked", Toast.LENGTH_LONG).show()
 
             // swap old items
             if (historyData.contains(model)) {
@@ -71,7 +79,7 @@ class SearchTrackViewHolder(
                 historyRView.adapter?.notifyItemMoved(oldPos, 0)
                 historyRView.scrollToPosition(0)
 
-                // insert new item
+            // insert new item
             } else {
 
                 historyData.add(0, model)
@@ -89,10 +97,6 @@ class SearchTrackViewHolder(
             isSearchHistoryEmpty = false
 
             saveSearchHistoryAndCurrentlyPlayingFun(historyData, model)
-            /*viewModel.saveSearchHistoryAndCurrentlyPlaying(
-                historyData,
-                model
-            )*/
 
             if (clickDebounce()) switchActivity()
         }

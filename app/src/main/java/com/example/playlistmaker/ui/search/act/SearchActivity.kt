@@ -28,12 +28,6 @@ import com.example.playlistmaker.ui.search.vm.SearchActivityUpdate
 import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
 
 
-
-
-lateinit var historyRView: RecyclerView
-val historyData = ArrayList<Track>()
-var isSearchHistoryEmpty = true
-
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var goBackButtonId: FrameLayout
@@ -41,15 +35,23 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editTextId: EditText
     private lateinit var searchHistory: LinearLayout
     private lateinit var clearHistory: Button
-    private lateinit var recyclerView: RecyclerView
     private lateinit var noDataFrame: FrameLayout
     private lateinit var noNetworkFrame: FrameLayout
     private lateinit var noNetworkUpdateButton: Button
     private lateinit var progressBar: ProgressBar
 
+
+    private lateinit var recyclerView: RecyclerView
     private var data = ArrayList<Track>()
 
+
+    private lateinit var historyRView: RecyclerView
+    private val historyData = ArrayList<Track>()
+    private var isSearchHistoryEmpty = true
+
+
     lateinit var viewModel: SearchActivityViewModel
+
 
     private val searchRunnable =
         Runnable {
