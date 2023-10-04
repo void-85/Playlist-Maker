@@ -10,6 +10,6 @@ import retrofit2.http.Query
 interface SearchAPIService {
 
     @GET("/search?entity=song")
-    fun getTracksByTerm( @Query("term") text :String ) :Call<ResponseData>
+    fun getTracksByTerm(@Query("term") text: String): Call<ResponseData>
 
 }

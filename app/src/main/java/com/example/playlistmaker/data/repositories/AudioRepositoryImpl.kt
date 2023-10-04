@@ -4,10 +4,13 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
-import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.api.AudioRepository
 
 class AudioRepositoryImpl : AudioRepository {
+
+    companion object{
+        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 500L
+    }
 
     private var mediaPlayer = MediaPlayer()
 
@@ -34,8 +37,9 @@ class AudioRepositoryImpl : AudioRepository {
         }
 
     private fun scheduleFunUpdate() {
-        handler.postDelayed(updatePosRunnable, App.MEDIA_PLAYER_UPDATE_POS_PERIOD)
+        handler.postDelayed(updatePosRunnable, MEDIA_PLAYER_UPDATE_POS_PERIOD)
     }
+
     private fun clearSchedule() {
         handler.removeCallbacks(updatePosRunnable)
     }

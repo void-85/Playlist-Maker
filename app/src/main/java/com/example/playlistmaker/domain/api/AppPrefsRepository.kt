@@ -1,18 +1,20 @@
 package com.example.playlistmaker.domain.api
 
+import com.example.playlistmaker.domain.entities.Track
+
 interface AppPrefsRepository {
 
     fun isThemeDark(): Boolean
     fun setDarkTheme(darkThemeEnabled: Boolean)
 
-    fun getSearchHistory(): String
-    fun setSearchHistory(text: String)
+    fun getSearchHistory(): List<Track>
+    fun setSearchHistory(tracks: List<Track>)
 
-    fun isSearchHistoryEmpty(): Boolean
-    fun setSearchHistoryEmpty(isEmpty: Boolean)
+    //fun isSearchHistoryEmpty(): Boolean
+    //fun setSearchHistoryEmpty(isEmpty: Boolean)
 
-    fun getCurrentlyPlaying(): String
-    fun setCurrentlyPlaying(text: String)
+    fun getCurrentlyPlaying(): Track?
+    fun setCurrentlyPlaying(track: Track)
 
     fun getMediaPlayerLastPosition(): Long
     fun setMediaPlayerLastPosition(position: Long)

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.data.DTO
 
-open class GeneralResponse() {
+open class GeneralResponse {
 
     var responseCode = 0
 

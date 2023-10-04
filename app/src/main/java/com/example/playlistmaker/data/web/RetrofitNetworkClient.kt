@@ -19,23 +19,24 @@ class RetrofitNetworkClient : NetworkClient {
     private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
 
 
+    override fun makeRequest(requestObject: Any): GeneralResponse {
 
-    override fun makeRequest( requestObject :Any ) : GeneralResponse {
-
-        when(requestObject){
+        when (requestObject) {
 
             is RequestData -> {
 
-                    val response = searchAPIService
-                                    .getTracksByTerm( requestObject.requestText )
-                                    .execute()
+                val response = searchAPIService
+                    .getTracksByTerm(requestObject.requestText)
+                    .execute()
 
-                    val respBody = response.body() ?: GeneralResponse()
+                val respBody = response.body() ?: GeneralResponse()
 
-                    return respBody.apply{ responseCode = response.code() }
+                return respBody.apply { responseCode = response.code() }
             }
 
-            else -> { return GeneralResponse().apply{ responseCode = 400 } }
+            else -> {
+                return GeneralResponse().apply { responseCode = 400 }
+            }
         }
     }
 
