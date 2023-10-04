@@ -61,16 +61,64 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-
-    fun switchToPlayer() {
+    private fun switchToPlayer() {
         val mediaIntent = Intent(this, MediaActivity::class.java)
         startActivity(mediaIntent)
     }
 
-    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> (Unit) =
+    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit =
         { tracks, track ->
             viewModel.saveSearchHistoryAndCurrentlyPlaying(tracks, track)
         }
+
+
+    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit =
+        { item, isClickAllowed, enableClick, disableClick ->
+            run {
+
+                // swap old items
+                if (historyData.contains(item)) {
+
+                    val oldPos: Int = historyData.indexOf(item)
+                    historyData.remove(item)
+                    historyData.add(0, item)
+
+                    historyRView.adapter?.notifyItemMoved(oldPos, 0)
+                    historyRView.scrollToPosition(0)
+
+                    // insert new item
+                } else {
+
+                    historyData.add(0, item)
+
+                    historyRView.adapter?.notifyItemInserted(0)
+                    historyRView.scrollToPosition(0)
+
+                    if (historyData.size > App.SEARCH_HISTORY_MAX_LENGTH) {
+
+                        historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
+                        historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
+                    }
+                }
+
+                isSearchHistoryEmpty = false
+
+                saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
+
+                if (viewModel
+                        .clickDebounce(
+                            isClickAllowed,
+                            enableClick,
+                            disableClick
+                        )
+                ) {
+                    switchToPlayer()
+                }
+
+            }
+        }
+
+
 
     private fun showHistory() {
 
@@ -167,12 +215,7 @@ class SearchActivity : AppCompatActivity() {
         historyRView = findViewById<RecyclerView>(R.id.history_rView)
         historyRView.adapter = SearchTrackAdapter(
             historyData,
-            ::switchToPlayer,
-            saveSearchHistoryAndCurrentlyPlayingFun,
-            historyRView,
-            historyData,
-            isSearchHistoryEmpty,
-            viewModel
+            trackViewHolderItemClicked
         )
 
         clearHistory = findViewById<Button>(R.id.clear_search_history)
@@ -188,12 +231,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.adapter = SearchTrackAdapter(
             data,
-            ::switchToPlayer,
-            saveSearchHistoryAndCurrentlyPlayingFun,
-            historyRView,
-            historyData,
-            isSearchHistoryEmpty,
-            viewModel
+            trackViewHolderItemClicked
         )
 
         noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)

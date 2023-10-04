@@ -9,20 +9,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
 
 
 class SearchTrackViewHolder(
     itemView: View,
-    private val switchActivity: () -> (Unit),
-    private val saveSearchHistoryAndCurrentlyPlayingFun: (List<Track>, Track) -> Unit,
-    private val historyRView: RecyclerView,
-    private val historyData: ArrayList<Track>,
-    private var isSearchHistoryEmpty: Boolean,
-    private val viewModel: SearchActivityViewModel
+    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit
 
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -56,39 +49,8 @@ class SearchTrackViewHolder(
             )
             .into(artworkUrl)
 
-
         itemView.setOnClickListener {
-
-            // swap old items
-            if (historyData.contains(model)) {
-
-                val oldPos: Int = historyData.indexOf(model)
-                historyData.remove(model)
-                historyData.add(0, model)
-
-                historyRView.adapter?.notifyItemMoved(oldPos, 0)
-                historyRView.scrollToPosition(0)
-
-                // insert new item
-            } else {
-
-                historyData.add(0, model)
-
-                historyRView.adapter?.notifyItemInserted(0)
-                historyRView.scrollToPosition(0)
-
-                if (historyData.size > App.SEARCH_HISTORY_MAX_LENGTH) {
-
-                    historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
-                    historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
-                }
-            }
-
-            isSearchHistoryEmpty = false
-
-            saveSearchHistoryAndCurrentlyPlayingFun(historyData, model)
-
-            if (viewModel.clickDebounce(isClickAllowed, enableClick, disableClick)) switchActivity()
+            trackViewHolderItemClicked(model, isClickAllowed, enableClick, disableClick)
         }
     }
 }
