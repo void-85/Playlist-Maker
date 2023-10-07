@@ -77,11 +77,14 @@ class MediaActivityViewModel(
     }
 
     private fun onCompletionFun() {
-        screenData.postValue(
-            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
+       /* screenData.postValue(
+            MediaActivityScreenUpdate.TimeCodeOnly(0)
         )
         screenData.postValue(
-            MediaActivityScreenUpdate.TimeCodeOnly(0)
+            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
+        )*/
+        screenData.postValue(
+            MediaActivityScreenUpdate.PlayFinished
         )
     }
 
@@ -100,14 +103,15 @@ class MediaActivityViewModel(
     }
 
     fun onStartActivity() {
-        if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
+        /*if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
             mediaInteractor.start()
-        }
+        }*/
     }
 
     fun onStopActivity() {
-        mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
-        mediaInteractor.pause()
+        //mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
+        mediaInteractor.setMediaPlayerToResumeOnCreate(false)
+        if( mediaInteractor.isPlaying() )mediaInteractor.pause()
     }
 
     fun pause() {
@@ -132,6 +136,7 @@ class MediaActivityViewModel(
             mediaInteractor.pause()
         } else {
             if (mediaInteractor.getCurrentlyPlaying() is Track) {
+                //Log.d("<!>",mediaInteractor.getCurrentlyPlaying().toString())
                 mediaInteractor.start()
             }
         }
@@ -170,4 +175,6 @@ sealed class MediaActivityScreenUpdate {
         val mediaCountry: String,
         val showPlayElsePauseButtonState: Boolean
     ) : MediaActivityScreenUpdate()
+
+    object PlayFinished : MediaActivityScreenUpdate()
 }

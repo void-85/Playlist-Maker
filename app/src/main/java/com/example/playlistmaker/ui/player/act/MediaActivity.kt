@@ -145,6 +145,8 @@ class MediaActivity : AppCompatActivity() {
                     mediaDate.text = it.mediaDate.substringBefore("-")
                     mediaGenre.text = it.mediaGenre
                     mediaCountry.text = it.mediaCountry
+
+                    showPlayButtonElsePauseButton = it.showPlayElsePauseButtonState
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
@@ -155,6 +157,14 @@ class MediaActivity : AppCompatActivity() {
                     showPlayButtonElsePauseButton = it.state
                     updatePlayPauseButtonStateFromVar()
                 }
+
+                is MediaActivityScreenUpdate.PlayFinished -> {
+                    mediaTimeCode.text = 0L.millisToMinSec()
+                    showPlayButtonElsePauseButton = true
+                    updatePlayPauseButtonStateFromVar()
+                }
+
+                else -> {}
             }
         }
 
