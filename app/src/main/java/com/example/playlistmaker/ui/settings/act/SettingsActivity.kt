@@ -7,20 +7,22 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-
 import com.example.playlistmaker.ui.settings.vm.SettingsActivityViewModel
 
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity (): AppCompatActivity() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var viewModel: SettingsActivityViewModel
+
+    //private lateinit var viewModel: SettingsActivityViewModel
+    private val viewModel by viewModel<SettingsActivityViewModel>()
 
     private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
         AppCompatDelegate.setDefaultNightMode(
@@ -39,10 +41,12 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        viewModel = ViewModelProvider(
+        /*viewModel = ViewModelProvider(
             this,
             SettingsActivityViewModel.getViewModelFactory()
-        )[SettingsActivityViewModel::class.java]
+        )[SettingsActivityViewModel::class.java]*/
+
+
         viewModel.setThemeSwitchFun( setTheme )
         viewModel.getSwitchToDarkThemeState().observe(this) {
             settingsThemeSwitcher.isChecked = it

@@ -1,22 +1,22 @@
 package com.example.playlistmaker.data.web
 
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-
 import com.example.playlistmaker.data.DTO.GeneralResponse
 import com.example.playlistmaker.data.DTO.RequestData
 import com.example.playlistmaker.data.api.NetworkClient
 import com.example.playlistmaker.data.api.SearchAPIService
 
 
-class RetrofitNetworkClient : NetworkClient {
+class RetrofitNetworkClient(
+    private val searchAPIService: SearchAPIService
+) : NetworkClient {
 
-    private val retrofit = Retrofit.Builder()
+    /*private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
+        .build()*/
+
+    //private val searchAPIService = retrofit.create<SearchAPIService>(SearchAPIService::class.java)
 
 
     override fun makeRequest(requestObject: Any): GeneralResponse {

@@ -6,12 +6,8 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.App
 
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -82,14 +78,14 @@ class SearchActivityViewModel(
         searchInteractor.setCurrentlyPlaying(currentlyPlaying)
     }
 
-    companion object {
+   /* companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
                     SearchActivityViewModel(Creator.provideSearchInteractor())
                 }
             }
-    }
+    }*/
 }
 
 

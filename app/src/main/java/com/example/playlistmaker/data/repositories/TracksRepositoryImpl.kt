@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.repositories
 
+
 import com.example.playlistmaker.data.DTO.RequestData
 import com.example.playlistmaker.data.DTO.ResponseData
 import com.example.playlistmaker.data.api.NetworkClient
@@ -8,7 +9,9 @@ import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.domain.api.TracksRepository
 
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(
+    private val networkClient: NetworkClient
+) : TracksRepository {
 
     override fun searchTracks(searchText: String): List<Track> {
         val response = networkClient.makeRequest(RequestData(searchText))

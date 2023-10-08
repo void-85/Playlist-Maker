@@ -2,10 +2,7 @@ package com.example.playlistmaker.ui.main.vm
 
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
+
 import com.example.playlistmaker.domain.api.ThemeInteractor
 
 
@@ -25,7 +22,7 @@ class MainActivityViewModel(
         themeInteractor.applyCurrentTheme()
     }
 
-    companion object {
+    /*companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
@@ -34,5 +31,5 @@ class MainActivityViewModel(
                     )
                 }
             }
-    }
+    }*/
 }

@@ -16,10 +16,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.App
 import kotlin.collections.ArrayList
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
@@ -50,7 +51,8 @@ class SearchActivity : AppCompatActivity() {
     private var isSearchHistoryEmpty = true
 
 
-    lateinit var viewModel: SearchActivityViewModel
+    //lateinit var viewModel: SearchActivityViewModel
+    private val viewModel by viewModel<SearchActivityViewModel>()
 
 
     private val searchRunnable =
@@ -166,10 +168,10 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProvider(
+       /* viewModel = ViewModelProvider(
             this,
             SearchActivityViewModel.getViewModelFactory()
-        )[SearchActivityViewModel::class.java]
+        )[SearchActivityViewModel::class.java]*/
 
         viewModel.getState().observe(this) {
             when (it) {

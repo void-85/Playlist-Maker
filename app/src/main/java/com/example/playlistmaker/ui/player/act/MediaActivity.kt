@@ -11,10 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
@@ -41,7 +42,9 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var playPauseButton: ImageSwitcher
 
     private lateinit var binding: ActivityMediaBinding
-    private lateinit var viewModel: MediaActivityViewModel
+
+    //private lateinit var viewModel: MediaActivityViewModel
+    private val viewModel by viewModel<MediaActivityViewModel>()
 
 
     private var intentionalExit: Boolean = false
@@ -108,10 +111,11 @@ class MediaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        viewModel = ViewModelProvider(
+       /* viewModel = ViewModelProvider(
             this,
             MediaActivityViewModel.getViewModelFactory()
-        )[MediaActivityViewModel::class.java]
+        )[MediaActivityViewModel::class.java]*/
+
         viewModel.getState().observe(this) {
 
             when (it) {

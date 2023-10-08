@@ -5,20 +5,22 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.search.act.SearchActivity
 import com.example.playlistmaker.ui.settings.act.SettingsActivity
-
 import com.example.playlistmaker.ui.main.vm.MainActivityViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainActivityViewModel
+
+    //private lateinit var viewModel: MainActivityViewModel
+    private val viewModel by viewModel<MainActivityViewModel>()
 
 
     private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
@@ -39,10 +41,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        viewModel = ViewModelProvider(
+        /*viewModel = ViewModelProvider(
             this,
             MainActivityViewModel.getViewModelFactory()
-        )[MainActivityViewModel::class.java]
+        )[MainActivityViewModel::class.java]*/
         viewModel.setThemeSwitchFun( setTheme )
         viewModel.applyCurrentTheme()
 
