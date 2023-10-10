@@ -4,11 +4,7 @@ package com.example.playlistmaker.ui.player.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.api.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -78,10 +74,7 @@ class MediaActivityViewModel(
 
     private fun onCompletionFun() {
         screenData.postValue(
-            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
-        )
-        screenData.postValue(
-            MediaActivityScreenUpdate.TimeCodeOnly(0)
+            MediaActivityScreenUpdate.PlayFinished
         )
     }
 
@@ -103,11 +96,32 @@ class MediaActivityViewModel(
         if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
             mediaInteractor.start()
         }
+
+        if( mediaInteractor.getCurrentPosition() > 0L ) {
+            val track: Track? = mediaInteractor.getCurrentlyPlaying()
+            if (track is Track) {
+                screenData.postValue(
+                    MediaActivityScreenUpdate.AllData(
+                        timeCode = mediaInteractor.getCurrentPosition(),
+                        artworkUrl100 = track.artworkUrl100,
+                        mediaTitle = track.trackName,
+                        mediaArtist = track.artistName,
+                        mediaLength = track.trackTime,
+                        mediaAlbum = track.collectionName,
+                        mediaDate = track.releaseDate,
+                        mediaGenre = track.primaryGenreName,
+                        mediaCountry = track.country,
+                        showPlayElsePauseButtonState = ! mediaInteractor.isMediaPlayerToResumeOnCreate()
+                    )
+                )
+            }
+        }
+
     }
 
     fun onStopActivity() {
         mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
-        mediaInteractor.pause()
+        if( mediaInteractor.isPlaying() )mediaInteractor.pause()
     }
 
     fun pause() {
@@ -132,18 +146,10 @@ class MediaActivityViewModel(
             mediaInteractor.pause()
         } else {
             if (mediaInteractor.getCurrentlyPlaying() is Track) {
+                //Log.d("<!>",mediaInteractor.getCurrentlyPlaying().toString())
                 mediaInteractor.start()
             }
         }
-    }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    MediaActivityViewModel( Creator.provideMediaInteractor() )
-                }
-            }
     }
 }
 
@@ -170,4 +176,6 @@ sealed class MediaActivityScreenUpdate {
         val mediaCountry: String,
         val showPlayElsePauseButtonState: Boolean
     ) : MediaActivityScreenUpdate()
+
+    object PlayFinished : MediaActivityScreenUpdate()
 }

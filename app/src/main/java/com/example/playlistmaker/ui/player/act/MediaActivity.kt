@@ -11,10 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
@@ -40,8 +41,9 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var playPauseButton: ImageSwitcher
 
+
     private lateinit var binding: ActivityMediaBinding
-    private lateinit var viewModel: MediaActivityViewModel
+    private val viewModel by viewModel<MediaActivityViewModel>()
 
 
     private var intentionalExit: Boolean = false
@@ -85,7 +87,7 @@ class MediaActivity : AppCompatActivity() {
         super.onBackPressed()
 
         intentionalExit = true
-        //viewModel.pause()
+        viewModel.release()
         finish()
     }
 
@@ -97,8 +99,6 @@ class MediaActivity : AppCompatActivity() {
         } else {
             viewModel.setMediaPlayerLastPosition()
         }
-
-        viewModel.release()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,11 +107,6 @@ class MediaActivity : AppCompatActivity() {
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        viewModel = ViewModelProvider(
-            this,
-            MediaActivityViewModel.getViewModelFactory()
-        )[MediaActivityViewModel::class.java]
         viewModel.getState().observe(this) {
 
             when (it) {
@@ -145,6 +140,11 @@ class MediaActivity : AppCompatActivity() {
                     mediaDate.text = it.mediaDate.substringBefore("-")
                     mediaGenre.text = it.mediaGenre
                     mediaCountry.text = it.mediaCountry
+
+                    mediaTimeCode.text = it.timeCode.millisToMinSec()
+
+                    showPlayButtonElsePauseButton = it.showPlayElsePauseButtonState
+                    updatePlayPauseButtonStateFromVar()
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
@@ -155,6 +155,14 @@ class MediaActivity : AppCompatActivity() {
                     showPlayButtonElsePauseButton = it.state
                     updatePlayPauseButtonStateFromVar()
                 }
+
+                is MediaActivityScreenUpdate.PlayFinished -> {
+                    mediaTimeCode.text = 0L.millisToMinSec()
+                    showPlayButtonElsePauseButton = true
+                    updatePlayPauseButtonStateFromVar()
+                }
+
+                else -> {}
             }
         }
 

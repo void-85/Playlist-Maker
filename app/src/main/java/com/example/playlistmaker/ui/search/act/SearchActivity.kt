@@ -16,10 +16,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.App
 import kotlin.collections.ArrayList
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
@@ -49,14 +49,12 @@ class SearchActivity : AppCompatActivity() {
     private val historyData = ArrayList<Track>()
     private var isSearchHistoryEmpty = true
 
-
-    lateinit var viewModel: SearchActivityViewModel
-
+    private val viewModel by viewModel<SearchActivityViewModel>()
 
     private val searchRunnable =
         Runnable {
             // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
-            if (editTextId.text.length >= App.SEARCH_DEBOUNCE_REQ_MIN_LEN)
+            if (editTextId.text.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN)
                 onSearchEntered()
         }
 
@@ -86,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
                     historyRView.adapter?.notifyItemMoved(oldPos, 0)
                     historyRView.scrollToPosition(0)
 
-                    // insert new item
+                // insert new item
                 } else {
 
                     historyData.add(0, item)
@@ -94,10 +92,10 @@ class SearchActivity : AppCompatActivity() {
                     historyRView.adapter?.notifyItemInserted(0)
                     historyRView.scrollToPosition(0)
 
-                    if (historyData.size > App.SEARCH_HISTORY_MAX_LENGTH) {
+                    if (historyData.size > SEARCH_HISTORY_MAX_LENGTH) {
 
-                        historyData.removeAt(App.SEARCH_HISTORY_MAX_LENGTH)
-                        historyRView.adapter?.notifyItemRemoved(App.SEARCH_HISTORY_MAX_LENGTH)
+                        historyData.removeAt(SEARCH_HISTORY_MAX_LENGTH)
+                        historyRView.adapter?.notifyItemRemoved(SEARCH_HISTORY_MAX_LENGTH)
                     }
                 }
 
@@ -165,11 +163,6 @@ class SearchActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchActivityViewModel.getViewModelFactory()
-        )[SearchActivityViewModel::class.java]
 
         viewModel.getState().observe(this) {
             when (it) {
@@ -305,7 +298,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         savedInstanceState?.let {
-            val s = savedInstanceState.getString(SEARCH_REQUEST, "")
+            val s = savedInstanceState.getString(SEARCH_REQUEST_KEY, "")
             if (s != "") {
                 editTextId.setText(s)
                 clearTextButtonId.visibility = View.VISIBLE
@@ -318,10 +311,14 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_REQUEST, editTextId.text.toString())
+        outState.putString(SEARCH_REQUEST_KEY, editTextId.text.toString())
     }
 
     private companion object {
-        const val SEARCH_REQUEST = "SEARCH_REQUEST"
+
+        const val SEARCH_HISTORY_MAX_LENGTH = 10
+        const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
+
+        const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
     }
 }
