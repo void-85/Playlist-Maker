@@ -99,14 +99,35 @@ class MediaActivityViewModel(
     }
 
     fun onStartActivity() {
-        /*if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
+        if (mediaInteractor.isMediaPlayerToResumeOnCreate()) {
             mediaInteractor.start()
-        }*/
+        }
+
+        if( mediaInteractor.getCurrentPosition() > 0L ) {
+            val track: Track? = mediaInteractor.getCurrentlyPlaying()
+            if (track is Track) {
+                screenData.postValue(
+                    MediaActivityScreenUpdate.AllData(
+                        timeCode = mediaInteractor.getCurrentPosition(),
+                        artworkUrl100 = track.artworkUrl100,
+                        mediaTitle = track.trackName,
+                        mediaArtist = track.artistName,
+                        mediaLength = track.trackTime,
+                        mediaAlbum = track.collectionName,
+                        mediaDate = track.releaseDate,
+                        mediaGenre = track.primaryGenreName,
+                        mediaCountry = track.country,
+                        showPlayElsePauseButtonState = ! mediaInteractor.isMediaPlayerToResumeOnCreate()
+                    )
+                )
+            }
+        }
+
     }
 
     fun onStopActivity() {
         //mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
-        mediaInteractor.setMediaPlayerToResumeOnCreate(false)
+        mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
         if( mediaInteractor.isPlaying() )mediaInteractor.pause()
     }
 

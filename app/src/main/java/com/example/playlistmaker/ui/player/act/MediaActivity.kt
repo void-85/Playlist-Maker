@@ -89,6 +89,7 @@ class MediaActivity : AppCompatActivity() {
 
         intentionalExit = true
         //viewModel.pause()
+        viewModel.release()
         finish()
     }
 
@@ -101,7 +102,7 @@ class MediaActivity : AppCompatActivity() {
             viewModel.setMediaPlayerLastPosition()
         }
 
-        viewModel.release()
+        //viewModel.release()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,7 +151,10 @@ class MediaActivity : AppCompatActivity() {
                     mediaGenre.text = it.mediaGenre
                     mediaCountry.text = it.mediaCountry
 
+                    mediaTimeCode.text = it.timeCode.millisToMinSec()
+
                     showPlayButtonElsePauseButton = it.showPlayElsePauseButtonState
+                    updatePlayPauseButtonStateFromVar()
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
