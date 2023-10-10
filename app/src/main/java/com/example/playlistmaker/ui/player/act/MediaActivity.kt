@@ -41,9 +41,8 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var playPauseButton: ImageSwitcher
 
-    private lateinit var binding: ActivityMediaBinding
 
-    //private lateinit var viewModel: MediaActivityViewModel
+    private lateinit var binding: ActivityMediaBinding
     private val viewModel by viewModel<MediaActivityViewModel>()
 
 
@@ -88,7 +87,6 @@ class MediaActivity : AppCompatActivity() {
         super.onBackPressed()
 
         intentionalExit = true
-        //viewModel.pause()
         viewModel.release()
         finish()
     }
@@ -101,8 +99,6 @@ class MediaActivity : AppCompatActivity() {
         } else {
             viewModel.setMediaPlayerLastPosition()
         }
-
-        //viewModel.release()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,12 +106,6 @@ class MediaActivity : AppCompatActivity() {
         super.onCreate(null) //savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-       /* viewModel = ViewModelProvider(
-            this,
-            MediaActivityViewModel.getViewModelFactory()
-        )[MediaActivityViewModel::class.java]*/
 
         viewModel.getState().observe(this) {
 

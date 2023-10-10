@@ -21,15 +21,4 @@ class MainActivityViewModel(
     fun applyCurrentTheme(){
         themeInteractor.applyCurrentTheme()
     }
-
-    /*companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    MainActivityViewModel(
-                        Creator.provideThemeInteractor()
-                    )
-                }
-            }
-    }*/
 }

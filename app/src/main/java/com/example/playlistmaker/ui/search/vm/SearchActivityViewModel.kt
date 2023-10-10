@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
@@ -30,14 +29,14 @@ class SearchActivityViewModel(
 
     fun searchDebounce( runnable: Runnable) {
         handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, App.SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             handler.post( disableClick )
-            handler.postDelayed(enableClick, App.CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed(enableClick, CLICK_DEBOUNCE_DELAY)
         }
         return current
     }
@@ -78,14 +77,12 @@ class SearchActivityViewModel(
         searchInteractor.setCurrentlyPlaying(currentlyPlaying)
     }
 
-   /* companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    SearchActivityViewModel(Creator.provideSearchInteractor())
-                }
-            }
-    }*/
+
+
+    companion object {
+       const val SEARCH_DEBOUNCE_DELAY = 2_000L
+       const val CLICK_DEBOUNCE_DELAY = 2_000L
+    }
 }
 
 
@@ -101,3 +98,5 @@ sealed class SearchActivityUpdate {
         val tracks: List<Track>
     ) : SearchActivityUpdate()
 }
+
+

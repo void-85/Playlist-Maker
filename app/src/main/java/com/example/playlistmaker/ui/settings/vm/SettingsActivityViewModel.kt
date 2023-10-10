@@ -29,11 +29,4 @@ class SettingsActivityViewModel(
         themeInteractor.setTheme(darkThemeEnabled)
     }
 
-    /*companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsActivityViewModel( Creator.provideThemeInteractor())
-            }
-        }
-    }*/
 }

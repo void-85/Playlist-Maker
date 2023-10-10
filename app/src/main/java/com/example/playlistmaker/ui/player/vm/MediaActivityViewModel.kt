@@ -73,12 +73,6 @@ class MediaActivityViewModel(
     }
 
     private fun onCompletionFun() {
-       /* screenData.postValue(
-            MediaActivityScreenUpdate.TimeCodeOnly(0)
-        )
-        screenData.postValue(
-            MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly(true)
-        )*/
         screenData.postValue(
             MediaActivityScreenUpdate.PlayFinished
         )
@@ -126,7 +120,6 @@ class MediaActivityViewModel(
     }
 
     fun onStopActivity() {
-        //mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
         mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
         if( mediaInteractor.isPlaying() )mediaInteractor.pause()
     }
@@ -158,15 +151,6 @@ class MediaActivityViewModel(
             }
         }
     }
-
-   /* companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    MediaActivityViewModel( Creator.provideMediaInteractor() )
-                }
-            }
-    }*/
 }
 
 

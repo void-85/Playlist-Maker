@@ -40,13 +40,6 @@ class SettingsActivity (): AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        /*viewModel = ViewModelProvider(
-            this,
-            SettingsActivityViewModel.getViewModelFactory()
-        )[SettingsActivityViewModel::class.java]*/
-
-
         viewModel.setThemeSwitchFun( setTheme )
         viewModel.getSwitchToDarkThemeState().observe(this) {
             settingsThemeSwitcher.isChecked = it
