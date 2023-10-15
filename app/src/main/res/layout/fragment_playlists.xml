@@ -47,7 +47,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="136dp"
 
-                    android:text="**********"
+                    android:text="**********\n***"
+                    android:textAlignment="center"
                     style="@style/search_info_text"
                     android:textColor="@color/search_screen_header"
                     />
