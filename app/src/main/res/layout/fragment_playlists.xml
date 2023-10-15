@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+
+        <Button
+
+            style="@style/search_info_button"
+
+            android:layout_width="@dimen/search_history_clear_button_width"
+            android:layout_height="@dimen/search_history_clear_button_height"
+
+            android:layout_marginTop="24dp"
+
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/search_screen_header"
+
+            android:insetTop   ="0dp"
+            android:insetBottom="0dp"
+
+            android:text="Новый плейлист"
+            android:textColor="@color/search_screen_background"
+            app:cornerRadius="@dimen/search_history_clear_button_corner_radius"
+        />
+
+        <FrameLayout
+            android:layout_width ="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+                <ImageView
+                    android:layout_width ="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/no_data"
+                />
+
+                <TextView
+                    android:id="@+id/playlists_frag_text"
+
+                    android:layout_width ="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="136dp"
+
+                    android:text="**********"
+                    style="@style/search_info_text"
+                    android:textColor="@color/search_screen_header"
+                    />
+        </FrameLayout>
+
+</FrameLayout>
