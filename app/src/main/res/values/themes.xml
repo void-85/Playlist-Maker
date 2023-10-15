@@ -14,4 +14,11 @@
         <item name="android:statusBarColor">#3772E7</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.PlaylistMaker.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.PlaylistMaker.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.PlaylistMaker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
