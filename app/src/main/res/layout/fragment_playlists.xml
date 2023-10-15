@@ -22,7 +22,7 @@
             android:insetTop   ="0dp"
             android:insetBottom="0dp"
 
-            android:text="Новый плейлист"
+            android:text="@string/media_library_playlists_tab_new_playlist"
             android:textColor="@color/search_screen_background"
             app:cornerRadius="@dimen/search_history_clear_button_corner_radius"
         />

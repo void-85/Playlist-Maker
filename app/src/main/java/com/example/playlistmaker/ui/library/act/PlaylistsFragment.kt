@@ -12,7 +12,6 @@ import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 class PlaylistsFragment : Fragment() {
 
     companion object {
-
         private const val TEXT_KEY = "text"
 
         fun newInstance(text: String) = PlaylistsFragment().apply {
@@ -35,5 +34,4 @@ class PlaylistsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.playlistsFragText.text = requireArguments().getString(TEXT_KEY)
     }
-
 }

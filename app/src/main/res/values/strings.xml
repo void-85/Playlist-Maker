@@ -46,7 +46,10 @@
     <string name="media_details_country"  >Страна</string>
     <string name="title_activity_library">Library</string>
 
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="media_library_header"    >Медиатека</string>
+    <string name="media_library_tab_1_text">Избранные треки</string>
+    <string name="media_library_tab_2_text">Плейлисты</string>
+
+    <string name="media_library_playlists_tab_new_playlist">Новый плейлист</string>
 
 </resources>
