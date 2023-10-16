@@ -52,4 +52,7 @@
 
     <string name="media_library_playlists_tab_new_playlist">Новый плейлист</string>
 
+    <string name="media_library_fav_songs_tab_the_library_is_empty">Ваша медиатека пуста</string>
+    <string name="media_library_playlists_tab_no_playlists">Вы не создали\nни одного плейлиста</string>
+
 </resources>

@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
+import com.example.playlistmaker.R
+
 
 class FragmentsAdapter(
     fragmentManager: FragmentManager,
@@ -14,8 +16,8 @@ class FragmentsAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0    -> FavSongsFragment.newInstance("Ваша медиатека пуста")
-            else -> PlaylistsFragment.newInstance("Вы не создали\nни одного плейлиста")
+            0    -> FavSongsFragment .newInstance( R.string.media_library_fav_songs_tab_the_library_is_empty )
+            else -> PlaylistsFragment.newInstance( R.string.media_library_playlists_tab_no_playlists )
         }
     }
 

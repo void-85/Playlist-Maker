@@ -12,11 +12,11 @@ import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 class PlaylistsFragment : Fragment() {
 
     companion object {
-        private const val TEXT_KEY = "text"
+        private const val TEXT_RESOURCE = "text"
 
-        fun newInstance(text: String) = PlaylistsFragment().apply {
+        fun newInstance(textResource: Int) = PlaylistsFragment().apply {
             arguments = Bundle().apply {
-                putString(TEXT_KEY, text)
+                putInt(TEXT_RESOURCE, textResource)
             }
         }
     }
@@ -32,6 +32,6 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.playlistsFragText.text = requireArguments().getString(TEXT_KEY)
+        binding.playlistsFragText.text = getString( requireArguments().getInt(TEXT_RESOURCE))
     }
 }
