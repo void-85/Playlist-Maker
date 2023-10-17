@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,7 +44,18 @@ class FavSongsFragment : Fragment() {
         viewmodel.getState().observe(viewLifecycleOwner){state ->
             when(state){
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
+
                     binding.noDataInfo.visibility = View.VISIBLE
+
+                    val animate = TranslateAnimation(
+                        0f, 0f,
+                        binding.noDataInfo.height.toFloat(), 0f
+                    ).apply {
+                        duration = 500
+                        fillAfter = true
+                    }
+                    binding.noDataInfo.startAnimation(animate)
+
                 }
             }
         }
