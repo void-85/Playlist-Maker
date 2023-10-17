@@ -6,21 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.example.playlistmaker.ui.library.vm.PlaylistsFragmentScreenUpdate
+import com.example.playlistmaker.ui.library.vm.PlaylistsFragmentViewModel
 
 
 class PlaylistsFragment : Fragment() {
 
     companion object {
-        private const val TEXT_RESOURCE = "text"
-
-        fun newInstance(textResource: Int) = PlaylistsFragment().apply {
-            arguments = Bundle().apply {
+        //private const val TEXT_RESOURCE = "text"
+        fun newInstance() = PlaylistsFragment().apply {
+            /*arguments = Bundle().apply {
                 putInt(TEXT_RESOURCE, textResource)
-            }
+            }*/
         }
     }
 
+    private val viewmodel by viewModel<PlaylistsFragmentViewModel>()
     private lateinit var binding: FragmentPlaylistsBinding
 
     override fun onCreateView(
@@ -32,6 +36,14 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.playlistsFragText.text = getString( requireArguments().getInt(TEXT_RESOURCE))
+
+        viewmodel.getState().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is PlaylistsFragmentScreenUpdate.ShowNoData -> {
+                    binding.noDataInfo.visibility = View.VISIBLE
+                }
+            }
+        }
+        //binding.playlistsFragText.text = getString( requireArguments().getInt(TEXT_RESOURCE))
     }
 }

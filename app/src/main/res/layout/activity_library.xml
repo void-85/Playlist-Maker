@@ -51,7 +51,7 @@
         android:layout_height="48dp"
         android:background="@color/settings_screen_background"
         app:tabIndicatorColor="@color/settings_screen_header"
-        app:tabRippleColor="@color/main_screen_background"
+        app:tabRippleColor="@color/main_library_tabs_ripple"
         app:tabTextAppearance="@style/media_player_time_code_font"
         app:tabTextColor="@color/settings_screen_header" />
 

@@ -4,9 +4,11 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/no_data_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="120dp"
@@ -22,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="128dp"
-            android:text=""
+            android:text="@string/media_library_fav_songs_tab_the_library_is_empty"
             android:textColor="@color/search_screen_header" />
     </FrameLayout>
 

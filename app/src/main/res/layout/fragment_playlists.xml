@@ -19,8 +19,10 @@
         app:cornerRadius="@dimen/search_history_clear_button_corner_radius" />
 
     <FrameLayout
+        android:id="@+id/no_data_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -28,10 +30,10 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:contentDescription="@string/search_info_no_data"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/search_info_no_data"
                 android:src="@drawable/no_data" />
 
             <TextView
@@ -41,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="128dp"
-                android:text=""
+                android:text="@string/media_library_playlists_tab_no_playlists"
                 android:textAlignment="center"
                 android:textColor="@color/search_screen_header" />
         </FrameLayout>
