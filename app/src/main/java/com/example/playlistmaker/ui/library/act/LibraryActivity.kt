@@ -9,7 +9,7 @@ import com.example.playlistmaker.databinding.ActivityLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class Library : AppCompatActivity() {
+class LibraryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
@@ -38,6 +38,7 @@ class Library : AppCompatActivity() {
         tabMediator.attach()
 
         binding.mediaLibraryBackButton.setOnClickListener { finish() }
+        //setSupportActionBar( binding.mediaLibraryToolbar )
     }
 
     override fun onDestroy() {

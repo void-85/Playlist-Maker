@@ -7,6 +7,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 import com.example.playlistmaker.R
+import com.example.playlistmaker.ui.library.act.fragments.FavSongsFragment
+import com.example.playlistmaker.ui.library.act.fragments.PlaylistsFragment
 
 
 class FragmentsAdapter(

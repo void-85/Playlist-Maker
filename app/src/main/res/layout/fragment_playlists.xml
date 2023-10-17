@@ -1,62 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
->
-        <Button
+    android:orientation="vertical">
 
-            style="@style/search_info_button"
+    <Button
+        style="@style/search_info_button"
+        android:layout_width="@dimen/search_history_clear_button_width"
+        android:layout_height="@dimen/search_history_clear_button_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/search_screen_header"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/media_library_playlists_tab_new_playlist"
+        android:textColor="@color/search_screen_background"
+        app:cornerRadius="@dimen/search_history_clear_button_corner_radius" />
 
-            android:layout_width="@dimen/search_history_clear_button_width"
-            android:layout_height="@dimen/search_history_clear_button_height"
-
-            android:layout_marginTop="24dp"
-
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/search_screen_header"
-
-            android:insetTop   ="0dp"
-            android:insetBottom="0dp"
-
-            android:text="@string/media_library_playlists_tab_new_playlist"
-            android:textColor="@color/search_screen_background"
-            app:cornerRadius="@dimen/search_history_clear_button_corner_radius"
-        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        >
-                <FrameLayout
-                    android:layout_width ="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
-                        <ImageView
-                            android:layout_width ="120dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/no_data"
-                        />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
-                        <TextView
-                            android:id="@+id/playlists_frag_text"
+            <ImageView
+                android:contentDescription="@string/search_info_no_data"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/no_data" />
 
-                            android:layout_width ="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="128dp"
-
-                            android:text="**********\n***"
-                            android:textAlignment="center"
-                            style="@style/search_info_text"
-                            android:textColor="@color/search_screen_header"
-                            />
-                </FrameLayout>
+            <TextView
+                android:id="@+id/playlists_frag_text"
+                style="@style/search_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="128dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/search_screen_header" />
         </FrameLayout>
+    </FrameLayout>
 </LinearLayout>
