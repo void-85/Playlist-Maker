@@ -44,5 +44,15 @@
     <string name="media_details_year"     >Год</string>
     <string name="media_details_genre"    >Жанр</string>
     <string name="media_details_country"  >Страна</string>
+    <string name="title_activity_library">Library</string>
+
+    <string name="media_library_header"    >Медиатека</string>
+    <string name="media_library_tab_1_text">Избранные треки</string>
+    <string name="media_library_tab_2_text">Плейлисты</string>
+
+    <string name="media_library_playlists_tab_new_playlist">Новый плейлист</string>
+
+    <string name="media_library_fav_songs_tab_the_library_is_empty">Ваша медиатека пуста</string>
+    <string name="media_library_playlists_tab_no_playlists">Вы не создали\nни одного плейлиста</string>
 
 </resources>

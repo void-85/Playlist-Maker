@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
@@ -83,29 +84,30 @@ class MediaActivity : AppCompatActivity() {
         viewModel.onStopActivity()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
 
+    private fun onIntentionalExit(){
         intentionalExit = true
-        viewModel.release()
         finish()
     }
-
     override fun onDestroy() {
         super.onDestroy()
 
         if (intentionalExit) {
             viewModel.setMediaPlayerLastPositionToStart()
+            viewModel.release()
         } else {
             viewModel.setMediaPlayerLastPosition()
         }
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(null) //savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        onBackPressedDispatcher.addCallback(this) { onIntentionalExit() }
 
         viewModel.getState().observe(this) {
 
@@ -203,10 +205,6 @@ class MediaActivity : AppCompatActivity() {
         mediaCountry = binding.mediaScreenDetails5LineData
 
         goBackButton = binding.mediaScreenBackButton
-        goBackButton.setOnClickListener {
-            intentionalExit = true
-            viewModel.pause()
-            finish()
-        }
+        goBackButton.setOnClickListener { onIntentionalExit() }
     }
 }

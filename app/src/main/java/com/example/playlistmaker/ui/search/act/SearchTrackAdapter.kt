@@ -11,6 +11,7 @@ import com.example.playlistmaker.domain.entities.Track
 
 
 class SearchTrackAdapter(
+
     private val tracks: List<Track>,
     private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit
 
