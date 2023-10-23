@@ -3,27 +3,24 @@
     <string name="app_name">Playlist Maker</string>
 
 
-
-    <string name="app_header"         >Playlist maker</string>
-    <string name="search_button"      >Поиск</string>
+    <string name="app_header">Playlist maker</string>
+    <string name="search_button">Поиск</string>
     <string name="medialibrary_button">Медиатека</string>
-    <string name="settings_button"    >Настройки</string>
+    <string name="settings_button">Настройки</string>
 
 
-
-    <string name="settings_header"                 >Настройки</string>
+    <string name="settings_header">Настройки</string>
     <string name="settings_back_button_description">Вернуться назад</string>
-    <string name="settings_switch_to_dark_theme"   >Тёмная тема</string>
-    <string name="settings_share_app"              >Поделиться приложением</string>
-    <string name="settings_support"                >Написать в поддержку</string>
-    <string name="settings_user_agreement"         >Пользовательское соглашение</string>
+    <string name="settings_switch_to_dark_theme">Тёмная тема</string>
+    <string name="settings_share_app">Поделиться приложением</string>
+    <string name="settings_support">Написать в поддержку</string>
+    <string name="settings_user_agreement">Пользовательское соглашение</string>
 
-    <string name="settings_share_app_link"      >https://practicum.yandex.ru/android-developer/</string>
-    <string name="settings_support_email"       >klava.tum@yandex.ru</string>
-    <string name="settings_support_subject"     >Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
-    <string name="settings_support_text"        >Спасибо разработчикам и разработчицам за крутое приложение!</string>
-    <string name="settings_user_agreement_link" >https://yandex.ru/legal/practicum_offer/</string>
-
+    <string name="settings_share_app_link">https://practicum.yandex.ru/android-developer/</string>
+    <string name="settings_support_email">klava.tum@yandex.ru</string>
+    <string name="settings_support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="settings_support_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="settings_user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
 
 
     <string name="search_header">Поиск</string>
@@ -39,14 +36,14 @@
     <string name="media_initial_text">....</string>
     <string name="media_initial_time">00:00</string>
 
-    <string name="media_details_duration" >Длительность</string>
-    <string name="media_details_album"    >Альбом</string>
-    <string name="media_details_year"     >Год</string>
-    <string name="media_details_genre"    >Жанр</string>
-    <string name="media_details_country"  >Страна</string>
+    <string name="media_details_duration">Длительность</string>
+    <string name="media_details_album">Альбом</string>
+    <string name="media_details_year">Год</string>
+    <string name="media_details_genre">Жанр</string>
+    <string name="media_details_country">Страна</string>
     <string name="title_activity_library">Library</string>
 
-    <string name="media_library_header"    >Медиатека</string>
+    <string name="media_library_header">Медиатека</string>
     <string name="media_library_tab_1_text">Избранные треки</string>
     <string name="media_library_tab_2_text">Плейлисты</string>
 
@@ -54,5 +51,9 @@
 
     <string name="media_library_fav_songs_tab_the_library_is_empty">Ваша медиатека пуста</string>
     <string name="media_library_playlists_tab_no_playlists">Вы не создали\nни одного плейлиста</string>
+    <string name="title_activity_frags_holder">FragsHolderActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>
