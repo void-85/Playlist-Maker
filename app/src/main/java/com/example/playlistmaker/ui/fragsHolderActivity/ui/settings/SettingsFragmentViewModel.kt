@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings.vm
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.settings
 
 
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.api.ThemeInteractor
 
 
-class SettingsActivityViewModel(
+class SettingsFragmentViewModel(
     private val themeInteractor: ThemeInteractor
 ) : ViewModel() {
 

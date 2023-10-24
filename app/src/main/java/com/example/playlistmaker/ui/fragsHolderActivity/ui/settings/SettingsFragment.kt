@@ -1,28 +1,29 @@
-package com.example.playlistmaker.ui.settings.act
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.settings
 
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.ui.settings.vm.SettingsActivityViewModel
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 
 
-class SettingsActivity (): AppCompatActivity() {
+class SettingsFragment (): Fragment() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
-    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var binding: FragmentSettingsBinding
 
     //private lateinit var viewModel: SettingsActivityViewModel
-    private val viewModel by viewModel<SettingsActivityViewModel>()
+    private val viewModel by viewModel<SettingsFragmentViewModel>()
 
     private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
         AppCompatDelegate.setDefaultNightMode(
@@ -34,27 +35,31 @@ class SettingsActivity (): AppCompatActivity() {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_blank, container, false)
+    }
 
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view:View,savedInstanceState: Bundle?) {
+        super.onViewCreated(view,savedInstanceState)
+
+        /*binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)*/
 
         viewModel.setThemeSwitchFun( setTheme )
-        viewModel.getSwitchToDarkThemeState().observe(this) {
+        viewModel.getSwitchToDarkThemeState().observe(viewLifecycleOwner) {
             settingsThemeSwitcher.isChecked = it
         }
-
 
         settingsThemeSwitcher = binding.settingsThemeSwitcher
         settingsThemeSwitcher.setOnCheckedChangeListener { _, checked ->
             run { viewModel.setSwitchToDarkThemeState(checked) }
         }
-
-
-        val goBackButtonId = binding.settingsGoBackButton
-        goBackButtonId.setOnClickListener { finish() }
-
 
         val shareAppButtonId = binding.settingsShareAppButton
         shareAppButtonId.setOnClickListener {
@@ -68,7 +73,6 @@ class SettingsActivity (): AppCompatActivity() {
             startActivity(Intent.createChooser(sendIntent, null))
         }
 
-
         val supportButtonId = binding.settingsSupportButton
         supportButtonId.setOnClickListener {
 
@@ -81,7 +85,6 @@ class SettingsActivity (): AppCompatActivity() {
             }
             startActivity( Intent.createChooser(sendIntent, null) )
         }
-
 
         val userAgreementButtonId = binding.settingsUserAgreementButton
         userAgreementButtonId.setOnClickListener {

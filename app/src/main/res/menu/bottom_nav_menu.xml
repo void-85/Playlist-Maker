@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/search"
         android:title="Поиск" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/libraryFragment"
+        android:checkable="false"
         android:icon="@drawable/media_library"
         android:title="Медиатека" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/settings"
         android:title="Настройки" />
 

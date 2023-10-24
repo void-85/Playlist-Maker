@@ -18,31 +18,34 @@
         <activity
             android:name=".ui.fragsHolderActivity.FragsHolderActivity"
             android:exported="true"
-            android:label="@string/title_activity_frags_holder">
+            android:label="@string/title_activity_frags_holder"
+            android:theme="@style/Theme.PlaylistMaker.NoActionBar"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.library.act.LibraryActivity"
-            android:exported="false"
-            android:label="@string/title_activity_library"
-            android:theme="@style/Theme.PlaylistMaker.NoActionBar" />
+
         <activity
             android:name=".ui.player.act.MediaActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
+
+        <!--
         <activity
             android:name=".ui.search.act.SearchActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
+
         <activity
             android:name=".ui.settings.act.SettingsActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.main.act.MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
+        -->
 
     </application>
 </manifest>

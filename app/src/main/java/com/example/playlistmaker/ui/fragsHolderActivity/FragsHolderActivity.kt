@@ -19,12 +19,12 @@ class FragsHolderActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
+        navView.selectedItemId = R.id.libraryFragment
         val navController = (
-                supportFragmentManager
-                    .findFragmentById(
-                        R.id.nav_host_fragment_activity_frags_holder
-                    ) as NavHostFragment
-                ).navController
+                supportFragmentManager.findFragmentById(
+                    R.id.nav_host_fragment_activity_frags_holder
+                ) as NavHostFragment
+            ).navController
         navView.setupWithNavController(navController)
 
         /*val appBarConfiguration = AppBarConfiguration(

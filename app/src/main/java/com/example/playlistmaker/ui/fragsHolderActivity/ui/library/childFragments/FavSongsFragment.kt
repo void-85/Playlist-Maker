@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.library.act.fragments
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments
 
 
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.databinding.FragmentFavSongsBinding
-import com.example.playlistmaker.ui.library.vm.FavSongsFragmentScreenUpdate
-import com.example.playlistmaker.ui.library.vm.FavSongsFragmentViewModel
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentScreenUpdate
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 
 
 

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.library.act.fragments
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments
 
 
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.ui.library.vm.PlaylistsFragmentScreenUpdate
-import com.example.playlistmaker.ui.library.vm.PlaylistsFragmentViewModel
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentScreenUpdate
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

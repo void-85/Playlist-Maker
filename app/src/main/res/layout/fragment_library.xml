@@ -19,28 +19,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_back_button_click_area">
-
-        <!-- BIGGER CLICK AREA -->
-        <FrameLayout
-            android:id="@+id/media_library_back_button"
-            android:layout_width="@dimen/settings_back_button_click_area"
-            android:layout_height="@dimen/settings_back_button_click_area" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/settings_back_button_description"
-            android:src="@drawable/back_icon" />
+        android:layout_height="48dp">
 
         <TextView
             style="@style/main_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="14dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
             android:text="@string/media_library_header"
             android:textColor="@color/settings_screen_header" />
     </FrameLayout>

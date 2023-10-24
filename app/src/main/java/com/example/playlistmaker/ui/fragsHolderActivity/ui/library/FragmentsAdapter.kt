@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.library.act
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.library
 
 
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-import com.example.playlistmaker.ui.library.act.fragments.FavSongsFragment
-import com.example.playlistmaker.ui.library.act.fragments.PlaylistsFragment
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.FavSongsFragment
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.PlaylistsFragment
 
 
 class FragmentsAdapter(

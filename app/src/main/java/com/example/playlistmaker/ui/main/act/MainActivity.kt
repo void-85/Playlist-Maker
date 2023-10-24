@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.ui.library.act.LibraryActivity
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.LibraryFragment
 import com.example.playlistmaker.ui.search.act.SearchActivity
-import com.example.playlistmaker.ui.settings.act.SettingsActivity
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.settings.SettingsFragment
 import com.example.playlistmaker.ui.main.vm.MainActivityViewModel
 
 
@@ -48,13 +48,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.medialibraryButton.setOnClickListener {
 
-            val mediaIntent = Intent(this, LibraryActivity::class.java)
+            val mediaIntent = Intent(this, LibraryFragment::class.java)
             startActivity(mediaIntent)
         }
 
         binding.settingsButton.setOnClickListener {
 
-            val settingsIntent = Intent(this, SettingsActivity::class.java)
+            val settingsIntent = Intent(this, SettingsFragment::class.java)
             startActivity(settingsIntent)
         }
     }
