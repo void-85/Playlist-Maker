@@ -15,31 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_header_size">
 
-        <!-- BIGGER CLICK AREA -->
-        <FrameLayout
-            android:id="@+id/search_go_back_button"
-
-            android:layout_width="@dimen/search_header_size"
-            android:layout_height="@dimen/search_header_size"
-        />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-
-            android:src="@drawable/back_icon"
-            android:contentDescription="@string/settings_back_button_description"
-        />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
 
             android:text="@string/search_header"
             android:textColor="@color/search_screen_header"

@@ -23,6 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
+import com.example.playlistmaker.ui.utils.hideKeyboard
+import com.example.playlistmaker.ui.utils.showKeyboard
 
 
 class SearchFragment: Fragment() {
@@ -259,19 +261,21 @@ class SearchFragment: Fragment() {
             data.clear()
             showHistory()
 
+            //editTextId.clearFocus()
             // TODO
-            /*this.currentFocus?.let { view ->
+/*             requireActivity().currentFocus?.let { view ->
                 val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
             }*/
+            hideKeyboard()
 
         }
 
 
         //editTextId = findViewById<EditText>(R.id.search_edit_text)
         editTextId = binding.searchEditText
-        editTextId.requestFocus()
+        //editTextId.requestFocus()
         editTextId.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onSearchEntered()
@@ -328,6 +332,18 @@ class SearchFragment: Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_REQUEST_KEY, editTextId.text.toString())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        editTextId.requestFocus()
+
+        //Toast.makeText(context,">>"+editTextId.text+"<<",Toast.LENGTH_LONG).show()
+
+        if(editTextId.text.isEmpty()){
+            showHistory()
+            showKeyboard()
+        }
     }
 
     private companion object {
