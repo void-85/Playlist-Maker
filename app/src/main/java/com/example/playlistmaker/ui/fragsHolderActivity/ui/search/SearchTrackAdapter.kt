@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.act
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
 import android.view.LayoutInflater

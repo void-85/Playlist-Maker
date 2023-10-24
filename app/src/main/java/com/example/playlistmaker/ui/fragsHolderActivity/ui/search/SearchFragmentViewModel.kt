@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.vm
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
 import android.os.Handler
@@ -11,7 +11,7 @@ import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 
 
-class SearchActivityViewModel(
+class SearchFragmentViewModel(
     private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 

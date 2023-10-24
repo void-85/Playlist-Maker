@@ -1,36 +1,34 @@
-package com.example.playlistmaker.ui.search.act
+package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
-import com.example.playlistmaker.ui.search.vm.SearchActivityUpdate
-import com.example.playlistmaker.ui.search.vm.SearchActivityViewModel
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment: Fragment() {
 
-    private lateinit var goBackButtonId: FrameLayout
+    private lateinit var binding: FragmentSearchBinding
+
     private lateinit var clearTextButtonId: ImageView
     private lateinit var editTextId: EditText
     private lateinit var searchHistory: LinearLayout
@@ -49,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
     private val historyData = ArrayList<Track>()
     private var isSearchHistoryEmpty = true
 
-    private val viewModel by viewModel<SearchActivityViewModel>()
+    private val viewModel by viewModel<SearchFragmentViewModel>()
 
     private val searchRunnable =
         Runnable {
@@ -60,7 +58,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun switchToPlayer() {
-        val mediaIntent = Intent(this, MediaActivity::class.java)
+        val mediaIntent = Intent(context, MediaActivity::class.java)
         startActivity(mediaIntent)
     }
 
@@ -159,12 +157,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_blank, container, false)
+    }
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onViewCreated(view:View,savedInstanceState: Bundle?) {
+        super.onViewCreated(view,savedInstanceState)
 
-        viewModel.getState().observe(this) {
+        //setContentView(R.layout.fragment_search)
+
+        viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
                 is SearchActivityUpdate.Loading -> {
 
@@ -202,16 +210,20 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        progressBar = findViewById(R.id.search_progress_bar)
+        //progressBar = findViewById(R.id.search_progress_bar)
+        progressBar = binding.searchProgressBar
 
-        searchHistory = findViewById<LinearLayout>(R.id.search_history)
-        historyRView = findViewById<RecyclerView>(R.id.history_rView)
+        //searchHistory = findViewById<LinearLayout>(R.id.search_history)
+        //historyRView = findViewById<RecyclerView>(R.id.history_rView)
+        searchHistory = binding.searchHistory
+        historyRView = binding.historyRView
         historyRView.adapter = SearchTrackAdapter(
             historyData,
             trackViewHolderItemClicked
         )
 
-        clearHistory = findViewById<Button>(R.id.clear_search_history)
+        //clearHistory = findViewById<Button>(R.id.clear_search_history)
+        clearHistory = binding.clearSearchHistory
         clearHistory.setOnClickListener {
 
             historyData.clear()
@@ -221,40 +233,44 @@ class SearchActivity : AppCompatActivity() {
             viewModel.clearSearchHistory()
         }
 
-        recyclerView = findViewById<RecyclerView>(R.id.rView)
+        //recyclerView = findViewById<RecyclerView>(R.id.rView)
+        recyclerView = binding.rView
         recyclerView.adapter = SearchTrackAdapter(
             data,
             trackViewHolderItemClicked
         )
 
-        noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
+        //noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
+        noDataFrame = binding.searchNoDataFrame
 
-        noNetworkFrame = findViewById<FrameLayout>(R.id.search_no_network_frame)
+        //noNetworkFrame = findViewById<FrameLayout>(R.id.search_no_network_frame)
+        noNetworkFrame = binding.searchNoNetworkFrame
 
-        noNetworkUpdateButton = findViewById<Button>(R.id.no_network_update_button)
+        //noNetworkUpdateButton = findViewById<Button>(R.id.no_network_update_button)
+        noNetworkUpdateButton = binding.noNetworkUpdateButton
         noNetworkUpdateButton.setOnClickListener { onSearchEntered() }
 
-        goBackButtonId = findViewById<FrameLayout>(R.id.search_go_back_button)
-        goBackButtonId.setOnClickListener { finish() }
 
-
-        clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
+        //clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
+        clearTextButtonId = binding.searchClearEditTextButton
         clearTextButtonId.setOnClickListener {
 
             editTextId.setText("")
             data.clear()
             showHistory()
 
-            this.currentFocus?.let { view ->
+            // TODO
+            /*this.currentFocus?.let { view ->
                 val inputMethodManager =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+            }*/
 
         }
 
 
-        editTextId = findViewById<EditText>(R.id.search_edit_text)
+        //editTextId = findViewById<EditText>(R.id.search_edit_text)
+        editTextId = binding.searchEditText
         editTextId.requestFocus()
         editTextId.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -315,10 +331,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private companion object {
-
         const val SEARCH_HISTORY_MAX_LENGTH = 10
         const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
-
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
     }
 }

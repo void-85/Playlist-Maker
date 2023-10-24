@@ -17,7 +17,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSettingsBinding
 
 
-class SettingsFragment (): Fragment() {
+class SettingsFragment: Fragment() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
     private lateinit var binding: FragmentSettingsBinding
