@@ -342,7 +342,7 @@ class SearchFragment: Fragment() {
 
         if(editTextId.text.isEmpty()){
             showHistory()
-            showKeyboard()
+            //showKeyboard()
         }
     }
 
