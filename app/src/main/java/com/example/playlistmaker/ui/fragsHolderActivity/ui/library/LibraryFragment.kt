@@ -36,7 +36,8 @@ class LibraryFragment : Fragment() {
 
         binding.mediaLibraryViewPager.adapter =
             FragmentsAdapter(
-                requireActivity().supportFragmentManager,
+                //requireActivity().supportFragmentManager,
+                childFragmentManager,
                 lifecycle
             )
 

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.main.vm
+package com.example.playlistmaker.ui.fragsHolderActivity
 
 
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.api.ThemeInteractor
 
 
-class MainActivityViewModel(
+class FragsHolderActivityViewModel(
     private val themeInteractor: ThemeInteractor
 ) : ViewModel() {
 

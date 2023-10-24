@@ -12,13 +12,13 @@ import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.LibraryFragment
 import com.example.playlistmaker.ui.search.act.SearchActivity
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.settings.SettingsFragment
-import com.example.playlistmaker.ui.main.vm.MainActivityViewModel
+import com.example.playlistmaker.ui.fragsHolderActivity.FragsHolderActivityViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModel<MainActivityViewModel>()
+    private val viewModel by viewModel<FragsHolderActivityViewModel>()
 
     private val setTheme: ((Boolean) -> Unit) = { darkThemeEnabled ->
         AppCompatDelegate.setDefaultNightMode(
@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
