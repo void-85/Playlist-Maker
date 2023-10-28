@@ -102,7 +102,7 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        super.onCreate(null) //savedInstanceState)
+        super.onCreate(savedInstanceState)
 
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)

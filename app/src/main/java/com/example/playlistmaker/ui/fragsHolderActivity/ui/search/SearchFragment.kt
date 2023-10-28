@@ -155,6 +155,13 @@ class SearchFragment: Fragment() {
 
     private fun onSearchEntered() {
 
+        /*
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
+        noNetworkFrame.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        */
         viewModel.searchTracks(editTextId.text.toString())
     }
 

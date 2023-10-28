@@ -118,7 +118,8 @@
             android:layout_marginTop  = "160dp"
             android:layout_gravity    = "center_horizontal"
             android:indeterminateTint = "#3772E7"
-            android:visibility        = "gone"
+
+            android:visibility        = "visible"
         />
 
 

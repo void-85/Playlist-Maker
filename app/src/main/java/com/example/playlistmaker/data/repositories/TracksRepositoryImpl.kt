@@ -20,18 +20,18 @@ class TracksRepositoryImpl(
             200 -> {
                 return (response as ResponseData).results.map {
                     Track(
-                        trackName = it.trackName,
-                        artistName = it.artistName,
-                        artworkUrl100 = it.artworkUrl100,
-                        trackTime = it.trackTimeMillis
-                            .millisToMinSec(),
+                        trackName     = it.trackName ?: "-",
+                        artistName    = it.artistName ?: "-",
+                        artworkUrl100 = it.artworkUrl100 ?: "-",
+                        trackTime     = it.trackTimeMillis?.millisToMinSec() ?: "-:--",
+                            //.millisToMinSec() ?: 0L,
 
-                        collectionName = it.collectionName,
-                        releaseDate = it.releaseDate,
-                        primaryGenreName = it.primaryGenreName,
-                        country = it.country,
+                        collectionName   = it.collectionName ?: "-",
+                        releaseDate      = it.releaseDate ?: "-",
+                        primaryGenreName = it.primaryGenreName ?: "-",
+                        country          = it.country ?: "-",
 
-                        previewUrl = it.previewUrl
+                        previewUrl = it.previewUrl ?: "-"
                     )
                 }
             }
