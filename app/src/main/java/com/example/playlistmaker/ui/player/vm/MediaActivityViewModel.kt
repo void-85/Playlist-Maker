@@ -51,7 +51,7 @@ class MediaActivityViewModel(
                     mediaArtist = track.artistName,
                     mediaLength = track.trackTime,
                     mediaAlbum = track.collectionName,
-                    mediaDate = track.releaseDate,
+                    mediaDate = track.releaseDate ?: "?",
                     mediaGenre = track.primaryGenreName,
                     mediaCountry = track.country,
                     showPlayElsePauseButtonState = true
@@ -108,7 +108,7 @@ class MediaActivityViewModel(
                         mediaArtist = track.artistName,
                         mediaLength = track.trackTime,
                         mediaAlbum = track.collectionName,
-                        mediaDate = track.releaseDate,
+                        mediaDate = track.releaseDate ?: "?",
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
                         showPlayElsePauseButtonState = ! mediaInteractor.isMediaPlayerToResumeOnCreate()

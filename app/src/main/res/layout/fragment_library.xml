@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/settings_screen_background"
+    android:orientation="vertical">
+
+    <!--
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/media_library_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:navigationIcon="@drawable/back_icon"
+        style="@style/main_font"
+        android:title="@string/media_library_header">
+    </androidx.appcompat.widget.Toolbar>
+    -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            style="@style/main_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="@string/media_library_header"
+            android:textColor="@color/settings_screen_header" />
+    </FrameLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/media_library_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/settings_screen_background"
+        app:tabIndicatorColor="@color/settings_screen_header"
+        app:tabRippleColor="@color/main_library_tabs_ripple"
+        app:tabTextAppearance="@style/media_player_time_code_font"
+        app:tabTextColor="@color/settings_screen_header" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/media_library_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+

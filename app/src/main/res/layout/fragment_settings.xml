@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/settings_screen_background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_header_size">
+
+        <TextView
+            style="@style/main_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/settings_header"
+            android:textColor="@color/settings_screen_header" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_parameters_size">
+
+        <TextView
+            style="@style/settings_screen_items_text"
+            android:text="@string/settings_switch_to_dark_theme" />
+
+        <!--
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+
+            android:layout_gravity="end"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="10dp"
+
+            app:thumbTint="@color/settings_screen_switch_thumb"
+            app:trackTint="@color/settings_screen_switch_track"
+        />
+        -->
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/settings_theme_switcher"
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_parameters_size">
+
+        <!-- BIGGER CLICK AREA -->
+        <FrameLayout
+            android:id="@+id/settings_share_app_button"
+            android:layout_width="@dimen/settings_icon_click_area"
+            android:layout_height="@dimen/settings_icon_click_area"
+            android:layout_gravity="end" />
+
+        <TextView
+            style="@style/settings_screen_items_text"
+            android:text="@string/settings_share_app" />
+
+        <ImageView
+            style="@style/settings_screen_items_icons"
+            android:contentDescription="@string/settings_share_app"
+            android:src="@drawable/share_icon" />
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_parameters_size">
+
+        <!-- BIGGER CLICK AREA -->
+        <FrameLayout
+            android:id="@+id/settings_support_button"
+            android:layout_width="@dimen/settings_icon_click_area"
+            android:layout_height="@dimen/settings_icon_click_area"
+            android:layout_gravity="end" />
+
+        <TextView
+            style="@style/settings_screen_items_text"
+            android:text="@string/settings_support" />
+
+        <ImageView
+            style="@style/settings_screen_items_icons"
+            android:contentDescription="@string/settings_support"
+            android:src="@drawable/support_icon" />
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_parameters_size">
+
+        <!-- BIGGER CLICK AREA -->
+        <FrameLayout
+            android:id="@+id/settings_user_agreement_button"
+            android:layout_width="@dimen/settings_icon_click_area"
+            android:layout_height="@dimen/settings_icon_click_area"
+            android:layout_gravity="end" />
+
+        <TextView
+            style="@style/settings_screen_items_text"
+            android:text="@string/settings_user_agreement" />
+
+        <ImageView
+            style="@style/settings_screen_items_icons"
+            android:contentDescription="@string/settings_user_agreement"
+            android:src="@drawable/next_icon" />
+    </FrameLayout>
+
+</LinearLayout>
+
+

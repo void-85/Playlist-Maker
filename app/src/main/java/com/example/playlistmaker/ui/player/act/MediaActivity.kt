@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
@@ -103,7 +102,8 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        super.onCreate(null) //savedInstanceState)
+        super.onCreate(savedInstanceState)
+
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
