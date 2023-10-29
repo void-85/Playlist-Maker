@@ -162,6 +162,7 @@ class SearchFragment: Fragment() {
         noNetworkFrame.visibility = View.GONE
         progressBar.visibility = View.GONE
         */
+        viewModel.clearSearchDebounce(searchRunnable)
         viewModel.searchTracks(editTextId.text.toString())
     }
 

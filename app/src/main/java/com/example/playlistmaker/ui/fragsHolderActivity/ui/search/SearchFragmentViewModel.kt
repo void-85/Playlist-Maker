@@ -32,6 +32,10 @@ class SearchFragmentViewModel(
         handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+    fun clearSearchDebounce( runnable: Runnable) {
+        handler.removeCallbacks(runnable)
+    }
+
     fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
