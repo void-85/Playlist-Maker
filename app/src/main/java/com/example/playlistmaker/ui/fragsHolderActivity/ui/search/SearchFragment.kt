@@ -51,12 +51,6 @@ class SearchFragment: Fragment() {
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
 
-    private val searchRunnable =
-        Runnable {
-            // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
-            if (editTextId.text.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN)
-                onSearchEntered()
-        }
 
 
     private fun switchToPlayer() {
@@ -162,8 +156,7 @@ class SearchFragment: Fragment() {
         noNetworkFrame.visibility = View.GONE
         progressBar.visibility = View.GONE
         */
-        viewModel.clearSearchDebounce(searchRunnable)
-        viewModel.searchTracks(editTextId.text.toString())
+        viewModel.searchTracksDebounced(editTextId.text.toString())
     }
 
 
@@ -312,7 +305,7 @@ class SearchFragment: Fragment() {
 
                 } else {
 
-                    viewModel.searchDebounce(searchRunnable)
+                    viewModel.searchTracksDebounced( s.toString() )
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
                 }
@@ -356,7 +349,6 @@ class SearchFragment: Fragment() {
 
     private companion object {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
-        const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
     }
 }

@@ -1,14 +1,18 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
-import android.os.Handler
-import android.os.Looper
+//import android.os.Handler
+//import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.playlistmaker.domain.api.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SearchFragmentViewModel(
@@ -16,6 +20,7 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
 
     private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
+    private var searchJob :Job? = null
 
     init {
         screenUpdate.postValue(
@@ -25,25 +30,35 @@ class SearchFragmentViewModel(
         )
     }
 
-    private val handler = Handler(Looper.getMainLooper())
 
-    fun searchDebounce( runnable: Runnable) {
+
+
+/*    fun searchDebounce( runnable: Runnable) {
         handler.removeCallbacks(runnable)
         handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
-    }
+    }*/
 
-    fun clearSearchDebounce( runnable: Runnable) {
+/*    fun clearSearchDebounce( runnable: Runnable) {
         handler.removeCallbacks(runnable)
-    }
+    }*/
+
+
 
     fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
-            handler.post( disableClick )
-            handler.postDelayed(enableClick, CLICK_DEBOUNCE_DELAY)
+//            handler.post( disableClick )
+//            handler.postDelayed(enableClick, CLICK_DEBOUNCE_DELAY)
         }
         return current
     }
+
+
+
+
+
+
+
 
 
     fun getState(): LiveData<SearchActivityUpdate> {
@@ -54,24 +69,42 @@ class SearchFragmentViewModel(
         searchInteractor.setSearchHistory(emptyList())
     }
 
-    fun searchTracks(searchText: String) {
 
-        screenUpdate.postValue(SearchActivityUpdate.Loading)
+    fun searchTracksDebounced(searchText: String){
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay( SEARCH_DEBOUNCE_DELAY )
+            searchTracks( searchText )
+        }
+    }
 
-        val data = ArrayList<Track>()
 
-        searchInteractor.searchTracks(
-            searchText,
-            object : SearchInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>) {
-                    foundTracks.forEach { data.add(it) }
+    private fun searchTracks(searchText: String) {
 
-                    screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+        if( searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN ){
+
+            screenUpdate.postValue(SearchActivityUpdate.Loading)
+
+            val data = ArrayList<Track>()
+
+            searchInteractor.searchTracks(
+                searchText,
+                object : SearchInteractor.TracksConsumer {
+                    override fun consume(foundTracks: List<Track>) {
+                        foundTracks.forEach { data.add(it) }
+
+                        screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+                    }
                 }
-            }
-        )
+            )
+        }
 
     }
+
+
+
+
+
 
     fun saveSearchHistoryAndCurrentlyPlaying(
         historyData: List<Track>,
@@ -85,7 +118,9 @@ class SearchFragmentViewModel(
 
     companion object {
        const val SEARCH_DEBOUNCE_DELAY = 2_000L
-       const val CLICK_DEBOUNCE_DELAY = 2_000L
+       const val CLICK_DEBOUNCE_DELAY  = 2_000L
+
+       const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
     }
 }
 
