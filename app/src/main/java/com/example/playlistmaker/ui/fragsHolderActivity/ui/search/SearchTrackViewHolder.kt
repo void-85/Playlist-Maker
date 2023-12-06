@@ -24,11 +24,6 @@ class SearchTrackViewHolder(
     private val trackTime: TextView = itemView.findViewById(R.id.track_view_track_time)
     private val artworkUrl: ImageView = itemView.findViewById(R.id.track_view_artwork_url)
 
-    private var isClickAllowed = true
-    private val enableClick = Runnable { isClickAllowed = true }
-    private val disableClick = Runnable { isClickAllowed = false }
-
-
     fun bind(model: Track) {
 
         trackName.text = model.trackName
