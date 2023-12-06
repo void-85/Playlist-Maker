@@ -20,7 +20,7 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
 
     private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
-    private var searchJob :Job? = null
+    private var searchJob: Job? = null
 
     init {
         screenUpdate.postValue(
@@ -30,37 +30,6 @@ class SearchFragmentViewModel(
         )
     }
 
-
-
-
-/*    fun searchDebounce( runnable: Runnable) {
-        handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
-    }*/
-
-/*    fun clearSearchDebounce( runnable: Runnable) {
-        handler.removeCallbacks(runnable)
-    }*/
-
-
-
-    fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-//            handler.post( disableClick )
-//            handler.postDelayed(enableClick, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
-
-
-
-
-
-
-
-
     fun getState(): LiveData<SearchActivityUpdate> {
         return screenUpdate
     }
@@ -69,19 +38,18 @@ class SearchFragmentViewModel(
         searchInteractor.setSearchHistory(emptyList())
     }
 
-
-    fun searchTracksDebounced(searchText: String){
+    fun searchTracksDebounced(searchText: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay( SEARCH_DEBOUNCE_DELAY )
-            searchTracks( searchText )
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchTracks(searchText)
         }
     }
 
 
     private fun searchTracks(searchText: String) {
 
-        if( searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN ){
+        if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
             screenUpdate.postValue(SearchActivityUpdate.Loading)
 
@@ -102,10 +70,6 @@ class SearchFragmentViewModel(
     }
 
 
-
-
-
-
     fun saveSearchHistoryAndCurrentlyPlaying(
         historyData: List<Track>,
         currentlyPlaying: Track
@@ -115,12 +79,9 @@ class SearchFragmentViewModel(
     }
 
 
-
     companion object {
-       const val SEARCH_DEBOUNCE_DELAY = 2_000L
-       const val CLICK_DEBOUNCE_DELAY  = 2_000L
-
-       const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
+        const val SEARCH_DEBOUNCE_DELAY = 2_000L
+        const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
     }
 }
 

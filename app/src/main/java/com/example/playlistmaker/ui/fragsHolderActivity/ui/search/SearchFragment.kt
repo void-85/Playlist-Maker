@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,9 +26,11 @@ import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
 import com.example.playlistmaker.ui.utils.showKeyboard
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -52,6 +55,19 @@ class SearchFragment: Fragment() {
     private val viewModel by viewModel<SearchFragmentViewModel>()
 
 
+    private var isClickAllowed: Boolean = true
+    private fun isClickAllowed(): Boolean {
+        val startState = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return startState
+    }
+
 
     private fun switchToPlayer() {
         val mediaIntent = Intent(context, MediaActivity::class.java)
@@ -64,52 +80,45 @@ class SearchFragment: Fragment() {
         }
 
 
-    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit =
-        { item, isClickAllowed, enableClick, disableClick ->
+    private val trackViewHolderItemClicked: (Track) -> Unit =
+        { item ->
             run {
 
-                // swap old items
-                if (historyData.contains(item)) {
+                if (isClickAllowed()) {
 
-                    val oldPos: Int = historyData.indexOf(item)
-                    historyData.remove(item)
-                    historyData.add(0, item)
+                    // swap old items
+                    if (historyData.contains(item)) {
 
-                    historyRView.adapter?.notifyItemMoved(oldPos, 0)
-                    historyRView.scrollToPosition(0)
+                        val oldPos: Int = historyData.indexOf(item)
+                        historyData.remove(item)
+                        historyData.add(0, item)
 
-                // insert new item
-                } else {
+                        historyRView.adapter?.notifyItemMoved(oldPos, 0)
+                        historyRView.scrollToPosition(0)
 
-                    historyData.add(0, item)
+                        // insert new item
+                    } else {
 
-                    historyRView.adapter?.notifyItemInserted(0)
-                    historyRView.scrollToPosition(0)
+                        historyData.add(0, item)
 
-                    if (historyData.size > SEARCH_HISTORY_MAX_LENGTH) {
+                        historyRView.adapter?.notifyItemInserted(0)
+                        historyRView.scrollToPosition(0)
 
-                        historyData.removeAt(SEARCH_HISTORY_MAX_LENGTH)
-                        historyRView.adapter?.notifyItemRemoved(SEARCH_HISTORY_MAX_LENGTH)
+                        if (historyData.size > SEARCH_HISTORY_MAX_LENGTH) {
+
+                            historyData.removeAt(SEARCH_HISTORY_MAX_LENGTH)
+                            historyRView.adapter?.notifyItemRemoved(SEARCH_HISTORY_MAX_LENGTH)
+                        }
                     }
-                }
 
-                isSearchHistoryEmpty = false
+                    isSearchHistoryEmpty = false
 
-                saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
+                    saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
 
-                if (viewModel
-                        .clickDebounce(
-                            isClickAllowed,
-                            enableClick,
-                            disableClick
-                        )
-                ) {
                     switchToPlayer()
                 }
-
             }
         }
-
 
 
     private fun showHistory() {
@@ -170,8 +179,8 @@ class SearchFragment: Fragment() {
         //return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view:View,savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //setContentView(R.layout.fragment_search)
 
@@ -264,11 +273,11 @@ class SearchFragment: Fragment() {
 
             //editTextId.clearFocus()
             // TODO
-/*             requireActivity().currentFocus?.let { view ->
-                val inputMethodManager =
-                    getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-            }*/
+            /*             requireActivity().currentFocus?.let { view ->
+                            val inputMethodManager =
+                                getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
+                            inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                        }*/
             hideKeyboard()
 
         }
@@ -305,7 +314,7 @@ class SearchFragment: Fragment() {
 
                 } else {
 
-                    viewModel.searchTracksDebounced( s.toString() )
+                    viewModel.searchTracksDebounced(s.toString())
                     clearTextButtonId.visibility = View.VISIBLE
                     showTracks()
                 }
@@ -341,7 +350,7 @@ class SearchFragment: Fragment() {
 
         //Toast.makeText(context,">>"+editTextId.text+"<<",Toast.LENGTH_LONG).show()
 
-        if(editTextId.text.isEmpty()){
+        if (editTextId.text.isEmpty()) {
             showHistory()
             //showKeyboard()
         }
@@ -350,5 +359,7 @@ class SearchFragment: Fragment() {
     private companion object {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
+
+        const val CLICK_DEBOUNCE_DELAY = 2_000L
     }
 }

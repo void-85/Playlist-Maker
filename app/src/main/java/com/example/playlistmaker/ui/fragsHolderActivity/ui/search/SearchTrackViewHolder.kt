@@ -15,7 +15,7 @@ import com.example.playlistmaker.domain.entities.Track
 
 class SearchTrackViewHolder(
     itemView: View,
-    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit
+    private val trackViewHolderItemClicked: (Track) -> Unit
 
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -50,7 +50,7 @@ class SearchTrackViewHolder(
             .into(artworkUrl)
 
         itemView.setOnClickListener {
-            trackViewHolderItemClicked(model, isClickAllowed, enableClick, disableClick)
+            trackViewHolderItemClicked(model)
         }
     }
 }
