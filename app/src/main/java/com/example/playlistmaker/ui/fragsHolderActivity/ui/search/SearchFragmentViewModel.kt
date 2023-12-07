@@ -1,8 +1,6 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
-//import android.os.Handler
-//import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,6 +34,10 @@ class SearchFragmentViewModel(
 
     fun clearSearchHistory() {
         searchInteractor.setSearchHistory(emptyList())
+    }
+
+    fun cancelSearch(){
+        searchJob?.cancel()
     }
 
     fun searchTracksDebounced(searchText: String) {

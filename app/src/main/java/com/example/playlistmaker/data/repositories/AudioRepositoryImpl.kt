@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class AudioRepositoryImpl : AudioRepository {
 
     companion object{
-        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 500L
+        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 300L
     }
 
     private var mediaPlayer = MediaPlayer()

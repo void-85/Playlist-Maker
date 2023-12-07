@@ -216,6 +216,8 @@ class SearchFragment : Fragment() {
                         historyData.addAll(it.tracks)
                     }
 
+                    //Log.d(">>>","history is empty:${isSearchHistoryEmpty.toString()} ")
+
                     historyRView.adapter?.notifyDataSetChanged()
                     showHistory()
                 }
@@ -269,7 +271,8 @@ class SearchFragment : Fragment() {
 
             editTextId.setText("")
             data.clear()
-            showHistory()
+
+            viewModel.cancelSearch()
 
             //editTextId.clearFocus()
             // TODO
@@ -278,8 +281,10 @@ class SearchFragment : Fragment() {
                                 getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
                             inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
                         }*/
-            hideKeyboard()
 
+            hideKeyboard()
+            //isSearchHistoryEmpty = false
+            showHistory()
         }
 
 
@@ -336,7 +341,7 @@ class SearchFragment : Fragment() {
         }
 
         //1st to show
-        showHistory()
+        //showHistory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
