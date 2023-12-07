@@ -6,9 +6,9 @@ import com.example.playlistmaker.data.repositories.AudioRepositoryImpl
 import org.koin.dsl.module
 
 import com.example.playlistmaker.data.repositories.TracksRepositoryImpl
-import com.example.playlistmaker.domain.api.AppPrefsRepository
-import com.example.playlistmaker.domain.api.AudioRepository
-import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
+import com.example.playlistmaker.domain.api.repositories.AudioRepository
+import com.example.playlistmaker.domain.api.repositories.TracksRepository
 
 
 val repositoryModule = module{

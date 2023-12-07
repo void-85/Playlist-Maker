@@ -6,7 +6,7 @@ import com.example.playlistmaker.data.DTO.ResponseData
 import com.example.playlistmaker.data.api.NetworkClient
 import com.example.playlistmaker.data.utils.millisToMinSec
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.api.repositories.TracksRepository
 
 
 class TracksRepositoryImpl(

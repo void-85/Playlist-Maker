@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,6 @@ import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
-import com.example.playlistmaker.ui.utils.showKeyboard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,9 +50,12 @@ class SearchFragment : Fragment() {
 
     private lateinit var historyRView: RecyclerView
     private val historyData = ArrayList<Track>()
-    private var isSearchHistoryEmpty = true
+    private var isSearchHistoryEmpty = false
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
+
+
+    private var previousSearchText :String = ""
 
 
     private var isClickAllowed: Boolean = true
@@ -188,12 +191,16 @@ class SearchFragment : Fragment() {
             when (it) {
                 is SearchActivityUpdate.Loading -> {
 
+                    Log.d(">>>","searchFragment <- state <- loading")
+
                     progressBar.visibility = View.VISIBLE
                     data.clear()
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
 
                 is SearchActivityUpdate.SearchResult -> {
+
+                    Log.d(">>>","searchFragment <- state <- search results")
 
                     data.clear()
                     if (it.tracks.isEmpty()) {
@@ -206,6 +213,8 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchActivityUpdate.SearchHistoryData -> {
+
+                    Log.d(">>>","searchFragment <- state <- history data")
 
                     historyData.clear()
 
@@ -273,6 +282,7 @@ class SearchFragment : Fragment() {
             data.clear()
 
             viewModel.cancelSearch()
+            viewModel.requestSearchHistory()
 
             //editTextId.clearFocus()
             // TODO
@@ -319,9 +329,13 @@ class SearchFragment : Fragment() {
 
                 } else {
 
-                    viewModel.searchTracksDebounced(s.toString())
+                    if(previousSearchText != s.toString())
+                    {
+                        viewModel.searchTracksDebounced(s.toString())
+                        previousSearchText = s.toString()
+                    }
                     clearTextButtonId.visibility = View.VISIBLE
-                    showTracks()
+                    //showTracks()
                 }
             }
 
@@ -335,6 +349,7 @@ class SearchFragment : Fragment() {
         savedInstanceState?.let {
             val s = savedInstanceState.getString(SEARCH_REQUEST_KEY, "")
             if (s != "") {
+                previousSearchText = s
                 editTextId.setText(s)
                 clearTextButtonId.visibility = View.VISIBLE
             }
@@ -359,6 +374,15 @@ class SearchFragment : Fragment() {
             showHistory()
             //showKeyboard()
         }
+    }
+
+/*    override fun onStop() {
+        super.onStop()
+        Log.d(">>>","search fragment stopped")
+    }*/
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
     private companion object {

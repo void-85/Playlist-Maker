@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.api
+package com.example.playlistmaker.domain.api.interactors
 import com.example.playlistmaker.domain.entities.Track
 
 interface SearchInteractor {

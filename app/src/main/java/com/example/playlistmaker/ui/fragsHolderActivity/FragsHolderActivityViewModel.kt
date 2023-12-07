@@ -3,7 +3,7 @@ package com.example.playlistmaker.ui.fragsHolderActivity
 
 import androidx.lifecycle.ViewModel
 
-import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.api.interactors.ThemeInteractor
 
 
 class FragsHolderActivityViewModel(

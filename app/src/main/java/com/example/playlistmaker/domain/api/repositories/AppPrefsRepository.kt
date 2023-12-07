@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.api
+package com.example.playlistmaker.domain.api.repositories
 
 import com.example.playlistmaker.domain.entities.Track
 

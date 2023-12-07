@@ -1,9 +1,9 @@
 package com.example.playlistmaker.di
 
 
-import com.example.playlistmaker.domain.api.MediaInteractor
-import com.example.playlistmaker.domain.api.SearchInteractor
-import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.api.interactors.MediaInteractor
+import com.example.playlistmaker.domain.api.interactors.SearchInteractor
+import com.example.playlistmaker.domain.api.interactors.ThemeInteractor
 import com.example.playlistmaker.domain.player.MediaInteractorImpl
 import com.example.playlistmaker.domain.search.SearchInteractorImpl
 import com.example.playlistmaker.domain.settings.ThemeInteractorImpl

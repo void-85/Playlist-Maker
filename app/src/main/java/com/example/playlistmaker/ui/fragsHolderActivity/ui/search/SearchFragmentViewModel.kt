@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import com.example.playlistmaker.domain.api.SearchInteractor
+import com.example.playlistmaker.domain.api.interactors.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,11 +21,7 @@ class SearchFragmentViewModel(
     private var searchJob: Job? = null
 
     init {
-        screenUpdate.postValue(
-            SearchActivityUpdate.SearchHistoryData(
-                searchInteractor.getSearchHistory()
-            )
-        )
+        requestSearchHistory()
     }
 
     fun getState(): LiveData<SearchActivityUpdate> {
@@ -40,6 +36,14 @@ class SearchFragmentViewModel(
         searchJob?.cancel()
     }
 
+    fun requestSearchHistory(){
+        screenUpdate.postValue(
+            SearchActivityUpdate.SearchHistoryData(
+                searchInteractor.getSearchHistory()
+            )
+        )
+    }
+
     fun searchTracksDebounced(searchText: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -47,7 +51,6 @@ class SearchFragmentViewModel(
             searchTracks(searchText)
         }
     }
-
 
     private fun searchTracks(searchText: String) {
 

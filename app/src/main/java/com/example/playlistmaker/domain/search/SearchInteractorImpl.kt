@@ -1,9 +1,9 @@
 package com.example.playlistmaker.domain.search
 
 
-import com.example.playlistmaker.domain.api.AppPrefsRepository
-import com.example.playlistmaker.domain.api.SearchInteractor
-import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
+import com.example.playlistmaker.domain.api.interactors.SearchInteractor
+import com.example.playlistmaker.domain.api.repositories.TracksRepository
 import com.example.playlistmaker.domain.entities.Track
 
 
