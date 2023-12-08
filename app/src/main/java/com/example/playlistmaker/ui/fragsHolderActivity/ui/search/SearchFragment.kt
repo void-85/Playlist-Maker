@@ -50,7 +50,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var historyRView: RecyclerView
     private val historyData = ArrayList<Track>()
-    private var isSearchHistoryEmpty = false
+    private var isSearchHistoryEmpty = true
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
 
