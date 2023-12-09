@@ -56,7 +56,7 @@ class SearchFragmentViewModel(
 
         if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
-            screenUpdate.postValue(SearchActivityUpdate.Loading)
+            //screenUpdate.postValue(SearchActivityUpdate.Loading)
 
             val data = ArrayList<Track>()
 

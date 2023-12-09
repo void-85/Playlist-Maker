@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,6 +157,15 @@ class SearchFragment : Fragment() {
         progressBar.visibility = View.GONE
     }
 
+    private fun showDataLoading(){
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
+        noNetworkFrame.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        data.clear()
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
 
     private fun onSearchEntered() {
 
@@ -168,6 +176,7 @@ class SearchFragment : Fragment() {
         noNetworkFrame.visibility = View.GONE
         progressBar.visibility = View.GONE
         */
+        showDataLoading()
         viewModel.searchTracksDebounced(editTextId.text.toString())
     }
 
@@ -191,16 +200,10 @@ class SearchFragment : Fragment() {
             when (it) {
                 is SearchActivityUpdate.Loading -> {
 
-                    Log.d(">>>","searchFragment <- state <- loading")
-
-                    progressBar.visibility = View.VISIBLE
-                    data.clear()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    showDataLoading()
                 }
 
                 is SearchActivityUpdate.SearchResult -> {
-
-                    Log.d(">>>","searchFragment <- state <- search results")
 
                     data.clear()
                     if (it.tracks.isEmpty()) {
@@ -213,8 +216,6 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchActivityUpdate.SearchHistoryData -> {
-
-                    Log.d(">>>","searchFragment <- state <- history data")
 
                     historyData.clear()
 
@@ -331,6 +332,7 @@ class SearchFragment : Fragment() {
 
                     if(previousSearchText != s.toString())
                     {
+                        showDataLoading()
                         viewModel.searchTracksDebounced(s.toString())
                         previousSearchText = s.toString()
                     }
