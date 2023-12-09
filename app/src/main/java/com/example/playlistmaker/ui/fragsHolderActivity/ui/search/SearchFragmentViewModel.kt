@@ -32,11 +32,11 @@ class SearchFragmentViewModel(
         searchInteractor.setSearchHistory(emptyList())
     }
 
-    fun cancelSearch(){
+    fun cancelSearch() {
         searchJob?.cancel()
     }
 
-    fun requestSearchHistory(){
+    fun requestSearchHistory() {
         screenUpdate.postValue(
             SearchActivityUpdate.SearchHistoryData(
                 searchInteractor.getSearchHistory()
