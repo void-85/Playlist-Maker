@@ -72,8 +72,17 @@ class SearchFragmentViewModel(
             val data = ArrayList<Track>()
             viewModelScope.launch { searchInteractor.searchTracks(searchText).collect{
                 pair -> run {
-                    pair.first?.forEach { data.add(it) }
-                    screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+
+                    if (pair.first == null) {
+
+                        screenUpdate.postValue(SearchActivityUpdate.NoNetwork)
+
+                    } else {
+
+                        pair.first?.forEach { data.add(it) }
+                        screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+
+                    }
                 }
             }}
 
@@ -100,6 +109,8 @@ class SearchFragmentViewModel(
 
 
 sealed class SearchActivityUpdate {
+
+    object NoNetwork : SearchActivityUpdate()
 
     object Loading : SearchActivityUpdate()
 

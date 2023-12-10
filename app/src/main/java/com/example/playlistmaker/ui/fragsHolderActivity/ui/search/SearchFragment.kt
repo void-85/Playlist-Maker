@@ -203,6 +203,10 @@ class SearchFragment : Fragment() {
                     showDataLoading()
                 }
 
+                is SearchActivityUpdate.NoNetwork -> {
+                    showNoNetwork()
+                }
+
                 is SearchActivityUpdate.SearchResult -> {
 
                     data.clear()
