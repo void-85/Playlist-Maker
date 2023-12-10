@@ -52,14 +52,12 @@ class SearchFragmentViewModel(
         }
     }
 
-    private fun searchTracks(searchText: String) {
+    private fun     searchTracks(searchText: String) {
 
         if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
-            //screenUpdate.postValue(SearchActivityUpdate.Loading)
-
+/*            //screenUpdate.postValue(SearchActivityUpdate.Loading)
             val data = ArrayList<Track>()
-
             searchInteractor.searchTracks(
                 searchText,
                 object : SearchInteractor.TracksConsumer {
@@ -69,7 +67,17 @@ class SearchFragmentViewModel(
                         screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
                     }
                 }
-            )
+            )*/
+
+            val data = ArrayList<Track>()
+            viewModelScope.launch { searchInteractor.searchTracks(searchText).collect{
+                pair -> run {
+                    pair.first?.forEach { data.add(it) }
+                    screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+                }
+            }}
+
+
         }
 
     }
