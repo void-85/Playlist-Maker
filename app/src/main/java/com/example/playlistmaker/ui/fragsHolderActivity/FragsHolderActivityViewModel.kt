@@ -3,7 +3,7 @@ package com.example.playlistmaker.ui.fragsHolderActivity
 
 import androidx.lifecycle.ViewModel
 
-import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.api.interactors.ThemeInteractor
 
 
 class FragsHolderActivityViewModel(
@@ -14,11 +14,11 @@ class FragsHolderActivityViewModel(
 
     }
 
-    fun setThemeSwitchFun( setThemeFun : ((Boolean) -> Unit) ){
+    fun setThemeSwitchFun(setThemeFun: ((Boolean) -> Unit)) {
         themeInteractor.setThemeSwitchFun(setThemeFun)
     }
 
-    fun applyCurrentTheme(){
+    fun applyCurrentTheme() {
         themeInteractor.applyCurrentTheme()
     }
 }

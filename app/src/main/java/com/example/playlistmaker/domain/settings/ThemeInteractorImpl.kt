@@ -3,8 +3,8 @@ package com.example.playlistmaker.domain.settings
 
 import android.util.Log
 
-import com.example.playlistmaker.domain.api.AppPrefsRepository
-import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
+import com.example.playlistmaker.domain.api.interactors.ThemeInteractor
 
 
 class ThemeInteractorImpl(
@@ -24,7 +24,7 @@ class ThemeInteractorImpl(
     }
 
     override fun applyCurrentTheme() {
-        setThemeFun( isThemeDark() )
+        setThemeFun(isThemeDark())
     }
 
     override fun setTheme(darkThemeEnabled: Boolean) {

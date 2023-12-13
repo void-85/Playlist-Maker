@@ -1,9 +1,9 @@
 package com.example.playlistmaker.domain.player
 
 
-import com.example.playlistmaker.domain.api.AppPrefsRepository
-import com.example.playlistmaker.domain.api.AudioRepository
-import com.example.playlistmaker.domain.api.MediaInteractor
+import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
+import com.example.playlistmaker.domain.api.repositories.AudioRepository
+import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
 
 

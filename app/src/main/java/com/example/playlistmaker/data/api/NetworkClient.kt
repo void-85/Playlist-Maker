@@ -6,6 +6,6 @@ import com.example.playlistmaker.data.DTO.GeneralResponse
 
 interface NetworkClient {
 
-    fun makeRequest(requestObject: Any): GeneralResponse
+    suspend fun makeRequest(requestObject: Any): GeneralResponse
 
 }

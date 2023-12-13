@@ -1,15 +1,19 @@
 package com.example.playlistmaker.data.repositories
 
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 
-import com.example.playlistmaker.domain.api.AudioRepository
+import android.media.MediaPlayer
+
+import com.example.playlistmaker.domain.api.repositories.AudioRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 class AudioRepositoryImpl : AudioRepository {
 
-    companion object{
-        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 500L
+    companion object {
+        const val MEDIA_PLAYER_UPDATE_POS_PERIOD_MILLIS = 300L
     }
 
     private var mediaPlayer = MediaPlayer()
@@ -28,21 +32,21 @@ class AudioRepositoryImpl : AudioRepository {
     private lateinit var onPauseFun: () -> (Unit)
 
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val updatePosRunnable =
-        Runnable {
-            updateFun()
-            scheduleFunUpdate()
-        }
+    private var updatePositionJob: Job? = null
 
     private fun scheduleFunUpdate() {
-        handler.postDelayed(updatePosRunnable, MEDIA_PLAYER_UPDATE_POS_PERIOD)
+        updatePositionJob = GlobalScope.launch {
+            while (true) {
+                delay(MEDIA_PLAYER_UPDATE_POS_PERIOD_MILLIS)
+                updateFun()
+            }
+        }
     }
 
     private fun clearSchedule() {
-        handler.removeCallbacks(updatePosRunnable)
+        updatePositionJob?.cancel()
     }
+
 
     override fun prepare(
         url: String,

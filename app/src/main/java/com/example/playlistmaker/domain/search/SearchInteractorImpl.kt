@@ -1,10 +1,14 @@
 package com.example.playlistmaker.domain.search
 
 
-import com.example.playlistmaker.domain.api.AppPrefsRepository
-import com.example.playlistmaker.domain.api.SearchInteractor
-import com.example.playlistmaker.domain.api.TracksRepository
+import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
+import com.example.playlistmaker.domain.api.interactors.SearchInteractor
+import com.example.playlistmaker.domain.api.repositories.TracksRepository
 import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.ui.utils.Option
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 
 class SearchInteractorImpl(
@@ -28,17 +32,20 @@ class SearchInteractorImpl(
 
 
     // TRACKS REPOSITORY ------------------------------------------------------------------
-    override fun searchTracks(
-        searchText: String,
-        consumer: SearchInteractor.TracksConsumer
-    ) {
-        val t = Thread {
-            consumer.consume(
-                tracksRepositoryImpl.searchTracks(searchText)
-            )
+    override fun searchTracks(searchText: String): Flow<Pair<List<Track>?, String?>> {
+
+        return tracksRepositoryImpl.searchTracks(searchText).map { result ->
+            when (result) {
+                is Option.Data -> {
+                    Pair(result.data, null)
+                }
+
+                is Option.Error -> {
+                    Pair(null, result.error)
+                }
+            }
         }
-        t.start()
-        t.join()
+
     }
     // TRACKS REPOSITORY ------------------------------------------------------------------
 }

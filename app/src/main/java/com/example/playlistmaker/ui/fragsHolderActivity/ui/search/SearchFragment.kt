@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,10 +25,11 @@ import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
-import com.example.playlistmaker.ui.utils.showKeyboard
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -51,12 +53,22 @@ class SearchFragment: Fragment() {
 
     private val viewModel by viewModel<SearchFragmentViewModel>()
 
-    private val searchRunnable =
-        Runnable {
-            // otherwise search can happen after editText.len < App.SEARCH_DEBOUNCE_REQ_MIN_LEN
-            if (editTextId.text.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN)
-                onSearchEntered()
+
+    private var previousSearchText: String = ""
+
+
+    private var isClickAllowed: Boolean = true
+    private fun isClickAllowed(): Boolean {
+        val startState = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
         }
+        return startState
+    }
 
 
     private fun switchToPlayer() {
@@ -70,9 +82,10 @@ class SearchFragment: Fragment() {
         }
 
 
-    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit =
-        { item, isClickAllowed, enableClick, disableClick ->
-            run {
+    private val trackViewHolderItemClicked: (Track) -> Unit = { item ->
+        run {
+
+            if (isClickAllowed()) {
 
                 // swap old items
                 if (historyData.contains(item)) {
@@ -84,7 +97,7 @@ class SearchFragment: Fragment() {
                     historyRView.adapter?.notifyItemMoved(oldPos, 0)
                     historyRView.scrollToPosition(0)
 
-                // insert new item
+                    // insert new item
                 } else {
 
                     historyData.add(0, item)
@@ -103,19 +116,10 @@ class SearchFragment: Fragment() {
 
                 saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
 
-                if (viewModel
-                        .clickDebounce(
-                            isClickAllowed,
-                            enableClick,
-                            disableClick
-                        )
-                ) {
-                    switchToPlayer()
-                }
-
+                switchToPlayer()
             }
         }
-
+    }
 
 
     private fun showHistory() {
@@ -152,6 +156,15 @@ class SearchFragment: Fragment() {
         progressBar.visibility = View.GONE
     }
 
+    private fun showDataLoading() {
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
+        noNetworkFrame.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        data.clear()
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
 
     private fun onSearchEntered() {
 
@@ -162,32 +175,38 @@ class SearchFragment: Fragment() {
         noNetworkFrame.visibility = View.GONE
         progressBar.visibility = View.GONE
         */
-        viewModel.searchTracks(editTextId.text.toString())
+        showDataLoading()
+        viewModel.searchTracksDebounced(editTextId.text.toString())
     }
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
         //return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view:View,savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //setContentView(R.layout.fragment_search)
 
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
-                is SearchActivityUpdate.Loading -> {
 
-                    progressBar.visibility = View.VISIBLE
-                    data.clear()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                is SearchActivityUpdate.DoNothing -> {
+                    //prevent resending LiveData old state
+                }
+
+                is SearchActivityUpdate.Loading -> {
+                    //unreachable?
+                    showDataLoading()
+                }
+
+                is SearchActivityUpdate.NoNetwork -> {
+                    showNoNetwork()
                 }
 
                 is SearchActivityUpdate.SearchResult -> {
@@ -219,19 +238,14 @@ class SearchFragment: Fragment() {
             }
         }
 
-        //progressBar = findViewById(R.id.search_progress_bar)
         progressBar = binding.searchProgressBar
 
-        //searchHistory = findViewById<LinearLayout>(R.id.search_history)
-        //historyRView = findViewById<RecyclerView>(R.id.history_rView)
         searchHistory = binding.searchHistory
         historyRView = binding.historyRView
         historyRView.adapter = SearchTrackAdapter(
-            historyData,
-            trackViewHolderItemClicked
+            historyData, trackViewHolderItemClicked
         )
 
-        //clearHistory = findViewById<Button>(R.id.clear_search_history)
         clearHistory = binding.clearSearchHistory
         clearHistory.setOnClickListener {
 
@@ -242,45 +256,38 @@ class SearchFragment: Fragment() {
             viewModel.clearSearchHistory()
         }
 
-        //recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView = binding.rView
         recyclerView.adapter = SearchTrackAdapter(
-            data,
-            trackViewHolderItemClicked
+            data, trackViewHolderItemClicked
         )
 
-        //noDataFrame = findViewById<FrameLayout>(R.id.search_no_data_frame)
         noDataFrame = binding.searchNoDataFrame
 
-        //noNetworkFrame = findViewById<FrameLayout>(R.id.search_no_network_frame)
         noNetworkFrame = binding.searchNoNetworkFrame
-
-        //noNetworkUpdateButton = findViewById<Button>(R.id.no_network_update_button)
         noNetworkUpdateButton = binding.noNetworkUpdateButton
         noNetworkUpdateButton.setOnClickListener { onSearchEntered() }
 
-
-        //clearTextButtonId = findViewById<ImageView>(R.id.search_clear_edit_text_button)
         clearTextButtonId = binding.searchClearEditTextButton
         clearTextButtonId.setOnClickListener {
 
             editTextId.setText("")
             data.clear()
-            showHistory()
+
+            viewModel.cancelSearch()
+            viewModel.requestSearchHistory()
 
             //editTextId.clearFocus()
             // TODO
-/*             requireActivity().currentFocus?.let { view ->
-                val inputMethodManager =
-                    getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-            }*/
-            hideKeyboard()
+            /*             requireActivity().currentFocus?.let { view ->
+                            val inputMethodManager =
+                                getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
+                            inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                        }*/
 
+            hideKeyboard()
+            showHistory()
         }
 
-
-        //editTextId = findViewById<EditText>(R.id.search_edit_text)
         editTextId = binding.searchEditText
         //editTextId.requestFocus()
         editTextId.setOnEditorActionListener { _, actionId, _ ->
@@ -295,12 +302,8 @@ class SearchFragment: Fragment() {
         val simpleTextWatcher = object : TextWatcher {
 
             override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                /* empty */
+                s: CharSequence?, start: Int, count: Int, after: Int
+            ) {/* empty */
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -311,14 +314,16 @@ class SearchFragment: Fragment() {
 
                 } else {
 
-                    viewModel.searchDebounce(searchRunnable)
+                    if (previousSearchText != s.toString()) {
+                        showDataLoading()
+                        viewModel.searchTracksDebounced(s.toString())
+                        previousSearchText = s.toString()
+                    }
                     clearTextButtonId.visibility = View.VISIBLE
-                    showTracks()
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                /* empty */
+            override fun afterTextChanged(s: Editable?) {/* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
@@ -327,13 +332,11 @@ class SearchFragment: Fragment() {
         savedInstanceState?.let {
             val s = savedInstanceState.getString(SEARCH_REQUEST_KEY, "")
             if (s != "") {
+                previousSearchText = s
                 editTextId.setText(s)
                 clearTextButtonId.visibility = View.VISIBLE
             }
         }
-
-        //1st to show
-        showHistory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -345,9 +348,7 @@ class SearchFragment: Fragment() {
         super.onStart()
         editTextId.requestFocus()
 
-        //Toast.makeText(context,">>"+editTextId.text+"<<",Toast.LENGTH_LONG).show()
-
-        if(editTextId.text.isEmpty()){
+        if (editTextId.text.isEmpty()) {
             showHistory()
             //showKeyboard()
         }
@@ -355,7 +356,8 @@ class SearchFragment: Fragment() {
 
     private companion object {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
-        const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
+
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 2_000L
     }
 }

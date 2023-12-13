@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-import com.example.playlistmaker.domain.api.MediaInteractor
+import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
 
 
@@ -31,8 +31,8 @@ class MediaActivityViewModel(
 
     init {
 
-        val track :Track? = mediaInteractor.getCurrentlyPlaying()
-        if( track is Track) {
+        val track: Track? = mediaInteractor.getCurrentlyPlaying()
+        if (track is Track) {
 
             mediaInteractor.prepare(
                 track.previewUrl,
@@ -51,7 +51,7 @@ class MediaActivityViewModel(
                     mediaArtist = track.artistName,
                     mediaLength = track.trackTime,
                     mediaAlbum = track.collectionName,
-                    mediaDate = track.releaseDate ?: "?",
+                    mediaDate = track.releaseDate,
                     mediaGenre = track.primaryGenreName,
                     mediaCountry = track.country,
                     showPlayElsePauseButtonState = true
@@ -97,7 +97,7 @@ class MediaActivityViewModel(
             mediaInteractor.start()
         }
 
-        if( mediaInteractor.getCurrentPosition() > 0L ) {
+        if (mediaInteractor.getCurrentPosition() > 0L) {
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
                 screenData.postValue(
@@ -108,10 +108,10 @@ class MediaActivityViewModel(
                         mediaArtist = track.artistName,
                         mediaLength = track.trackTime,
                         mediaAlbum = track.collectionName,
-                        mediaDate = track.releaseDate ?: "?",
+                        mediaDate = track.releaseDate,
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
-                        showPlayElsePauseButtonState = ! mediaInteractor.isMediaPlayerToResumeOnCreate()
+                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate()
                     )
                 )
             }
@@ -121,7 +121,7 @@ class MediaActivityViewModel(
 
     fun onStopActivity() {
         mediaInteractor.setMediaPlayerToResumeOnCreate(mediaInteractor.isPlaying())
-        if( mediaInteractor.isPlaying() )mediaInteractor.pause()
+        if (mediaInteractor.isPlaying()) mediaInteractor.pause()
     }
 
     fun pause() {
@@ -142,7 +142,7 @@ class MediaActivityViewModel(
     }
 
     fun playPauseButtonPressed() {
-        if( mediaInteractor.isPlaying() ) {
+        if (mediaInteractor.isPlaying()) {
             mediaInteractor.pause()
         } else {
             if (mediaInteractor.getCurrentlyPlaying() is Track) {

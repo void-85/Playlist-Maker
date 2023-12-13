@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.domain.api.interactors.ThemeInteractor
 
 
 class SettingsFragmentViewModel(
@@ -18,7 +18,7 @@ class SettingsFragmentViewModel(
         switchedToDarkTheme.postValue(themeInteractor.isThemeDark())
     }
 
-    fun setThemeSwitchFun( setThemeFun : ((Boolean) -> Unit) ){
+    fun setThemeSwitchFun(setThemeFun: ((Boolean) -> Unit)) {
         themeInteractor.setThemeSwitchFun(setThemeFun)
     }
 

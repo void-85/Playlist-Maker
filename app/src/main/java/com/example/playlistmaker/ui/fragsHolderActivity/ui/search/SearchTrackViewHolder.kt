@@ -15,7 +15,7 @@ import com.example.playlistmaker.domain.entities.Track
 
 class SearchTrackViewHolder(
     itemView: View,
-    private val trackViewHolderItemClicked: (Track, Boolean, Runnable, Runnable) -> Unit
+    private val trackViewHolderItemClicked: (Track) -> Unit
 
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -23,11 +23,6 @@ class SearchTrackViewHolder(
     private val artistName: TextView = itemView.findViewById(R.id.track_view_artist_name)
     private val trackTime: TextView = itemView.findViewById(R.id.track_view_track_time)
     private val artworkUrl: ImageView = itemView.findViewById(R.id.track_view_artwork_url)
-
-    private var isClickAllowed = true
-    private val enableClick = Runnable { isClickAllowed = true }
-    private val disableClick = Runnable { isClickAllowed = false }
-
 
     fun bind(model: Track) {
 
@@ -50,7 +45,7 @@ class SearchTrackViewHolder(
             .into(artworkUrl)
 
         itemView.setOnClickListener {
-            trackViewHolderItemClicked(model, isClickAllowed, enableClick, disableClick)
+            trackViewHolderItemClicked(model)
         }
     }
 }

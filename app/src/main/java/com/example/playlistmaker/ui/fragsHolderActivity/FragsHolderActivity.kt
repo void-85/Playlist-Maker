@@ -31,7 +31,7 @@ class FragsHolderActivity : AppCompatActivity() {
         binding = ActivityFragsHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.setThemeSwitchFun( setTheme )
+        viewModel.setThemeSwitchFun(setTheme)
         viewModel.applyCurrentTheme()
 
         val navView: BottomNavigationView = binding.navView
@@ -40,7 +40,7 @@ class FragsHolderActivity : AppCompatActivity() {
                 supportFragmentManager.findFragmentById(
                     R.id.nav_host_fragment_activity_frags_holder
                 ) as NavHostFragment
-            ).navController
+                ).navController
         navView.setupWithNavController(navController)
 
         /*val appBarConfiguration = AppBarConfiguration(

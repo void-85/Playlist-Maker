@@ -1,73 +1,84 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
-import com.example.playlistmaker.domain.api.SearchInteractor
+import com.example.playlistmaker.domain.api.interactors.SearchInteractor
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SearchFragmentViewModel(
     private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 
-    private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
+    private var screenUpdateLiveData =
+        MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.DoNothing)
+    private var searchJob: Job? = null
 
     init {
-        screenUpdate.postValue(
+        requestSearchHistory()
+    }
+
+    fun getState(): LiveData<SearchActivityUpdate> {
+        return screenUpdateLiveData
+    }
+
+    fun clearSearchHistory() {
+        searchInteractor.setSearchHistory(emptyList())
+        screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
+    }
+
+    fun cancelSearch() {
+        searchJob?.cancel()
+    }
+
+    fun requestSearchHistory() {
+        screenUpdateLiveData.postValue(
             SearchActivityUpdate.SearchHistoryData(
                 searchInteractor.getSearchHistory()
             )
         )
     }
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    fun searchDebounce( runnable: Runnable) {
-        handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
-    fun clickDebounce( isClickAllowed :Boolean, enableClick:Runnable, disableClick:Runnable ): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            handler.post( disableClick )
-            handler.postDelayed(enableClick, CLICK_DEBOUNCE_DELAY)
+    fun searchTracksDebounced(searchText: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
+            searchTracks(searchText)
         }
-        return current
     }
 
+    private fun searchTracks(searchText: String) {
 
-    fun getState(): LiveData<SearchActivityUpdate> {
-        return screenUpdate
-    }
+        if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
-    fun clearSearchHistory() {
-        searchInteractor.setSearchHistory(emptyList())
-    }
+            val data = ArrayList<Track>()
+            viewModelScope.launch {
+                searchInteractor.searchTracks(searchText).collect { pair ->
+                    run {
 
-    fun searchTracks(searchText: String) {
+                        if (pair.first == null) {
 
-        screenUpdate.postValue(SearchActivityUpdate.Loading)
+                            screenUpdateLiveData.postValue(SearchActivityUpdate.NoNetwork)
 
-        val data = ArrayList<Track>()
+                        } else {
 
-        searchInteractor.searchTracks(
-            searchText,
-            object : SearchInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>) {
-                    foundTracks.forEach { data.add(it) }
+                            pair.first?.forEach { data.add(it) }
+                            screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(data))
 
-                    screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+                        }
+                    }
                 }
             }
-        )
-
+        }
     }
+
 
     fun saveSearchHistoryAndCurrentlyPlaying(
         historyData: List<Track>,
@@ -78,15 +89,18 @@ class SearchFragmentViewModel(
     }
 
 
-
     companion object {
-       const val SEARCH_DEBOUNCE_DELAY = 2_000L
-       const val CLICK_DEBOUNCE_DELAY = 2_000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
+        const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
     }
 }
 
 
 sealed class SearchActivityUpdate {
+
+    object DoNothing : SearchActivityUpdate()
+
+    object NoNetwork : SearchActivityUpdate()
 
     object Loading : SearchActivityUpdate()
 

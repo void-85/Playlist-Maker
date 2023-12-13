@@ -14,7 +14,6 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 
 
-
 class FavSongsFragment : Fragment() {
 
     companion object {
@@ -41,8 +40,8 @@ class FavSongsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewmodel.getState().observe(viewLifecycleOwner){state ->
-            when(state){
+        viewmodel.getState().observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
 
                     binding.noDataInfo.visibility = View.VISIBLE
