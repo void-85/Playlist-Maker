@@ -29,7 +29,9 @@ class AppPrefsRepositoryImpl(
     }*/
 
     override fun isThemeDark(): Boolean {
-        return sharedPrefs.getBoolean(CURRENT_THEME_KEY, false)
+        synchronized(sharedPrefs) {
+            return sharedPrefs.getBoolean(CURRENT_THEME_KEY, false)
+        }
     }
 
     override fun setDarkTheme(darkThemeEnabled: Boolean) {
@@ -43,20 +45,21 @@ class AppPrefsRepositoryImpl(
 
 
     override fun getSearchHistory(): List<Track> {
+        synchronized(sharedPrefs) {
+            val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, "").orEmpty()
+            return if (json.isNotEmpty()) {
+                val data = ArrayList<Track>()
 
-        val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, "").orEmpty()
-        return if (json.isNotEmpty()) {
-            val data = ArrayList<Track>()
+                gson.fromJson<ArrayList<Track>>(
+                    json,
+                    object : TypeToken<ArrayList<Track>>() {}.type
+                ).forEach { data.add(it) }
 
-            gson.fromJson<ArrayList<Track>>(
-                json,
-                object : TypeToken<ArrayList<Track>>() {}.type
-            ).forEach { data.add(it) }
+                data
 
-            data
-
-        }else{
-            emptyList()
+            } else {
+                emptyList()
+            }
         }
     }
 
@@ -85,18 +88,19 @@ class AppPrefsRepositoryImpl(
 
 
     override fun getCurrentlyPlaying(): Track? {
+        synchronized(sharedPrefs) {
+            val jsonTrack = sharedPrefs.getString(CURRENTLY_PLAYING_KEY, "") ?: ""
+            if (jsonTrack.isNotEmpty()) {
 
-        val jsonTrack = sharedPrefs.getString(CURRENTLY_PLAYING_KEY, "") ?: ""
-        if( jsonTrack.isNotEmpty() ){
+                val data = gson.fromJson<Track>(
+                    jsonTrack,
+                    object : TypeToken<Track>() {}.type
+                )
+                return data
 
-            val data = gson.fromJson<Track>(
-                jsonTrack,
-                object : TypeToken<Track>() {}.type
-            )
-            return data
-
-        }else{
-            return null
+            } else {
+                return null
+            }
         }
     }
 
@@ -110,7 +114,9 @@ class AppPrefsRepositoryImpl(
     }
 
     override fun getMediaPlayerLastPosition(): Long {
-        return sharedPrefs.getLong(MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L)
+        synchronized(sharedPrefs) {
+            return sharedPrefs.getLong(MEDIA_PLAYER_LAST_POSITION_LONG_KEY, 0L)
+        }
     }
 
     override fun setMediaPlayerLastPosition(position: Long) {
@@ -123,7 +129,9 @@ class AppPrefsRepositoryImpl(
     }
 
     override fun isMediaPlayerToResumeOnCreate(): Boolean {
-        return sharedPrefs.getBoolean(MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false)
+        synchronized(sharedPrefs) {
+            return sharedPrefs.getBoolean(MEDIA_PLAYER_RESUME_PLAY_ON_CREATE, false)
+        }
     }
 
     override fun setMediaPlayerToResumeOnCreate(resume: Boolean) {

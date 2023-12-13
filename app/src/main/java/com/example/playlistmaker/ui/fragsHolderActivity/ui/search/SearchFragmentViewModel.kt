@@ -17,7 +17,7 @@ class SearchFragmentViewModel(
     private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 
-    private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.Loading)
+    private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.DoNothing)
     private var searchJob: Job? = null
 
     init {
@@ -30,6 +30,7 @@ class SearchFragmentViewModel(
 
     fun clearSearchHistory() {
         searchInteractor.setSearchHistory(emptyList())
+        screenUpdate.postValue(SearchActivityUpdate.DoNothing)
     }
 
     fun cancelSearch() {
@@ -109,6 +110,8 @@ class SearchFragmentViewModel(
 
 
 sealed class SearchActivityUpdate {
+
+    object DoNothing : SearchActivityUpdate()
 
     object NoNetwork : SearchActivityUpdate()
 

@@ -198,6 +198,11 @@ class SearchFragment : Fragment() {
 
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
+
+                is SearchActivityUpdate.DoNothing -> {
+                    //prevent resending LiveData old state
+                }
+
                 is SearchActivityUpdate.Loading -> {
                     //unreachable?
                     showDataLoading()
