@@ -10,19 +10,17 @@ import com.example.playlistmaker.domain.settings.ThemeInteractorImpl
 import org.koin.dsl.module
 
 
+val interactorModule = module {
 
-
-val interactorModule = module{
-
-    single<SearchInteractor>{
+    single<SearchInteractor> {
         SearchInteractorImpl(get(), get())
     }
 
-    single<ThemeInteractor>{
+    single<ThemeInteractor> {
         ThemeInteractorImpl(get())
     }
 
-    single<MediaInteractor>{
+    single<MediaInteractor> {
         MediaInteractorImpl(get(), get())
     }
 

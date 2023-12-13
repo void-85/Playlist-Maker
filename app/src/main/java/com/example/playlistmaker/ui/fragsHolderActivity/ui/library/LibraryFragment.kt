@@ -28,11 +28,11 @@ class LibraryFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view:View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       /* binding = ActivityLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)*/
+        /* binding = ActivityLibraryBinding.inflate(layoutInflater)
+         setContentView(binding.root)*/
 
         binding.mediaLibraryViewPager.adapter =
             FragmentsAdapter(

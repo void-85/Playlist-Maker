@@ -24,7 +24,7 @@ class ThemeInteractorImpl(
     }
 
     override fun applyCurrentTheme() {
-        setThemeFun( isThemeDark() )
+        setThemeFun(isThemeDark())
     }
 
     override fun setTheme(darkThemeEnabled: Boolean) {

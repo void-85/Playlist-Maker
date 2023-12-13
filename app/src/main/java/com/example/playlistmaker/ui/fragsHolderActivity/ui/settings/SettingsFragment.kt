@@ -17,7 +17,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSettingsBinding
 
 
-class SettingsFragment: Fragment() {
+class SettingsFragment : Fragment() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
     private lateinit var binding: FragmentSettingsBinding
@@ -45,13 +45,13 @@ class SettingsFragment: Fragment() {
         //return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view:View,savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         /*binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)*/
 
-        viewModel.setThemeSwitchFun( setTheme )
+        viewModel.setThemeSwitchFun(setTheme)
         viewModel.getSwitchToDarkThemeState().observe(viewLifecycleOwner) {
             settingsThemeSwitcher.isChecked = it
         }
@@ -83,7 +83,7 @@ class SettingsFragment: Fragment() {
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_support_subject))
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_support_text))
             }
-            startActivity( Intent.createChooser(sendIntent, null) )
+            startActivity(Intent.createChooser(sendIntent, null))
         }
 
         val userAgreementButtonId = binding.settingsUserAgreementButton

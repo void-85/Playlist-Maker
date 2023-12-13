@@ -1,7 +1,6 @@
 package com.example.playlistmaker.data.repositories
 
 
-
 import android.media.MediaPlayer
 
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
@@ -13,8 +12,8 @@ import kotlinx.coroutines.launch
 
 class AudioRepositoryImpl : AudioRepository {
 
-    companion object{
-        const val MEDIA_PLAYER_UPDATE_POS_PERIOD = 300L
+    companion object {
+        const val MEDIA_PLAYER_UPDATE_POS_PERIOD_MILLIS = 300L
     }
 
     private var mediaPlayer = MediaPlayer()
@@ -33,19 +32,19 @@ class AudioRepositoryImpl : AudioRepository {
     private lateinit var onPauseFun: () -> (Unit)
 
 
-    private var updatePos: Job? = null
+    private var updatePositionJob: Job? = null
 
     private fun scheduleFunUpdate() {
-        updatePos = GlobalScope.launch {
+        updatePositionJob = GlobalScope.launch {
             while (true) {
-                delay(MEDIA_PLAYER_UPDATE_POS_PERIOD)
+                delay(MEDIA_PLAYER_UPDATE_POS_PERIOD_MILLIS)
                 updateFun()
             }
         }
     }
 
     private fun clearSchedule() {
-        updatePos?.cancel()
+        updatePositionJob?.cancel()
     }
 
 

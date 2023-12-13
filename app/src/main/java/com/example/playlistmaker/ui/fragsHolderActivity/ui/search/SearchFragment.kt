@@ -63,7 +63,7 @@ class SearchFragment : Fragment() {
         if (isClickAllowed) {
             isClickAllowed = false
             viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
                 isClickAllowed = true
             }
         }
@@ -82,45 +82,44 @@ class SearchFragment : Fragment() {
         }
 
 
-    private val trackViewHolderItemClicked: (Track) -> Unit =
-        { item ->
-            run {
+    private val trackViewHolderItemClicked: (Track) -> Unit = { item ->
+        run {
 
-                if (isClickAllowed()) {
+            if (isClickAllowed()) {
 
-                    // swap old items
-                    if (historyData.contains(item)) {
+                // swap old items
+                if (historyData.contains(item)) {
 
-                        val oldPos: Int = historyData.indexOf(item)
-                        historyData.remove(item)
-                        historyData.add(0, item)
+                    val oldPos: Int = historyData.indexOf(item)
+                    historyData.remove(item)
+                    historyData.add(0, item)
 
-                        historyRView.adapter?.notifyItemMoved(oldPos, 0)
-                        historyRView.scrollToPosition(0)
+                    historyRView.adapter?.notifyItemMoved(oldPos, 0)
+                    historyRView.scrollToPosition(0)
 
-                        // insert new item
-                    } else {
+                    // insert new item
+                } else {
 
-                        historyData.add(0, item)
+                    historyData.add(0, item)
 
-                        historyRView.adapter?.notifyItemInserted(0)
-                        historyRView.scrollToPosition(0)
+                    historyRView.adapter?.notifyItemInserted(0)
+                    historyRView.scrollToPosition(0)
 
-                        if (historyData.size > SEARCH_HISTORY_MAX_LENGTH) {
+                    if (historyData.size > SEARCH_HISTORY_MAX_LENGTH) {
 
-                            historyData.removeAt(SEARCH_HISTORY_MAX_LENGTH)
-                            historyRView.adapter?.notifyItemRemoved(SEARCH_HISTORY_MAX_LENGTH)
-                        }
+                        historyData.removeAt(SEARCH_HISTORY_MAX_LENGTH)
+                        historyRView.adapter?.notifyItemRemoved(SEARCH_HISTORY_MAX_LENGTH)
                     }
-
-                    isSearchHistoryEmpty = false
-
-                    saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
-
-                    switchToPlayer()
                 }
+
+                isSearchHistoryEmpty = false
+
+                saveSearchHistoryAndCurrentlyPlayingFun(historyData, item)
+
+                switchToPlayer()
             }
         }
+    }
 
 
     private fun showHistory() {
@@ -182,9 +181,7 @@ class SearchFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -246,8 +243,7 @@ class SearchFragment : Fragment() {
         searchHistory = binding.searchHistory
         historyRView = binding.historyRView
         historyRView.adapter = SearchTrackAdapter(
-            historyData,
-            trackViewHolderItemClicked
+            historyData, trackViewHolderItemClicked
         )
 
         clearHistory = binding.clearSearchHistory
@@ -262,8 +258,7 @@ class SearchFragment : Fragment() {
 
         recyclerView = binding.rView
         recyclerView.adapter = SearchTrackAdapter(
-            data,
-            trackViewHolderItemClicked
+            data, trackViewHolderItemClicked
         )
 
         noDataFrame = binding.searchNoDataFrame
@@ -307,12 +302,8 @@ class SearchFragment : Fragment() {
         val simpleTextWatcher = object : TextWatcher {
 
             override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                /* empty */
+                s: CharSequence?, start: Int, count: Int, after: Int
+            ) {/* empty */
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -332,8 +323,7 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                /* empty */
+            override fun afterTextChanged(s: Editable?) {/* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)
@@ -358,8 +348,6 @@ class SearchFragment : Fragment() {
         super.onStart()
         editTextId.requestFocus()
 
-        //Toast.makeText(context,">>"+editTextId.text+"<<",Toast.LENGTH_LONG).show()
-
         if (editTextId.text.isEmpty()) {
             showHistory()
             //showKeyboard()
@@ -370,6 +358,6 @@ class SearchFragment : Fragment() {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
 
-        const val CLICK_DEBOUNCE_DELAY = 2_000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 2_000L
     }
 }

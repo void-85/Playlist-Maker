@@ -14,13 +14,13 @@ class AppPrefsRepositoryImpl(
     private val gson: Gson
 ) : AppPrefsRepository {
 
-    companion object{
-        const val CURRENT_THEME_KEY       = "current_theme_key"
-        const val SEARCH_HISTORY_KEY      = "search_history_key"
-        const val CURRENTLY_PLAYING_KEY   = "currently_playing_key"
+    companion object {
+        const val CURRENT_THEME_KEY = "current_theme_key"
+        const val SEARCH_HISTORY_KEY = "search_history_key"
+        const val CURRENTLY_PLAYING_KEY = "currently_playing_key"
 
         const val MEDIA_PLAYER_LAST_POSITION_LONG_KEY = "media_player_last_position_long_key"
-        const val MEDIA_PLAYER_RESUME_PLAY_ON_CREATE  = "media_player_resume_play_on_create"
+        const val MEDIA_PLAYER_RESUME_PLAY_ON_CREATE = "media_player_resume_play_on_create"
     }
 
     /*private lateinit var sharedPrefs: SharedPreferences
@@ -108,7 +108,7 @@ class AppPrefsRepositoryImpl(
         synchronized(sharedPrefs) {
             sharedPrefs
                 .edit()
-                .putString(CURRENTLY_PLAYING_KEY, gson.toJson(track) )
+                .putString(CURRENTLY_PLAYING_KEY, gson.toJson(track))
                 .apply()
         }
     }

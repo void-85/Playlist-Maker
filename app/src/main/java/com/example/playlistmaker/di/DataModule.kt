@@ -15,17 +15,17 @@ import com.example.playlistmaker.data.web.RetrofitNetworkClient
 import com.example.playlistmaker.data.api.NetworkClient
 
 
-class Constants{
-    companion object{
-        const val SERVICE_URL  = "https://itunes.apple.com"
+class Constants {
+    companion object {
+        const val SERVICE_URL = "https://itunes.apple.com"
         const val SHARED_PREFS = "playlist_preferences"
     }
 }
 
 
-val dataModule = module{
+val dataModule = module {
 
-    single<SearchAPIService>{
+    single<SearchAPIService> {
         Retrofit.Builder()
             .baseUrl(Constants.SERVICE_URL)
             .addConverterFactory(GsonConverterFactory.create())

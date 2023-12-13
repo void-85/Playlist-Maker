@@ -14,11 +14,11 @@ class FragsHolderActivityViewModel(
 
     }
 
-    fun setThemeSwitchFun( setThemeFun : ((Boolean) -> Unit) ){
+    fun setThemeSwitchFun(setThemeFun: ((Boolean) -> Unit)) {
         themeInteractor.setThemeSwitchFun(setThemeFun)
     }
 
-    fun applyCurrentTheme(){
+    fun applyCurrentTheme() {
         themeInteractor.applyCurrentTheme()
     }
 }

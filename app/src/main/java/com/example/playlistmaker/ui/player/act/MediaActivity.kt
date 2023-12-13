@@ -84,10 +84,11 @@ class MediaActivity : AppCompatActivity() {
     }
 
 
-    private fun onIntentionalExit(){
+    private fun onIntentionalExit() {
         intentionalExit = true
         finish()
     }
+
     override fun onDestroy() {
         super.onDestroy()
 

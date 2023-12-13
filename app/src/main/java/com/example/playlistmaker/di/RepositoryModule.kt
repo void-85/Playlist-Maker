@@ -11,17 +11,17 @@ import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import com.example.playlistmaker.domain.api.repositories.TracksRepository
 
 
-val repositoryModule = module{
+val repositoryModule = module {
 
-    single<TracksRepository>{
+    single<TracksRepository> {
         TracksRepositoryImpl(get())
     }
 
-    single<AppPrefsRepository>{
+    single<AppPrefsRepository> {
         AppPrefsRepositoryImpl(get(), get())
     }
 
-    single<AudioRepository>{
+    single<AudioRepository> {
         AudioRepositoryImpl()
     }
 

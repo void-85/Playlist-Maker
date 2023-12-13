@@ -13,27 +13,27 @@ import org.koin.dsl.module
 
 val viewModuleModule = module {
 
-    viewModel{
+    viewModel {
         FragsHolderActivityViewModel(get())
     }
 
-    viewModel{
+    viewModel {
         MediaActivityViewModel(get())
     }
 
-    viewModel{
+    viewModel {
         SearchFragmentViewModel(get())
     }
 
-    viewModel{
+    viewModel {
         SettingsFragmentViewModel(get())
     }
 
-    viewModel{
+    viewModel {
         FavSongsFragmentViewModel()
     }
 
-    viewModel{
+    viewModel {
         PlaylistsFragmentViewModel()
     }
 }

@@ -45,7 +45,7 @@ class PlaylistsFragment : Fragment() {
 
                     val animate = TranslateAnimation(
                         0f, 0f,
-                        binding.noDataInfo.height.toFloat()*2, 0f
+                        binding.noDataInfo.height.toFloat() * 2, 0f
                     ).apply {
                         duration = 500
                         fillAfter = true

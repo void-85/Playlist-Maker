@@ -18,7 +18,7 @@ class SettingsFragmentViewModel(
         switchedToDarkTheme.postValue(themeInteractor.isThemeDark())
     }
 
-    fun setThemeSwitchFun( setThemeFun : ((Boolean) -> Unit) ){
+    fun setThemeSwitchFun(setThemeFun: ((Boolean) -> Unit)) {
         themeInteractor.setThemeSwitchFun(setThemeFun)
     }
 

@@ -32,12 +32,17 @@ class SearchInteractorImpl(
 
 
     // TRACKS REPOSITORY ------------------------------------------------------------------
-    override fun searchTracks( searchText: String ) : Flow<Pair<List<Track>?, String?>> {
+    override fun searchTracks(searchText: String): Flow<Pair<List<Track>?, String?>> {
 
-        return tracksRepositoryImpl.searchTracks( searchText ).map{ result ->
-            when(result){
-                is Option.Data  -> { Pair( result.data, null  ) }
-                is Option.Error -> { Pair( null, result.error ) }
+        return tracksRepositoryImpl.searchTracks(searchText).map { result ->
+            when (result) {
+                is Option.Data -> {
+                    Pair(result.data, null)
+                }
+
+                is Option.Error -> {
+                    Pair(null, result.error)
+                }
             }
         }
 

@@ -17,7 +17,8 @@ class SearchFragmentViewModel(
     private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 
-    private var screenUpdate = MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.DoNothing)
+    private var screenUpdateLiveData =
+        MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.DoNothing)
     private var searchJob: Job? = null
 
     init {
@@ -25,12 +26,12 @@ class SearchFragmentViewModel(
     }
 
     fun getState(): LiveData<SearchActivityUpdate> {
-        return screenUpdate
+        return screenUpdateLiveData
     }
 
     fun clearSearchHistory() {
         searchInteractor.setSearchHistory(emptyList())
-        screenUpdate.postValue(SearchActivityUpdate.DoNothing)
+        screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
     }
 
     fun cancelSearch() {
@@ -38,7 +39,7 @@ class SearchFragmentViewModel(
     }
 
     fun requestSearchHistory() {
-        screenUpdate.postValue(
+        screenUpdateLiveData.postValue(
             SearchActivityUpdate.SearchHistoryData(
                 searchInteractor.getSearchHistory()
             )
@@ -48,48 +49,34 @@ class SearchFragmentViewModel(
     fun searchTracksDebounced(searchText: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
+            delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             searchTracks(searchText)
         }
     }
 
-    private fun     searchTracks(searchText: String) {
+    private fun searchTracks(searchText: String) {
 
         if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
-/*            //screenUpdate.postValue(SearchActivityUpdate.Loading)
             val data = ArrayList<Track>()
-            searchInteractor.searchTracks(
-                searchText,
-                object : SearchInteractor.TracksConsumer {
-                    override fun consume(foundTracks: List<Track>) {
-                        foundTracks.forEach { data.add(it) }
+            viewModelScope.launch {
+                searchInteractor.searchTracks(searchText).collect { pair ->
+                    run {
 
-                        screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
+                        if (pair.first == null) {
+
+                            screenUpdateLiveData.postValue(SearchActivityUpdate.NoNetwork)
+
+                        } else {
+
+                            pair.first?.forEach { data.add(it) }
+                            screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(data))
+
+                        }
                     }
                 }
-            )*/
-
-            val data = ArrayList<Track>()
-            viewModelScope.launch { searchInteractor.searchTracks(searchText).collect{
-                pair -> run {
-
-                    if (pair.first == null) {
-
-                        screenUpdate.postValue(SearchActivityUpdate.NoNetwork)
-
-                    } else {
-
-                        pair.first?.forEach { data.add(it) }
-                        screenUpdate.postValue(SearchActivityUpdate.SearchResult(data))
-
-                    }
-                }
-            }}
-
-
+            }
         }
-
     }
 
 
@@ -103,7 +90,7 @@ class SearchFragmentViewModel(
 
 
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 2_000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
         const val SEARCH_DEBOUNCE_REQ_MIN_LEN = 3
     }
 }

@@ -1,4 +1,5 @@
 package com.example.playlistmaker.domain.api.interactors
+
 import com.example.playlistmaker.domain.entities.Track
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +14,6 @@ interface SearchInteractor {
 
 
     // TRACKS REPOSITORY ------------------------------------------------------------------
-    fun searchTracks(searchText: String): Flow< Pair<List<Track>?, String?> >
+    fun searchTracks(searchText: String): Flow<Pair<List<Track>?, String?>>
     // TRACKS REPOSITORY ------------------------------------------------------------------
 }

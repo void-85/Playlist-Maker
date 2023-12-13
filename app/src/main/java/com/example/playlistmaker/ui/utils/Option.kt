@@ -1,8 +1,8 @@
 package com.example.playlistmaker.ui.utils
 
-sealed class Option<T> (
-    val data  : T?      = null ,
-    val error : String? = null
+sealed class Option<T>(
+    val data: T? = null,
+    val error: String? = null
 ) {
     class Data<T>(
         data: T
