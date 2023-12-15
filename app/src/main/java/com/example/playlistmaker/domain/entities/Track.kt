@@ -2,6 +2,8 @@ package com.example.playlistmaker.domain.entities
 
 data class Track(
 
+    val trackId: Long,
+
     val trackName: String,
     val artistName: String,
     val trackTime: String,

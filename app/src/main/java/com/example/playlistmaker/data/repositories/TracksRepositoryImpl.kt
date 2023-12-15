@@ -30,6 +30,8 @@ class TracksRepositoryImpl(
 
                     emit(Option.Data(response.results.map {
                         Track(
+                            trackId = it.trackId,
+
                             trackName = it.trackName ?: "-",
                             artistName = it.artistName ?: "-",
                             artworkUrl100 = it.artworkUrl100 ?: "-",
@@ -43,38 +45,6 @@ class TracksRepositoryImpl(
                             previewUrl = it.previewUrl ?: "-"
                         )
                     }))
-
-                    /*                    response.results.map {
-                                            emit(Option.Data( listOf(Track(
-                                                trackName = it.trackName ?: "-",
-                                                artistName = it.artistName ?: "-",
-                                                artworkUrl100 = it.artworkUrl100 ?: "-",
-                                                trackTime = it.trackTimeMillis?.millisToMinSec() ?: "-:--",
-
-                                                collectionName = it.collectionName ?: "-",
-                                                releaseDate = it.releaseDate ?: "-",
-                                                primaryGenreName = it.primaryGenreName ?: "-",
-                                                country = it.country ?: "-",
-
-                                                previewUrl = it.previewUrl ?: "-"
-                                            ))
-                                            ))*/
-
-                    /*return (response as ResponseData).results.map {
-                        Track(
-                            trackName     = it.trackName ?: "-",
-                            artistName    = it.artistName ?: "-",
-                            artworkUrl100 = it.artworkUrl100 ?: "-",
-                            trackTime     = it.trackTimeMillis?.millisToMinSec() ?: "-:--",
-                                //.millisToMinSec() ?: 0L,
-
-                            collectionName   = it.collectionName ?: "-",
-                            releaseDate      = it.releaseDate ?: "-",
-                            primaryGenreName = it.primaryGenreName ?: "-",
-                            country          = it.country ?: "-",
-
-                            previewUrl = it.previewUrl ?: "-"
-                        )*/
                 }
             }
 

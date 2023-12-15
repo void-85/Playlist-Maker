@@ -20,13 +20,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+
 
 
 class SearchFragment : Fragment() {

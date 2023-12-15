@@ -4,12 +4,14 @@ package com.example.playlistmaker.data.web
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 import com.example.playlistmaker.data.DTO.GeneralResponse
 import com.example.playlistmaker.data.DTO.RequestData
 import com.example.playlistmaker.data.api.NetworkClient
 import com.example.playlistmaker.data.api.SearchAPIService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
 
 
 class RetrofitNetworkClient(
