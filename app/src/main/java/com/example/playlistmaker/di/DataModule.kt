@@ -2,6 +2,7 @@ package com.example.playlistmaker.di
 
 
 import android.content.Context
+import androidx.room.Room
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidContext
 
@@ -13,6 +14,7 @@ import com.google.gson.Gson
 import com.example.playlistmaker.data.api.SearchAPIService
 import com.example.playlistmaker.data.web.RetrofitNetworkClient
 import com.example.playlistmaker.data.api.NetworkClient
+import com.example.playlistmaker.data.db.AppDB
 
 
 class Constants {
@@ -43,5 +45,9 @@ val dataModule = module {
             Constants.SHARED_PREFS,
             Context.MODE_PRIVATE
         )
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDB::class.java, "database.db").build()
     }
 }

@@ -21,7 +21,7 @@ val interactorModule = module {
     }
 
     single<MediaInteractor> {
-        MediaInteractorImpl(get(), get())
+        MediaInteractorImpl(get(), get(), get())
     }
 
 }
