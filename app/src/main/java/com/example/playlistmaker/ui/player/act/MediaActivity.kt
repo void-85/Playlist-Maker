@@ -207,7 +207,6 @@ class MediaActivity : AppCompatActivity() {
         playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
         updatePlayPauseButtonStateFromVar()
         playPauseButton.setOnClickListener {
-
             viewModel.playPauseButtonPressed()
         }
 
@@ -224,11 +223,12 @@ class MediaActivity : AppCompatActivity() {
             )
             myView
         }
-        favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_in)
-        favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
+        favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_in)
+        favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_out)
         favoriteTrackButton.setOnClickListener {
-            trackIsFavorite = !trackIsFavorite
-            updateTrackIsFavoriteButtonStateFromVar()
+            //trackIsFavorite = !trackIsFavorite
+            //updateTrackIsFavoriteButtonStateFromVar()
+            viewModel.favoriteTrackButtonPressed()
         }
 
         //updateTrackIsFavoriteButtonStateFromVar()

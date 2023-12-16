@@ -1,17 +1,18 @@
 package com.example.playlistmaker.domain.player
 
 
-import com.example.playlistmaker.data.repositories.FavTracksRepositoryImpl
+
 import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
+import com.example.playlistmaker.domain.db.FavTracksRepository
 import com.example.playlistmaker.domain.entities.Track
 
 
 class MediaInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
-    private val audioRepositoryImpl: AudioRepository
-    //private val favTracksRepositoryImpl: FavTracksRepositoryImpl
+    private val audioRepositoryImpl: AudioRepository,
+    private val favTracksRepositoryImpl: FavTracksRepository
 ) : MediaInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------

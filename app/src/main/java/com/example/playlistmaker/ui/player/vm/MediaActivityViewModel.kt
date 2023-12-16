@@ -151,6 +151,10 @@ class MediaActivityViewModel(
             }
         }
     }
+
+    fun favoriteTrackButtonPressed(){
+
+    }
 }
 
 
