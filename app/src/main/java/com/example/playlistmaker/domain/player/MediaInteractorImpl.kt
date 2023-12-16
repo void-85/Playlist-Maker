@@ -10,8 +10,8 @@ import com.example.playlistmaker.domain.entities.Track
 
 class MediaInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
-    private val audioRepositoryImpl: AudioRepository,
-    private val favTracksRepositoryImpl: FavTracksRepositoryImpl
+    private val audioRepositoryImpl: AudioRepository
+    //private val favTracksRepositoryImpl: FavTracksRepositoryImpl
 ) : MediaInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
