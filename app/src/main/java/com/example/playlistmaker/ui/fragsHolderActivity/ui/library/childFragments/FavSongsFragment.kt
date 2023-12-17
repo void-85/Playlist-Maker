@@ -42,10 +42,10 @@ class FavSongsFragment : Fragment() {
 
         viewmodel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
+
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
 
                     binding.noDataInfo.visibility = View.VISIBLE
-
                     val animate = TranslateAnimation(
                         0f, 0f,
                         binding.noDataInfo.height.toFloat(), 0f
@@ -54,8 +54,9 @@ class FavSongsFragment : Fragment() {
                         fillAfter = true
                     }
                     binding.noDataInfo.startAnimation(animate)
-
                 }
+
+
             }
         }
         //binding.favSongFragText.text = getString(requireArguments().getInt(TEXT_RESOURCE))
