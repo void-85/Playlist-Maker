@@ -4,9 +4,11 @@ package com.example.playlistmaker.ui.player.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.launch
 
 
 class MediaActivityViewModel(
@@ -25,7 +27,8 @@ class MediaActivityViewModel(
                 "_",
                 "-",
                 "-",
-                true
+                true,
+                false
             )
         )
 
@@ -43,6 +46,12 @@ class MediaActivityViewModel(
                 ::onPlayFun,
                 ::onPauseFun
             )
+
+            var isTrackFavorite = false
+            viewModelScope.launch {
+                isTrackFavorite = mediaInteractor.isTrackFavorite(track.trackId)
+            }
+
             screenData.postValue(
                 MediaActivityScreenUpdate.AllData(
                     timeCode = 0L,
@@ -54,7 +63,8 @@ class MediaActivityViewModel(
                     mediaDate = track.releaseDate,
                     mediaGenre = track.primaryGenreName,
                     mediaCountry = track.country,
-                    showPlayElsePauseButtonState = true
+                    showPlayElsePauseButtonState = true,
+                    trackIsFavorite = isTrackFavorite
                 )
             )
         }
@@ -79,7 +89,6 @@ class MediaActivityViewModel(
     }
 
     private fun updateFun() {
-
         screenData.postValue(
             MediaActivityScreenUpdate.TimeCodeOnly(
                 mediaInteractor.getCurrentPosition()
@@ -100,6 +109,12 @@ class MediaActivityViewModel(
         if (mediaInteractor.getCurrentPosition() > 0L) {
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
+
+                var isTrackFavorite = false
+                viewModelScope.launch {
+                    isTrackFavorite = mediaInteractor.isTrackFavorite(track.trackId)
+                }
+
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
                         timeCode = mediaInteractor.getCurrentPosition(),
@@ -111,7 +126,8 @@ class MediaActivityViewModel(
                         mediaDate = track.releaseDate,
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
-                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate()
+                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                        trackIsFavorite = isTrackFavorite
                     )
                 )
             }
@@ -152,8 +168,17 @@ class MediaActivityViewModel(
         }
     }
 
-    fun favoriteTrackButtonPressed(){
+    fun favoriteTrackButtonPressed( makeTrackFavorite:Boolean ){
 
+        val track: Track? = mediaInteractor.getCurrentlyPlaying()
+        if (track is Track) {
+            viewModelScope.launch {
+                if (makeTrackFavorite)
+                    mediaInteractor.insertTrack(track)
+                else
+                    mediaInteractor.deleteTrack(track)
+            }
+        }
     }
 }
 
@@ -178,8 +203,11 @@ sealed class MediaActivityScreenUpdate {
         val mediaDate: String,
         val mediaGenre: String,
         val mediaCountry: String,
-        val showPlayElsePauseButtonState: Boolean
+        val showPlayElsePauseButtonState: Boolean,
+        val trackIsFavorite: Boolean
     ) : MediaActivityScreenUpdate()
 
     object PlayFinished : MediaActivityScreenUpdate()
+
+    object DoNothing : MediaActivityScreenUpdate()
 }

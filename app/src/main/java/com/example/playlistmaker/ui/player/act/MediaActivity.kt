@@ -70,7 +70,7 @@ class MediaActivity : AppCompatActivity() {
         }
     }
 
-    private var trackIsFavorite:Boolean = false
+    private var trackIsFavorite: Boolean = false
     private fun updateTrackIsFavoriteButtonStateFromVar(){
         when (AppCompatDelegate.getDefaultNightMode()) {
 
@@ -169,6 +169,9 @@ class MediaActivity : AppCompatActivity() {
 
                     showPlayButtonElsePauseButton = it.showPlayElsePauseButtonState
                     updatePlayPauseButtonStateFromVar()
+
+                    trackIsFavorite = it.trackIsFavorite
+                    updateTrackIsFavoriteButtonStateFromVar()
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
@@ -226,9 +229,19 @@ class MediaActivity : AppCompatActivity() {
         favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_in)
         favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_out)
         favoriteTrackButton.setOnClickListener {
+
             //trackIsFavorite = !trackIsFavorite
             //updateTrackIsFavoriteButtonStateFromVar()
-            viewModel.favoriteTrackButtonPressed()
+            if(!trackIsFavorite){
+                viewModel.favoriteTrackButtonPressed(true)
+                trackIsFavorite = !trackIsFavorite
+                updateTrackIsFavoriteButtonStateFromVar()
+            }else{
+                viewModel.favoriteTrackButtonPressed(false)
+                trackIsFavorite = !trackIsFavorite
+                updateTrackIsFavoriteButtonStateFromVar()
+            }
+
         }
 
         //updateTrackIsFavoriteButtonStateFromVar()

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.domain.api.interactors
 
+import com.example.playlistmaker.data.interLayerConverters.convert
 import com.example.playlistmaker.domain.entities.Track
 
 interface MediaInteractor {
@@ -33,6 +34,13 @@ interface MediaInteractor {
 
     fun getCurrentlyPlaying(): Track?
     // APP PREFS REPOSITORY ---------------------------------------------------------------
+
+
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    suspend fun insertTrack(track: Track)
+    suspend fun deleteTrack(track: Track)
+    suspend fun isTrackFavorite(trackId: Long): Boolean
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }
 
 

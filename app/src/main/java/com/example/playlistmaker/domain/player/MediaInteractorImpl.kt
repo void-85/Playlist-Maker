@@ -84,6 +84,16 @@ class MediaInteractorImpl(
 
 
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    override suspend fun insertTrack(track: Track) {
+        favTracksRepositoryImpl.insertTrack(track)
+    }
 
+    override suspend fun deleteTrack(track: Track) {
+        favTracksRepositoryImpl.deleteTrack(track)
+    }
+
+    override suspend fun isTrackFavorite(trackId: Long): Boolean {
+        return favTracksRepositoryImpl.isTrackFavorite(trackId)
+    }
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }
