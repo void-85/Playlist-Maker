@@ -14,10 +14,10 @@ class FavTracksRepositoryImpl(
     }
 
     override suspend fun deleteTrack(track: Track) {
-        appDB.getDAO().deleteTrack(track.convert())
+        appDB.getDAO().deleteTrack(track.convert().trackId)
     }
 
-    override suspend fun isTrackFavorite(trackId: Long): Boolean {
-        return appDB.getDAO().isTrackFavorite(trackId) > 0
+    override suspend fun isTrackFavorite(track: Track): Boolean {
+        return appDB.getDAO().isTrackFavorite(track.convert().trackId) > 0
     }
 }

@@ -35,7 +35,6 @@ class MediaActivityViewModel(
                 ::onPauseFun
             )
 
-            var isTrackFavorite = false
             viewModelScope.launch {
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
@@ -49,7 +48,7 @@ class MediaActivityViewModel(
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
                         showPlayElsePauseButtonState = true,
-                        trackIsFavorite = mediaInteractor.isTrackFavorite(track.trackId)
+                        trackIsFavorite = mediaInteractor.isTrackFavorite(track)
                     )
                 )
             }
@@ -115,7 +114,7 @@ class MediaActivityViewModel(
                 viewModelScope.launch {
                     screenData.postValue(
                         MediaActivityScreenUpdate.ShowTrackIsFavorite(
-                            mediaInteractor.isTrackFavorite(track.trackId)
+                            mediaInteractor.isTrackFavorite(track)
                         )
                     )
                 }
@@ -157,7 +156,7 @@ class MediaActivityViewModel(
         }
     }
 
-    fun favoriteTrackButtonPressed( makeTrackFavorite:Boolean ){
+    fun favoriteTrackButtonPressed(makeTrackFavorite: Boolean) {
 
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
@@ -169,7 +168,7 @@ class MediaActivityViewModel(
 
                 screenData.postValue(
                     MediaActivityScreenUpdate.ShowTrackIsFavorite(
-                        mediaInteractor.isTrackFavorite(track.trackId)
+                        mediaInteractor.isTrackFavorite(track)
                     )
                 )
             }

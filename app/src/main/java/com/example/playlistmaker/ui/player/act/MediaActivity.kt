@@ -219,7 +219,6 @@ class MediaActivity : AppCompatActivity() {
         }
 
 
-
         favoriteTrackButton = binding.mediaScreenLike
         favoriteTrackButton.setFactory {
 
@@ -234,28 +233,8 @@ class MediaActivity : AppCompatActivity() {
         favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_in)
         favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_out)
         favoriteTrackButton.setOnClickListener {
-
-            //trackIsFavorite = !trackIsFavorite
-            //updateTrackIsFavoriteButtonStateFromVar()
-/*            if(!trackIsFavorite){
-                viewModel.favoriteTrackButtonPressed(true)
-                //trackIsFavorite = !trackIsFavorite
-                //updateTrackIsFavoriteButtonStateFromVar()
-            }else{
-                viewModel.favoriteTrackButtonPressed(false)
-                //trackIsFavorite = !trackIsFavorite
-                //updateTrackIsFavoriteButtonStateFromVar()
-            }*/
-            viewModel.favoriteTrackButtonPressed( !trackIsFavorite )
-
+            viewModel.favoriteTrackButtonPressed( makeTrackFavorite = !trackIsFavorite )
         }
-
-        //updateTrackIsFavoriteButtonStateFromVar()
-//        playPauseButton.setOnClickListener {
-//
-//            viewModel.playPauseButtonPressed()
-//        }
-
 
 
         mediaTimeCode = binding.mediaScreenTimeCode

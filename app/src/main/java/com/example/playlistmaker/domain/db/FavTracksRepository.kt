@@ -8,6 +8,6 @@ interface FavTracksRepository {
 
     suspend fun insertTrack(track: Track)
     suspend fun deleteTrack(track: Track)
-    suspend fun isTrackFavorite(trackId: Long): Boolean
+    suspend fun isTrackFavorite(track: Track): Boolean
 
 }

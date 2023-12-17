@@ -15,5 +15,4 @@ data class Track(
     val country: String,
 
     val previewUrl: String
-
 )

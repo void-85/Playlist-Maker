@@ -92,8 +92,8 @@ class MediaInteractorImpl(
         favTracksRepositoryImpl.deleteTrack(track)
     }
 
-    override suspend fun isTrackFavorite(trackId: Long): Boolean {
-        return favTracksRepositoryImpl.isTrackFavorite(trackId)
+    override suspend fun isTrackFavorite(track: Track): Boolean {
+        return favTracksRepositoryImpl.isTrackFavorite(track)
     }
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }

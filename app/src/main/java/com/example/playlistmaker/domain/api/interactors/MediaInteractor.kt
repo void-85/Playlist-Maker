@@ -1,6 +1,5 @@
 package com.example.playlistmaker.domain.api.interactors
 
-import com.example.playlistmaker.data.interLayerConverters.convert
 import com.example.playlistmaker.domain.entities.Track
 
 interface MediaInteractor {
@@ -39,7 +38,7 @@ interface MediaInteractor {
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
     suspend fun insertTrack(track: Track)
     suspend fun deleteTrack(track: Track)
-    suspend fun isTrackFavorite(trackId: Long): Boolean
+    suspend fun isTrackFavorite(track: Track): Boolean
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }
 
