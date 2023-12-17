@@ -12,11 +12,12 @@ interface DBTrackDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(track: DBTrackEntity)
 
-    //@Delete
     @Query("DELETE FROM fav_tracks_table WHERE track_id = :trackId")
     suspend fun deleteTrack(trackId: Long)
 
     @Query("SELECT COUNT(*) FROM fav_tracks_table WHERE track_id = :trackId")
     suspend fun isTrackFavorite(trackId: Long): Int
 
+    @Query("SELECT * FROM fav_tracks_table ORDER BY when_added DESC")
+    suspend fun getAllTracks(): List<DBTrackEntity>
 }

@@ -66,3 +66,22 @@ fun Track.convert(): DBTrackEntity {
         LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
     )
 }
+
+fun DBTrackEntity.convert(): Track{
+    return Track(
+
+        this.trackId,
+
+        this.trackName,
+        this.artistName,
+        this.trackTime,
+        this.artworkUrl100,
+
+        this.collectionName,
+        this.releaseDate,
+        this.primaryGenreName,
+        this.country,
+
+        this.previewUrl
+    )
+}

@@ -22,5 +22,6 @@ data class DBTrackEntity(
 
     val previewUrl: String,
 
+    @ColumnInfo(name = "when_added")
     val whenAdded: Long
 )

@@ -25,9 +25,9 @@ import kotlinx.coroutines.launch
 
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.player.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
-
 
 
 class SearchFragment : Fragment() {
@@ -243,7 +243,7 @@ class SearchFragment : Fragment() {
 
         searchHistory = binding.searchHistory
         historyRView = binding.historyRView
-        historyRView.adapter = SearchTrackAdapter(
+        historyRView.adapter = RecyclerViewTrackAdapter(
             historyData, trackViewHolderItemClicked
         )
 
@@ -258,7 +258,7 @@ class SearchFragment : Fragment() {
         }
 
         recyclerView = binding.rView
-        recyclerView.adapter = SearchTrackAdapter(
+        recyclerView.adapter = RecyclerViewTrackAdapter(
             data, trackViewHolderItemClicked
         )
 

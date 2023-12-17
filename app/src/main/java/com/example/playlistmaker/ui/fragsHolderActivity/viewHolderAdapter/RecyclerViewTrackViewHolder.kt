@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
+package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
 
 
 import android.view.View
@@ -13,7 +13,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 
 
-class SearchTrackViewHolder(
+class RecyclerViewTrackViewHolder(
     itemView: View,
     private val trackViewHolderItemClicked: (Track) -> Unit
 
