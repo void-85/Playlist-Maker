@@ -71,8 +71,10 @@ class FavSongsFragment : Fragment() {
     }
 
 
-
-
+    override fun onStart() {
+        super.onStart()
+        viewmodel.loadDBFavoriteTracks()
+    }
 
 
     override fun onCreateView(
@@ -81,7 +83,6 @@ class FavSongsFragment : Fragment() {
         binding = FragmentFavSongsBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

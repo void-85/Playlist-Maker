@@ -20,6 +20,10 @@ class FavSongsFragmentViewModel(
         )
 
     init {
+        loadDBFavoriteTracks()
+    }
+
+    fun loadDBFavoriteTracks(){
         viewModelScope.launch {
             val favTracks = ArrayList<Track>()
 
@@ -39,9 +43,7 @@ class FavSongsFragmentViewModel(
         }
     }
 
-    fun saveCurrentlyPlaying(
-        currentlyPlaying: Track
-    ) {
+    fun saveCurrentlyPlaying(currentlyPlaying: Track) {
         searchInteractor.setCurrentlyPlaying(currentlyPlaying)
     }
 
