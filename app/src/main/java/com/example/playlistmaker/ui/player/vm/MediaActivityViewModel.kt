@@ -17,19 +17,7 @@ class MediaActivityViewModel(
 
     private var screenData =
         MutableLiveData<MediaActivityScreenUpdate>(
-            MediaActivityScreenUpdate.AllData(
-                0,
-                "",
-                "-",
-                "-",
-                "-",
-                "-",
-                "_",
-                "-",
-                "-",
-                true,
-                false
-            )
+            MediaActivityScreenUpdate.DoNothing
         )
 
     init {
@@ -49,24 +37,22 @@ class MediaActivityViewModel(
 
             var isTrackFavorite = false
             viewModelScope.launch {
-                isTrackFavorite = mediaInteractor.isTrackFavorite(track.trackId)
-            }
-
-            screenData.postValue(
-                MediaActivityScreenUpdate.AllData(
-                    timeCode = 0L,
-                    artworkUrl100 = track.artworkUrl100,
-                    mediaTitle = track.trackName,
-                    mediaArtist = track.artistName,
-                    mediaLength = track.trackTime,
-                    mediaAlbum = track.collectionName,
-                    mediaDate = track.releaseDate,
-                    mediaGenre = track.primaryGenreName,
-                    mediaCountry = track.country,
-                    showPlayElsePauseButtonState = true,
-                    trackIsFavorite = isTrackFavorite
+                screenData.postValue(
+                    MediaActivityScreenUpdate.AllData(
+                        timeCode = 0L,
+                        artworkUrl100 = track.artworkUrl100,
+                        mediaTitle = track.trackName,
+                        mediaArtist = track.artistName,
+                        mediaLength = track.trackTime,
+                        mediaAlbum = track.collectionName,
+                        mediaDate = track.releaseDate,
+                        mediaGenre = track.primaryGenreName,
+                        mediaCountry = track.country,
+                        showPlayElsePauseButtonState = true,
+                        trackIsFavorite = mediaInteractor.isTrackFavorite(track.trackId)
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -110,11 +96,6 @@ class MediaActivityViewModel(
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
 
-                var isTrackFavorite = false
-                viewModelScope.launch {
-                    isTrackFavorite = mediaInteractor.isTrackFavorite(track.trackId)
-                }
-
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
                         timeCode = mediaInteractor.getCurrentPosition(),
@@ -127,9 +108,17 @@ class MediaActivityViewModel(
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
                         showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
-                        trackIsFavorite = isTrackFavorite
+                        trackIsFavorite = false
                     )
                 )
+
+                viewModelScope.launch {
+                    screenData.postValue(
+                        MediaActivityScreenUpdate.ShowTrackIsFavorite(
+                            mediaInteractor.isTrackFavorite(track.trackId)
+                        )
+                    )
+                }
             }
         }
 
@@ -177,6 +166,12 @@ class MediaActivityViewModel(
                     mediaInteractor.insertTrack(track)
                 else
                     mediaInteractor.deleteTrack(track)
+
+                screenData.postValue(
+                    MediaActivityScreenUpdate.ShowTrackIsFavorite(
+                        mediaInteractor.isTrackFavorite(track.trackId)
+                    )
+                )
             }
         }
     }
@@ -191,6 +186,10 @@ sealed class MediaActivityScreenUpdate {
 
     data class ShowPlayElsePauseButtonStateOnly(
         val state: Boolean
+    ) : MediaActivityScreenUpdate()
+
+    data class ShowTrackIsFavorite(
+        val trackIsFavorite: Boolean
     ) : MediaActivityScreenUpdate()
 
     data class AllData(

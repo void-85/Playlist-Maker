@@ -183,6 +183,11 @@ class MediaActivity : AppCompatActivity() {
                     updatePlayPauseButtonStateFromVar()
                 }
 
+                is MediaActivityScreenUpdate.ShowTrackIsFavorite -> {
+                    trackIsFavorite = it.trackIsFavorite
+                    updateTrackIsFavoriteButtonStateFromVar()
+                }
+
                 is MediaActivityScreenUpdate.PlayFinished -> {
                     mediaTimeCode.text = 0L.millisToMinSec()
                     showPlayButtonElsePauseButton = true
@@ -232,15 +237,16 @@ class MediaActivity : AppCompatActivity() {
 
             //trackIsFavorite = !trackIsFavorite
             //updateTrackIsFavoriteButtonStateFromVar()
-            if(!trackIsFavorite){
+/*            if(!trackIsFavorite){
                 viewModel.favoriteTrackButtonPressed(true)
-                trackIsFavorite = !trackIsFavorite
-                updateTrackIsFavoriteButtonStateFromVar()
+                //trackIsFavorite = !trackIsFavorite
+                //updateTrackIsFavoriteButtonStateFromVar()
             }else{
                 viewModel.favoriteTrackButtonPressed(false)
-                trackIsFavorite = !trackIsFavorite
-                updateTrackIsFavoriteButtonStateFromVar()
-            }
+                //trackIsFavorite = !trackIsFavorite
+                //updateTrackIsFavoriteButtonStateFromVar()
+            }*/
+            viewModel.favoriteTrackButtonPressed( !trackIsFavorite )
 
         }
 
