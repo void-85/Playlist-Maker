@@ -55,5 +55,9 @@ class SearchInteractorImpl(
     override suspend fun getAllFavoriteTracks(): Flow<Track>{
         return favTracksRepositoryImpl.getAllTracks()
     }
+
+    override suspend fun getAllFavoriteTracksIds(): Flow<Long> {
+        return favTracksRepositoryImpl.getAllTracksIds()
+    }
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }

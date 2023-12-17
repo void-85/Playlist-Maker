@@ -49,6 +49,7 @@ class MediaActivityViewModel(
                         mediaCountry = track.country,
                         showPlayElsePauseButtonState = true,
                         trackIsFavorite = mediaInteractor.isTrackFavorite(track)
+                        //trackIsFavorite = track.isFavorite
                     )
                 )
             }
@@ -94,6 +95,8 @@ class MediaActivityViewModel(
         if (mediaInteractor.getCurrentPosition() > 0L) {
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
+
+
 
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(

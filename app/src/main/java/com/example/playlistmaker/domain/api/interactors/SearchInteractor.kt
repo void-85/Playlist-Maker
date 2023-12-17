@@ -19,5 +19,6 @@ interface SearchInteractor {
 
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
     suspend fun getAllFavoriteTracks(): Flow<Track>
+    suspend fun getAllFavoriteTracksIds(): Flow<Long>
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }

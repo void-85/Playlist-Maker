@@ -41,6 +41,8 @@ fun DBTrackEntity.convert(): Track{
         this.primaryGenreName,
         this.country,
 
-        this.previewUrl
+        this.previewUrl,
+
+        isFavorite = false
     )
 }

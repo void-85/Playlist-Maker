@@ -11,5 +11,6 @@ interface FavTracksRepository {
     suspend fun deleteTrack(track: Track)
     suspend fun isTrackFavorite(track: Track): Boolean
     suspend fun getAllTracks(): Flow<Track>
+    suspend fun getAllTracksIds(): Flow<Long>
 
 }

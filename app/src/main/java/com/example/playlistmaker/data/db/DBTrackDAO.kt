@@ -20,4 +20,7 @@ interface DBTrackDAO {
 
     @Query("SELECT * FROM fav_tracks_table ORDER BY when_added DESC")
     suspend fun getAllTracks(): List<DBTrackEntity>
+
+    @Query("SELECT track_id FROM fav_tracks_table")
+    suspend fun getAllTracksIds(): List<Long>
 }

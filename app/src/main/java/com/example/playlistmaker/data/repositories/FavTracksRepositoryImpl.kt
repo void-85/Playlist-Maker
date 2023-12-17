@@ -25,7 +25,13 @@ class FavTracksRepositoryImpl(
 
     override suspend fun getAllTracks(): Flow<Track> = flow {
         appDB.getDAO().getAllTracks().forEach {
-            emit( it.convert() )
+            emit(it.convert())
+        }
+    }
+
+    override suspend fun getAllTracksIds(): Flow<Long> = flow {
+        appDB.getDAO().getAllTracksIds().forEach {
+            emit(it)
         }
     }
 }
