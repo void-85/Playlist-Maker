@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentScreenUpdate
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
+import com.example.playlistmaker.ui.player.act.MediaActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -54,8 +56,18 @@ class FavSongsFragment : Fragment() {
         return startState
     }
 
+    private fun switchToPlayer() {
+        val mediaIntent = Intent(context, MediaActivity::class.java)
+        startActivity(mediaIntent)
+    }
+
     private val trackViewHolderItemClicked: (Track) -> Unit = { item ->
-        run {}
+        run {
+            if (isClickAllowed()) {
+                viewmodel.saveCurrentlyPlaying( item )
+                switchToPlayer()
+            }
+        }
     }
 
 
@@ -76,6 +88,10 @@ class FavSongsFragment : Fragment() {
 
         viewmodel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
+
+                is FavSongsFragmentScreenUpdate.DoNothing -> {
+                    //
+                }
 
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
 

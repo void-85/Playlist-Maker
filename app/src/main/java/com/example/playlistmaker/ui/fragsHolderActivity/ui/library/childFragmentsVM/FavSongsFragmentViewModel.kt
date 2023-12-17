@@ -16,7 +16,7 @@ class FavSongsFragmentViewModel(
 
     private var state =
         MutableLiveData<FavSongsFragmentScreenUpdate>(
-            FavSongsFragmentScreenUpdate.ShowNoData
+            FavSongsFragmentScreenUpdate.DoNothing
         )
 
     init {
@@ -39,13 +39,21 @@ class FavSongsFragmentViewModel(
         }
     }
 
+    fun saveCurrentlyPlaying(
+        currentlyPlaying: Track
+    ) {
+        searchInteractor.setCurrentlyPlaying(currentlyPlaying)
+    }
 
     fun getState(): LiveData<FavSongsFragmentScreenUpdate> {
         return state
     }
 }
 
+
 sealed class FavSongsFragmentScreenUpdate {
+
+    object DoNothing : FavSongsFragmentScreenUpdate()
 
     object ShowNoData : FavSongsFragmentScreenUpdate()
 
