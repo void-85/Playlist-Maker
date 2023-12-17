@@ -46,6 +46,10 @@ class SearchFragmentViewModel(
         )
     }
 
+    fun updateRecieved(){
+        //screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
+    }
+
     fun searchTracksDebounced(searchText: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {

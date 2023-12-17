@@ -20,7 +20,7 @@ class FavSongsFragmentViewModel(
         )
 
     init {
-        loadDBFavoriteTracks()
+        //loadDBFavoriteTracks()
     }
 
     fun loadDBFavoriteTracks(){
@@ -41,6 +41,10 @@ class FavSongsFragmentViewModel(
                 )
             }
         }
+    }
+
+    fun updateRecieved(){
+        state.postValue(FavSongsFragmentScreenUpdate.DoNothing)
     }
 
     fun saveCurrentlyPlaying(currentlyPlaying: Track) {

@@ -21,7 +21,8 @@
     <FrameLayout
         android:id="@+id/no_data_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="wrap_content"

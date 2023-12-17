@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,8 +18,6 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.player.act.MediaActivity
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class FavSongsFragment : Fragment() {
@@ -37,13 +34,15 @@ class FavSongsFragment : Fragment() {
     }
 
     private val viewmodel by viewModel<FavSongsFragmentViewModel>()
-    private lateinit var binding: FragmentFavSongsBinding
+
+    private var _binding: FragmentFavSongsBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var noDataFrame: FrameLayout
     private lateinit var recyclerView: RecyclerView
-    private var data = ArrayList<Track>()
+    private val data = ArrayList<Track>()
 
-    private var isClickAllowed: Boolean = true
+/*    private var isClickAllowed: Boolean = true
     private fun isClickAllowed(): Boolean {
         val startState = isClickAllowed
         if (isClickAllowed) {
@@ -54,7 +53,7 @@ class FavSongsFragment : Fragment() {
             }
         }
         return startState
-    }
+    }*/
 
     private fun switchToPlayer() {
         val mediaIntent = Intent(context, MediaActivity::class.java)
@@ -63,29 +62,44 @@ class FavSongsFragment : Fragment() {
 
     private val trackViewHolderItemClicked: (Track) -> Unit = { item ->
         run {
-            if (isClickAllowed()) {
+            //if (isClickAllowed()) {
                 viewmodel.saveCurrentlyPlaying( item )
                 switchToPlayer()
-            }
+            //}
         }
     }
 
-
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         viewmodel.loadDBFavoriteTracks()
     }
+/*    override fun onStart() {
+        super.onStart()
+        viewmodel.loadDBFavoriteTracks()
+    }*/
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFavSongsBinding.inflate(inflater, container, false)
+        _binding = FragmentFavSongsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        noDataFrame = binding.noDataInfo
+
+        recyclerView = binding.favSongsRView
+        recyclerView.adapter = RecyclerViewTrackAdapter(
+            data, trackViewHolderItemClicked
+        )
 
         viewmodel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -97,14 +111,21 @@ class FavSongsFragment : Fragment() {
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
 
                     noDataFrame.visibility = View.VISIBLE
+
                     val animate = TranslateAnimation(
                         0f, 0f,
-                        binding.noDataInfo.height.toFloat(), 0f
+                        noDataFrame.height.toFloat(), 0f
                     ).apply {
                         duration = 500
                         fillAfter = true
                     }
-                    binding.noDataInfo.startAnimation(animate)
+
+                    noDataFrame.startAnimation(animate)
+
+                    data.clear()
+                    recyclerView.adapter?.notifyDataSetChanged()
+
+                    viewmodel.updateRecieved()
                 }
 
                 is FavSongsFragmentScreenUpdate.DBFavoriteTracks -> {
@@ -113,17 +134,12 @@ class FavSongsFragment : Fragment() {
                     data.clear()
                     data.addAll( state.tracks )
                     recyclerView.adapter?.notifyDataSetChanged()
+
+                    viewmodel.updateRecieved()
                 }
 
             }
         }
-        //binding.favSongFragText.text = getString(requireArguments().getInt(TEXT_RESOURCE))
 
-        noDataFrame = binding.noDataInfo
-
-        recyclerView = binding.favSongsRView
-        recyclerView.adapter = RecyclerViewTrackAdapter(
-            data, trackViewHolderItemClicked
-        )
     }
 }

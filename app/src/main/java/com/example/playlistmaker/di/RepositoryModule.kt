@@ -23,7 +23,7 @@ val repositoryModule = module {
         AppPrefsRepositoryImpl(get(), get())
     }
 
-    factory<AudioRepository> {
+    single<AudioRepository> {
         AudioRepositoryImpl()
     }
 

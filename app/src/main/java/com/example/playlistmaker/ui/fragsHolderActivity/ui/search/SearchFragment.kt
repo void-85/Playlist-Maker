@@ -32,7 +32,9 @@ import com.example.playlistmaker.ui.utils.hideKeyboard
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    //private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var clearTextButtonId: ImageView
     private lateinit var editTextId: EditText
@@ -184,15 +186,17 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_blank, container, false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //setContentView(R.layout.fragment_search)
 
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
@@ -204,10 +208,12 @@ class SearchFragment : Fragment() {
                 is SearchActivityUpdate.Loading -> {
                     //unreachable?
                     showDataLoading()
+                    viewModel.updateRecieved()
                 }
 
                 is SearchActivityUpdate.NoNetwork -> {
                     showNoNetwork()
+                    viewModel.updateRecieved()
                 }
 
                 is SearchActivityUpdate.SearchResult -> {
@@ -220,6 +226,7 @@ class SearchFragment : Fragment() {
                         showTracks()
                     }
                     recyclerView.adapter?.notifyDataSetChanged()
+                    viewModel.updateRecieved()
                 }
 
                 is SearchActivityUpdate.SearchHistoryData -> {
@@ -235,6 +242,7 @@ class SearchFragment : Fragment() {
 
                     historyRView.adapter?.notifyDataSetChanged()
                     showHistory()
+                    viewModel.updateRecieved()
                 }
             }
         }

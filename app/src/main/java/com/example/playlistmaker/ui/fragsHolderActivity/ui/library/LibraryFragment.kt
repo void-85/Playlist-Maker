@@ -14,7 +14,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class LibraryFragment : Fragment() {
 
-
     private lateinit var binding: FragmentLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
 
