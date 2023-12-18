@@ -1,15 +1,18 @@
 package com.example.playlistmaker.domain.player
 
 
+
 import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
+import com.example.playlistmaker.domain.db.FavTracksRepository
 import com.example.playlistmaker.domain.entities.Track
 
 
 class MediaInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
-    private val audioRepositoryImpl: AudioRepository
+    private val audioRepositoryImpl: AudioRepository,
+    private val favTracksRepositoryImpl: FavTracksRepository
 ) : MediaInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
@@ -78,4 +81,19 @@ class MediaInteractorImpl(
         audioRepositoryImpl.release()
     }
     // AUDIO REPOSITORY -------------------------------------------------------------------
+
+
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    override suspend fun insertTrack(track: Track) {
+        favTracksRepositoryImpl.insertTrack(track)
+    }
+
+    override suspend fun deleteTrack(track: Track) {
+        favTracksRepositoryImpl.deleteTrack(track)
+    }
+
+    override suspend fun isTrackFavorite(track: Track): Boolean {
+        return favTracksRepositoryImpl.isTrackFavorite(track)
+    }
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }

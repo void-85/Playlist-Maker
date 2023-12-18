@@ -46,6 +46,10 @@ class SearchFragmentViewModel(
         )
     }
 
+    fun updateRecieved(){
+        //screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
+    }
+
     fun searchTracksDebounced(searchText: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -58,7 +62,6 @@ class SearchFragmentViewModel(
 
         if (searchText.length >= SEARCH_DEBOUNCE_REQ_MIN_LEN) {
 
-            val data = ArrayList<Track>()
             viewModelScope.launch {
                 searchInteractor.searchTracks(searchText).collect { pair ->
                     run {
@@ -69,8 +72,18 @@ class SearchFragmentViewModel(
 
                         } else {
 
-                            pair.first?.forEach { data.add(it) }
-                            screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(data))
+/*                            val favIds = ArrayList<Long>()
+                            searchInteractor.getAllFavoriteTracksIds().collect{
+                                favIds.add(it)
+                            }*/
+
+                            val tracks = ArrayList<Track>()
+                            pair.first?.forEach {
+
+                                tracks.add( it ) //it.apply { isFavorite = favIds.contains(it.trackId) } )
+                            }
+
+                            screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(tracks))
 
                         }
                     }

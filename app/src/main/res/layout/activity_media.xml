@@ -121,6 +121,19 @@
         android:textColor="@color/search_screen_header"
     />
 
+    <ImageSwitcher
+        android:id="@+id/media_screen_like"
+        android:layout_width ="@dimen/media_small_button_size"
+        android:layout_height="@dimen/media_small_button_size"
+        app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist"
+        app:layout_constraintEnd_toEndOf   ="parent"
+        app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
+        android:layout_marginTop   ="@dimen/media_screen_small_margin"
+        android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
+        android:layout_marginEnd   ="@dimen/media_screen_large_margin"
+        android:src="@drawable/icon_like"
+    />
+    <!--
     <ImageView
         android:id="@+id/media_screen_like"
         android:layout_width ="@dimen/media_small_button_size"
@@ -133,6 +146,8 @@
         android:layout_marginEnd   ="@dimen/media_screen_large_margin"
         android:src="@drawable/icon_like"
     />
+    -->
+
 
 
 

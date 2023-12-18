@@ -40,7 +40,7 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var mediaCountry: TextView
 
     private lateinit var playPauseButton: ImageSwitcher
-
+    private lateinit var favoriteTrackButton: ImageSwitcher
 
     private lateinit var binding: ActivityMediaBinding
     private val viewModel by viewModel<MediaActivityViewModel>()
@@ -70,6 +70,27 @@ class MediaActivity : AppCompatActivity() {
         }
     }
 
+    private var trackIsFavorite: Boolean = false
+    private fun updateTrackIsFavoriteButtonStateFromVar(){
+        when (AppCompatDelegate.getDefaultNightMode()) {
+
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                if (trackIsFavorite) {
+                    favoriteTrackButton.setImageResource(R.drawable.icon_liked_dark)
+                } else {
+                    favoriteTrackButton.setImageResource(R.drawable.icon_like_dark)
+                }
+            }
+
+            else -> {
+                if (trackIsFavorite) {
+                    favoriteTrackButton.setImageResource(R.drawable.icon_liked)
+                } else {
+                    favoriteTrackButton.setImageResource(R.drawable.icon_like)
+                }
+            }
+        }
+    }
 
     override fun onStart() {
         super.onStart()
@@ -148,6 +169,9 @@ class MediaActivity : AppCompatActivity() {
 
                     showPlayButtonElsePauseButton = it.showPlayElsePauseButtonState
                     updatePlayPauseButtonStateFromVar()
+
+                    trackIsFavorite = it.trackIsFavorite
+                    updateTrackIsFavoriteButtonStateFromVar()
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
@@ -157,6 +181,11 @@ class MediaActivity : AppCompatActivity() {
                 is MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly -> {
                     showPlayButtonElsePauseButton = it.state
                     updatePlayPauseButtonStateFromVar()
+                }
+
+                is MediaActivityScreenUpdate.ShowTrackIsFavorite -> {
+                    trackIsFavorite = it.trackIsFavorite
+                    updateTrackIsFavoriteButtonStateFromVar()
                 }
 
                 is MediaActivityScreenUpdate.PlayFinished -> {
@@ -170,6 +199,7 @@ class MediaActivity : AppCompatActivity() {
         }
 
 
+
         playPauseButton = binding.mediaScreenPlay
         playPauseButton.setFactory {
 
@@ -179,18 +209,33 @@ class MediaActivity : AppCompatActivity() {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-
             myView
         }
         playPauseButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_in)
         playPauseButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.switches_out)
-
         updatePlayPauseButtonStateFromVar()
-
         playPauseButton.setOnClickListener {
-
             viewModel.playPauseButtonPressed()
         }
+
+
+        favoriteTrackButton = binding.mediaScreenLike
+        favoriteTrackButton.setFactory {
+
+            val myView = ImageView(applicationContext)
+            myView.scaleType = ImageView.ScaleType.FIT_CENTER
+            myView.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            myView
+        }
+        favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_in)
+        favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_out)
+        favoriteTrackButton.setOnClickListener {
+            viewModel.favoriteTrackButtonPressed( makeTrackFavorite = !trackIsFavorite )
+        }
+
 
         mediaTimeCode = binding.mediaScreenTimeCode
 

@@ -4,9 +4,11 @@ package com.example.playlistmaker.ui.player.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.launch
 
 
 class MediaActivityViewModel(
@@ -15,18 +17,7 @@ class MediaActivityViewModel(
 
     private var screenData =
         MutableLiveData<MediaActivityScreenUpdate>(
-            MediaActivityScreenUpdate.AllData(
-                0,
-                "",
-                "-",
-                "-",
-                "-",
-                "-",
-                "_",
-                "-",
-                "-",
-                true
-            )
+            MediaActivityScreenUpdate.DoNothing
         )
 
     init {
@@ -43,20 +34,25 @@ class MediaActivityViewModel(
                 ::onPlayFun,
                 ::onPauseFun
             )
-            screenData.postValue(
-                MediaActivityScreenUpdate.AllData(
-                    timeCode = 0L,
-                    artworkUrl100 = track.artworkUrl100,
-                    mediaTitle = track.trackName,
-                    mediaArtist = track.artistName,
-                    mediaLength = track.trackTime,
-                    mediaAlbum = track.collectionName,
-                    mediaDate = track.releaseDate,
-                    mediaGenre = track.primaryGenreName,
-                    mediaCountry = track.country,
-                    showPlayElsePauseButtonState = true
+
+            viewModelScope.launch {
+                screenData.postValue(
+                    MediaActivityScreenUpdate.AllData(
+                        timeCode = 0L,
+                        artworkUrl100 = track.artworkUrl100,
+                        mediaTitle = track.trackName,
+                        mediaArtist = track.artistName,
+                        mediaLength = track.trackTime,
+                        mediaAlbum = track.collectionName,
+                        mediaDate = track.releaseDate,
+                        mediaGenre = track.primaryGenreName,
+                        mediaCountry = track.country,
+                        showPlayElsePauseButtonState = true,
+                        trackIsFavorite = mediaInteractor.isTrackFavorite(track)
+                        //trackIsFavorite = track.isFavorite
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -79,7 +75,6 @@ class MediaActivityViewModel(
     }
 
     private fun updateFun() {
-
         screenData.postValue(
             MediaActivityScreenUpdate.TimeCodeOnly(
                 mediaInteractor.getCurrentPosition()
@@ -100,6 +95,9 @@ class MediaActivityViewModel(
         if (mediaInteractor.getCurrentPosition() > 0L) {
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
+
+
+
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
                         timeCode = mediaInteractor.getCurrentPosition(),
@@ -111,9 +109,18 @@ class MediaActivityViewModel(
                         mediaDate = track.releaseDate,
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
-                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate()
+                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                        trackIsFavorite = false
                     )
                 )
+
+                viewModelScope.launch {
+                    screenData.postValue(
+                        MediaActivityScreenUpdate.ShowTrackIsFavorite(
+                            mediaInteractor.isTrackFavorite(track)
+                        )
+                    )
+                }
             }
         }
 
@@ -151,6 +158,25 @@ class MediaActivityViewModel(
             }
         }
     }
+
+    fun favoriteTrackButtonPressed(makeTrackFavorite: Boolean) {
+
+        val track: Track? = mediaInteractor.getCurrentlyPlaying()
+        if (track is Track) {
+            viewModelScope.launch {
+                if (makeTrackFavorite)
+                    mediaInteractor.insertTrack(track)
+                else
+                    mediaInteractor.deleteTrack(track)
+
+                screenData.postValue(
+                    MediaActivityScreenUpdate.ShowTrackIsFavorite(
+                        mediaInteractor.isTrackFavorite(track)
+                    )
+                )
+            }
+        }
+    }
 }
 
 
@@ -164,6 +190,10 @@ sealed class MediaActivityScreenUpdate {
         val state: Boolean
     ) : MediaActivityScreenUpdate()
 
+    data class ShowTrackIsFavorite(
+        val trackIsFavorite: Boolean
+    ) : MediaActivityScreenUpdate()
+
     data class AllData(
         val timeCode: Long,
         val artworkUrl100: String,
@@ -174,8 +204,11 @@ sealed class MediaActivityScreenUpdate {
         val mediaDate: String,
         val mediaGenre: String,
         val mediaCountry: String,
-        val showPlayElsePauseButtonState: Boolean
+        val showPlayElsePauseButtonState: Boolean,
+        val trackIsFavorite: Boolean
     ) : MediaActivityScreenUpdate()
 
     object PlayFinished : MediaActivityScreenUpdate()
+
+    object DoNothing : MediaActivityScreenUpdate()
 }

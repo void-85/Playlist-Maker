@@ -33,6 +33,13 @@ interface MediaInteractor {
 
     fun getCurrentlyPlaying(): Track?
     // APP PREFS REPOSITORY ---------------------------------------------------------------
+
+
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    suspend fun insertTrack(track: Track)
+    suspend fun deleteTrack(track: Track)
+    suspend fun isTrackFavorite(track: Track): Boolean
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }
 
 

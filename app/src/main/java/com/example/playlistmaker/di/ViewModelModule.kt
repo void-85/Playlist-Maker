@@ -30,7 +30,7 @@ val viewModuleModule = module {
     }
 
     viewModel {
-        FavSongsFragmentViewModel()
+        FavSongsFragmentViewModel(get())
     }
 
     viewModel {

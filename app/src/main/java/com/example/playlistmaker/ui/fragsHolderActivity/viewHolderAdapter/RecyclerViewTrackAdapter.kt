@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
+package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
 
 
 import android.view.LayoutInflater
@@ -10,23 +10,23 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 
 
-class SearchTrackAdapter(
+class RecyclerViewTrackAdapter(
 
     private val tracks: List<Track>,
     private val trackViewHolderItemClicked: (Track) -> Unit
 
-) : RecyclerView.Adapter<SearchTrackViewHolder>() {
+) : RecyclerView.Adapter<RecyclerViewTrackViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewTrackViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return SearchTrackViewHolder(
+        return RecyclerViewTrackViewHolder(
             view,
             trackViewHolderItemClicked
         )
     }
 
-    override fun onBindViewHolder(holder: SearchTrackViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerViewTrackViewHolder, position: Int) {
 
         holder.bind(tracks[position])
         holder.itemView.animation =

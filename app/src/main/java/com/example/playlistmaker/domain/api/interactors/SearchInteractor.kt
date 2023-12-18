@@ -8,7 +8,6 @@ interface SearchInteractor {
     // APP PREFS REPOSITORY ---------------------------------------------------------------
     fun getSearchHistory(): List<Track>
     fun setSearchHistory(tracks: List<Track>)
-
     fun setCurrentlyPlaying(track: Track)
     // APP PREFS REPOSITORY ---------------------------------------------------------------
 
@@ -16,4 +15,10 @@ interface SearchInteractor {
     // TRACKS REPOSITORY ------------------------------------------------------------------
     fun searchTracks(searchText: String): Flow<Pair<List<Track>?, String?>>
     // TRACKS REPOSITORY ------------------------------------------------------------------
+
+
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    suspend fun getAllFavoriteTracks(): Flow<Track>
+    suspend fun getAllFavoriteTracksIds(): Flow<Long>
+    // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }
