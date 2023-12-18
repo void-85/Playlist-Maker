@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -18,6 +19,8 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.player.act.MediaActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class FavSongsFragment : Fragment() {
@@ -42,7 +45,7 @@ class FavSongsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val data = ArrayList<Track>()
 
-/*    private var isClickAllowed: Boolean = true
+    private var isClickAllowed: Boolean = true
     private fun isClickAllowed(): Boolean {
         val startState = isClickAllowed
         if (isClickAllowed) {
@@ -53,7 +56,7 @@ class FavSongsFragment : Fragment() {
             }
         }
         return startState
-    }*/
+    }
 
     private fun switchToPlayer() {
         val mediaIntent = Intent(context, MediaActivity::class.java)
@@ -62,10 +65,10 @@ class FavSongsFragment : Fragment() {
 
     private val trackViewHolderItemClicked: (Track) -> Unit = { item ->
         run {
-            //if (isClickAllowed()) {
+            if (isClickAllowed()) {
                 viewmodel.saveCurrentlyPlaying( item )
                 switchToPlayer()
-            //}
+            }
         }
     }
 
