@@ -72,18 +72,15 @@ class SearchFragmentViewModel(
 
                         } else {
 
-                            val favIds = ArrayList<Long>()
+/*                            val favIds = ArrayList<Long>()
                             searchInteractor.getAllFavoriteTracksIds().collect{
                                 favIds.add(it)
-                            }
+                            }*/
 
                             val tracks = ArrayList<Track>()
                             pair.first?.forEach {
 
-                                //val track = it
-                                //track.apply { isFavorite = favIds.contains(track.trackId) }
-
-                                tracks.add( it.apply { isFavorite = favIds.contains(it.trackId) } )
+                                tracks.add( it ) //it.apply { isFavorite = favIds.contains(it.trackId) } )
                             }
 
                             screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(tracks))

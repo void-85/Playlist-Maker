@@ -16,7 +16,7 @@ import com.example.playlistmaker.domain.db.FavTracksRepository
 val repositoryModule = module {
 
     single<TracksRepository> {
-        TracksRepositoryImpl(get())
+        TracksRepositoryImpl(get(),get())
     }
 
     single<AppPrefsRepository> {
