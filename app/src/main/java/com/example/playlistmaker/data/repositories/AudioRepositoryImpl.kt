@@ -62,6 +62,8 @@ class AudioRepositoryImpl : AudioRepository {
         this.onPlayFun = onPlayFun
         this.onPauseFun = onPauseFun
 
+        mediaPlayer.reset()
+
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
 

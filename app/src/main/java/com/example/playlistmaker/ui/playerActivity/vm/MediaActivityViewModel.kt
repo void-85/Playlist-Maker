@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.vm
+package com.example.playlistmaker.ui.playerActivity.vm
 
 
 import androidx.lifecycle.LiveData
@@ -25,17 +25,18 @@ class MediaActivityViewModel(
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
-            mediaInteractor.prepare(
-                track.previewUrl,
-                mediaInteractor.getMediaPlayerLastPosition().toInt(),
-                mediaInteractor.isMediaPlayerToResumeOnCreate(),
-                ::updateFun,
-                ::onCompletionFun,
-                ::onPlayFun,
-                ::onPauseFun
-            )
-
             viewModelScope.launch {
+
+                mediaInteractor.prepare(
+                    track.previewUrl,
+                    mediaInteractor.getMediaPlayerLastPosition().toInt(),
+                    mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                    ::updateFun,
+                    ::onCompletionFun,
+                    ::onPlayFun,
+                    ::onPauseFun
+                )
+
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
                         timeCode = 0L,

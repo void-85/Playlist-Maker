@@ -29,9 +29,14 @@
         </activity>
 
         <activity
-            android:name=".ui.player.act.MediaActivity"
+            android:name=".ui.playerActivity.act.MediaActivity"
             android:exported="false">
         </activity>
+
+        <activity
+            android:name=".ui.newPlaylistActivity.act.NewPlaylistActivity"
+            android:exported="false"
+        />
 
         <!--
         <activity

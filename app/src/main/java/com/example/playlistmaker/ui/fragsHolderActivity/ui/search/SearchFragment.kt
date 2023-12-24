@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
-import com.example.playlistmaker.ui.player.act.MediaActivity
+import com.example.playlistmaker.ui.playerActivity.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
 
 
@@ -312,7 +312,8 @@ class SearchFragment : Fragment() {
 
             override fun beforeTextChanged(
                 s: CharSequence?, start: Int, count: Int, after: Int
-            ) {/* empty */
+            ) {
+                /* empty */
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -332,7 +333,8 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {/* empty */
+            override fun afterTextChanged(s: Editable?) {
+                /* empty */
             }
         }
         editTextId.addTextChangedListener(simpleTextWatcher)

@@ -1,6 +1,7 @@
-package com.example.playlistmaker.ui.player.act
+package com.example.playlistmaker.ui.playerActivity.act
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
-import com.example.playlistmaker.ui.player.vm.MediaActivityScreenUpdate
-import com.example.playlistmaker.ui.player.vm.MediaActivityViewModel
+import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
+import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityScreenUpdate
+import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.utils.millisToMinSec
 
 
@@ -28,6 +30,7 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var goBackButton: ImageView
     private lateinit var mediaArtwork: ImageView
+    private lateinit var addToPlaylistButton: ImageView
 
     private lateinit var mediaTimeCode: TextView
     private lateinit var mediaTitle: TextView
@@ -198,7 +201,11 @@ class MediaActivity : AppCompatActivity() {
             }
         }
 
-
+        addToPlaylistButton = binding.mediaScreenAddToPlaylist
+        addToPlaylistButton.setOnClickListener{
+            val newPlaylistIntent = Intent(applicationContext, NewPlaylistActivity::class.java)
+            startActivity(newPlaylistIntent)
+        }
 
         playPauseButton = binding.mediaScreenPlay
         playPauseButton.setFactory {

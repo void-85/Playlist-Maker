@@ -18,7 +18,7 @@ import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentScreenUpdate
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
-import com.example.playlistmaker.ui.player.act.MediaActivity
+import com.example.playlistmaker.ui.playerActivity.act.MediaActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -140,5 +140,15 @@
         <item name="android:layout_marginEnd">@dimen/settings_icon_padding_right</item>
     </style>
 
+    
+    
+    
+    
+    
+    <style name="new_playlist_edit_text_style" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#f00</item>
+        <item name="boxStrokeWidth">2dp</item>
+
+    </style>
 
 </resources>

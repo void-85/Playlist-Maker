@@ -4,7 +4,7 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.FragsHolderActivityViewModel
-import com.example.playlistmaker.ui.player.vm.MediaActivityViewModel
+import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.search.SearchFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.settings.SettingsFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
