@@ -25,17 +25,17 @@ class MediaActivityViewModel(
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
-            viewModelScope.launch {
+            mediaInteractor.prepare(
+                track.previewUrl,
+                mediaInteractor.getMediaPlayerLastPosition().toInt(),
+                mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                ::updateFun,
+                ::onCompletionFun,
+                ::onPlayFun,
+                ::onPauseFun
+            )
 
-                mediaInteractor.prepare(
-                    track.previewUrl,
-                    mediaInteractor.getMediaPlayerLastPosition().toInt(),
-                    mediaInteractor.isMediaPlayerToResumeOnCreate(),
-                    ::updateFun,
-                    ::onCompletionFun,
-                    ::onPlayFun,
-                    ::onPauseFun
-                )
+            viewModelScope.launch {
 
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
