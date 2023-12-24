@@ -1,7 +1,10 @@
 package com.example.playlistmaker.ui.newPlaylistActivity.act
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
@@ -16,9 +19,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
+import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 
 class NewPlaylistActivity : AppCompatActivity() {
@@ -81,7 +89,7 @@ class NewPlaylistActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) { /**/ }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/**/}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                createPlaylistButton.isEnabled = (s?.length ?: 0) > 2
+                createPlaylistButton.isEnabled = (s?.length ?: 0) > 0
             }
         })
 
@@ -92,6 +100,35 @@ class NewPlaylistActivity : AppCompatActivity() {
         createPlaylistButton = binding.createNewPlaylistButton
         createPlaylistButton.setOnClickListener {
             //Toast.makeText(applicationContext, "saving...", Toast.LENGTH_LONG).show()
+
+            var imageIdFilename = ""
+            if (currentImageURI != null) {
+
+                imageIdFilename = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
+
+                val filePath = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                if (!filePath.exists()) {
+                    filePath.mkdirs()
+                }
+                val file = File(filePath, imageIdFilename)
+                val inputStream = contentResolver.openInputStream(currentImageURI!!)
+                val outputStream = FileOutputStream(file)
+                BitmapFactory
+                    .decodeStream(inputStream)
+                    .compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+
+            viewModel.createPlaylist( Playlist(
+                id = 0L,
+
+                name = playlistName.text.toString(),
+                description = playlistDescription.text.toString(),
+
+                imageId = imageIdFilename,
+
+                emptyList(),
+                0
+            ))
 
         }
     }

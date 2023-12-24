@@ -9,6 +9,7 @@ import androidx.room.Query
 @Dao
 interface DBTrackDAO {
 
+    // -- FAV TRACKS ----------------------------------------------------------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavTrack(track: DBTrackEntity)
 
@@ -23,4 +24,13 @@ interface DBTrackDAO {
 
     @Query("SELECT track_id FROM fav_tracks_table")
     suspend fun getAllFavTracksIds(): List<Long>
+    // -- FAV TRACKS ----------------------------------------------------------
+
+
+
+    // -- PLAYLISTS -----------------------------------------------------------
+    @Insert
+    suspend fun createPlaylist(playlist: DBPlaylistEntity)
+
+    // -- PLAYLISTS -----------------------------------------------------------
 }

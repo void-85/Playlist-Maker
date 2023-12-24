@@ -6,6 +6,7 @@ import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.db.FavTracksPlaylistsRepository
+import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
 
 
@@ -83,7 +84,7 @@ class MediaInteractorImpl(
     // AUDIO REPOSITORY -------------------------------------------------------------------
 
 
-    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
     override suspend fun insertTrack(track: Track) {
         favTracksPlaylistsRepositoryImpl.insertFavTrack(track)
     }
@@ -95,5 +96,9 @@ class MediaInteractorImpl(
     override suspend fun isTrackFavorite(track: Track): Boolean {
         return favTracksPlaylistsRepositoryImpl.isTrackFavorite(track)
     }
-    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+
+    override suspend fun createPlaylist(playlist: Playlist) {
+        favTracksPlaylistsRepositoryImpl.createPlaylist( playlist )
+    }
+    // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }
