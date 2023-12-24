@@ -9,7 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +21,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -41,6 +42,8 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var createPlaylistButton: Button
 
     private var currentImageURI: Uri? = null
+
+    lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +83,8 @@ class NewPlaylistActivity : AppCompatActivity() {
 
         toolbar = binding.newPlaylistToolbar
         toolbar.setNavigationOnClickListener {
-            Toast.makeText(applicationContext, "exit...", Toast.LENGTH_LONG).show()
+            //Toast.makeText(applicationContext, "exit...", Toast.LENGTH_LONG).show()
+            onBackPressedDispatcher.onBackPressed()
         }
 
 
@@ -130,7 +134,27 @@ class NewPlaylistActivity : AppCompatActivity() {
                 0
             ))
 
+            finish()
         }
+
+        confirmExitDialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Завершить создание плейлиста?")
+            .setMessage("Все несохраненные данные будут потеряны!")
+            .setNeutralButton("Отмена") { _, _ -> /* NOTHING */ }
+            .setPositiveButton("Завершить") { dialog, which ->
+                finish()
+            }
+
+        onBackPressedDispatcher.addCallback( object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                //Toast.makeText(applicationContext, "trying to exit...", Toast.LENGTH_LONG).show()
+                if( createPlaylistButton.isEnabled ){
+                    confirmExitDialog.show()
+                }else{
+                    finish()
+                }
+            }
+        } )
     }
 
 }
