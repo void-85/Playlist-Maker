@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.newPlaylistActivity.act
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPlaylistActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityNewPlaylistBinding
+    private lateinit var binding: ActivityNewPlaylistBinding
     private val viewModel by viewModel<NewPlaylistActivityViewModel>()
 
     private lateinit var toolbar: Toolbar
@@ -30,6 +31,8 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var playlistName: TextInputEditText
     private lateinit var playlistDescription: TextInputEditText
     private lateinit var createPlaylistButton: Button
+
+    private var currentImageURI: Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,33 +42,32 @@ class NewPlaylistActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val uploadPhoto =
-            registerForActivityResult(
-                ActivityResultContracts.PickVisualMedia()
-            ) { uri ->
-                if (uri != null) {
-                    //Toast.makeText(applicationContext, uri.toString(), Toast.LENGTH_LONG).show()
-                    //playlistImage.setImageURI(uri)
-                    Glide
-                        .with(applicationContext)
-                        .load(uri)
-                        .placeholder(R.drawable.spiral)
-                        .transform(
-                            CenterCrop(),
-                            RoundedCorners(
-                                resources.getDimensionPixelSize(
-                                    R.dimen.new_playlist_upload_image_corner_radius
-                                )
+        val uploadPhoto = registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        ) { uri ->
+            if (uri != null) {
+                //Toast.makeText(applicationContext, uri.toString(), Toast.LENGTH_LONG).show()
+                //playlistImage.setImageURI(uri)
+                currentImageURI = uri
+                Glide
+                    .with(applicationContext)
+                    .load(uri)
+                    .placeholder(R.drawable.spiral)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(
+                            resources.getDimensionPixelSize(
+                                R.dimen.new_playlist_upload_image_corner_radius
                             )
                         )
-                        .into(playlistImage)
-                }
+                    )
+                    .into(playlistImage)
             }
+        }
         playlistImage = binding.newPlaylistUploadImage
-        playlistImage.setOnClickListener{
+        playlistImage.setOnClickListener {
             uploadPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-
 
 
         toolbar = binding.newPlaylistToolbar
@@ -73,23 +75,25 @@ class NewPlaylistActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "exit...", Toast.LENGTH_LONG).show()
         }
 
-        createPlaylistButton = binding.createNewPlaylistButton
 
         playlistName = binding.playlistName
-        playlistName.addTextChangedListener( object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                /**/
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                /**/
-            }
-
+        playlistName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { /**/ }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/**/}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 createPlaylistButton.isEnabled = (s?.length ?: 0) > 2
             }
-        } )
+        })
 
+
+        playlistDescription = binding.playlistDescription
+
+
+        createPlaylistButton = binding.createNewPlaylistButton
+        createPlaylistButton.setOnClickListener {
+            //Toast.makeText(applicationContext, "saving...", Toast.LENGTH_LONG).show()
+
+        }
     }
 
 }
