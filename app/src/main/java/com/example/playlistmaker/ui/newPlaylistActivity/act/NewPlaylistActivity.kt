@@ -18,10 +18,6 @@ import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
-import com.example.playlistmaker.domain.entities.Playlist
-import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,6 +25,11 @@ import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+
+import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
+import com.example.playlistmaker.domain.entities.Playlist
+import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
 
 
 class NewPlaylistActivity : AppCompatActivity() {
@@ -47,8 +48,7 @@ class NewPlaylistActivity : AppCompatActivity() {
     lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
 
-
-    private fun renderImageFromVar(){
+    private fun renderImageFromVar() {
         Glide
             .with(applicationContext)
             .load(currentImageURI)
@@ -68,7 +68,7 @@ class NewPlaylistActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
 
         currentImageURI?.let {
-            outState.putString( SELECTED_IMAGE_URI, it.toString() )
+            outState.putString(SELECTED_IMAGE_URI, it.toString())
         }
     }
 
@@ -77,7 +77,6 @@ class NewPlaylistActivity : AppCompatActivity() {
 
         binding = ActivityNewPlaylistBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
 
         val uploadPhoto = registerForActivityResult(
@@ -175,7 +174,7 @@ class NewPlaylistActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 //Toast.makeText(applicationContext, "trying to exit...", Toast.LENGTH_LONG).show()
-                if (createPlaylistButton.isEnabled) {
+                if (createPlaylistButton.isEnabled || currentImageURI != null) {
                     confirmExitDialog.show()
                 } else {
                     finish()
@@ -184,15 +183,15 @@ class NewPlaylistActivity : AppCompatActivity() {
         })
 
         savedInstanceState?.let {
-            val selectedImageUri = it.getString( SELECTED_IMAGE_URI, "" )
-            if(selectedImageUri.isNotEmpty()){
+            val selectedImageUri = it.getString(SELECTED_IMAGE_URI, "")
+            if (selectedImageUri.isNotEmpty()) {
                 currentImageURI = selectedImageUri.toUri()
                 renderImageFromVar()
             }
         }
     }
 
-    private companion object{
+    private companion object {
         const val SELECTED_IMAGE_URI = "SELECTED_IMAGE_URI"
     }
 

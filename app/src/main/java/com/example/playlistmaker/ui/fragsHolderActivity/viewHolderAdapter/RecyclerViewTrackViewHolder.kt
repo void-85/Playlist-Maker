@@ -16,7 +16,6 @@ import com.example.playlistmaker.domain.entities.Track
 class RecyclerViewTrackViewHolder(
     itemView: View,
     private val trackViewHolderItemClicked: (Track) -> Unit
-
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_view_track_name)

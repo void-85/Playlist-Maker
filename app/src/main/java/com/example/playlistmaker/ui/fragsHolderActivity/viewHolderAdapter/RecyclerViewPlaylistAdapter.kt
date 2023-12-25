@@ -1,50 +1,41 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.entities.Track
+import com.example.playlistmaker.domain.entities.Playlist
 
-
-class RecyclerViewTrackAdapter(
-
-    private val tracks: List<Track>,
-    private val trackViewHolderItemClicked: (Track) -> Unit
-
-) : RecyclerView.Adapter<RecyclerViewTrackViewHolder>() {
+class RecyclerViewPlaylistAdapter(
+    private val playlists: List<Playlist>
+) : RecyclerView.Adapter<RecyclerViewPlaylistViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerViewTrackViewHolder {
+    ): RecyclerViewPlaylistViewHolder {
 
         val view = LayoutInflater
             .from(parent.context)
             .inflate(
-                R.layout.track_view,
+                R.layout.playlist_view,
                 parent,
                 false
             )
-        return RecyclerViewTrackViewHolder(
-            view,
-            trackViewHolderItemClicked
-        )
+        return RecyclerViewPlaylistViewHolder(view)
     }
 
     override fun onBindViewHolder(
-        holder: RecyclerViewTrackViewHolder,
+        holder: RecyclerViewPlaylistViewHolder,
         position: Int
     ) {
-        holder.bind(tracks[position])
-        holder.itemView.animation =
+        holder.bind( playlists[position] )
+        holder.itemView.animation=
             AnimationUtils.loadAnimation(
                 holder.itemView.context, R.anim.anim
             )
     }
 
-    override fun getItemCount(): Int = tracks.size
+    override fun getItemCount(): Int = playlists.size
 }
