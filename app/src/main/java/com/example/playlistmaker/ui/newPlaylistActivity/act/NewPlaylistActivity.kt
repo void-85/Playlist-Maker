@@ -14,6 +14,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -46,11 +47,37 @@ class NewPlaylistActivity : AppCompatActivity() {
     lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
 
+
+    private fun renderImageFromVar(){
+        Glide
+            .with(applicationContext)
+            .load(currentImageURI)
+            .placeholder(R.drawable.spiral)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(
+                    resources.getDimensionPixelSize(
+                        R.dimen.new_playlist_upload_image_corner_radius
+                    )
+                )
+            )
+            .into(playlistImage)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        currentImageURI?.let {
+            outState.putString( SELECTED_IMAGE_URI, it.toString() )
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityNewPlaylistBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
 
         val uploadPhoto = registerForActivityResult(
@@ -60,19 +87,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 //Toast.makeText(applicationContext, uri.toString(), Toast.LENGTH_LONG).show()
                 //playlistImage.setImageURI(uri)
                 currentImageURI = uri
-                Glide
-                    .with(applicationContext)
-                    .load(uri)
-                    .placeholder(R.drawable.spiral)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCorners(
-                            resources.getDimensionPixelSize(
-                                R.dimen.new_playlist_upload_image_corner_radius
-                            )
-                        )
-                    )
-                    .into(playlistImage)
+                renderImageFromVar()
             }
         }
         playlistImage = binding.newPlaylistUploadImage
@@ -90,8 +105,17 @@ class NewPlaylistActivity : AppCompatActivity() {
 
         playlistName = binding.playlistName
         playlistName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { /**/ }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/**/}
+            override fun afterTextChanged(s: Editable?) { /**/
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {/**/
+            }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 createPlaylistButton.isEnabled = (s?.length ?: 0) > 0
             }
@@ -110,7 +134,8 @@ class NewPlaylistActivity : AppCompatActivity() {
 
                 imageIdFilename = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
 
-                val filePath = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                val filePath =
+                    File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
                 if (!filePath.exists()) {
                     filePath.mkdirs()
                 }
@@ -122,17 +147,19 @@ class NewPlaylistActivity : AppCompatActivity() {
                     .compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             }
 
-            viewModel.createPlaylist( Playlist(
-                id = 0L,
+            viewModel.createPlaylist(
+                Playlist(
+                    id = 0L,
 
-                name = playlistName.text.toString(),
-                description = playlistDescription.text.toString(),
+                    name = playlistName.text.toString(),
+                    description = playlistDescription.text.toString(),
 
-                imageId = imageIdFilename,
+                    imageId = imageIdFilename,
 
-                emptyList(),
-                0
-            ))
+                    emptyList(),
+                    0
+                )
+            )
 
             finish()
         }
@@ -145,16 +172,28 @@ class NewPlaylistActivity : AppCompatActivity() {
                 finish()
             }
 
-        onBackPressedDispatcher.addCallback( object: OnBackPressedCallback(true){
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 //Toast.makeText(applicationContext, "trying to exit...", Toast.LENGTH_LONG).show()
-                if( createPlaylistButton.isEnabled ){
+                if (createPlaylistButton.isEnabled) {
                     confirmExitDialog.show()
-                }else{
+                } else {
                     finish()
                 }
             }
-        } )
+        })
+
+        savedInstanceState?.let {
+            val selectedImageUri = it.getString( SELECTED_IMAGE_URI, "" )
+            if(selectedImageUri.isNotEmpty()){
+                currentImageURI = selectedImageUri.toUri()
+                renderImageFromVar()
+            }
+        }
+    }
+
+    private companion object{
+        const val SELECTED_IMAGE_URI = "SELECTED_IMAGE_URI"
     }
 
 }
