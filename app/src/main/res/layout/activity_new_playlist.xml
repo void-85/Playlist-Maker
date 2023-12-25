@@ -14,13 +14,12 @@
         app:layout_constraintBottom_toTopOf="@id/new_playlist_upload_image"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:navigationIcon="@drawable/back_icon"
-        app:title="Новый плейлист"
-        app:titleTextAppearance="@style/main_font"
-        app:titleTextColor="@color/settings_screen_header"
-        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0"
-        />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:navigationIcon="@drawable/back_icon"
+        app:title="@string/new_playlist_activity_title"
+        app:titleTextAppearance="@style/main_font"
+        app:titleTextColor="@color/settings_screen_header" />
 
     <ImageView
         android:id="@+id/new_playlist_upload_image"
@@ -32,12 +31,12 @@
         android:background="@drawable/rounded_dashed_line_shape"
         android:scaleType="center"
         android:src="@drawable/addimage"
+        android:contentDescription="@string/new_playlist_activity_image_cont_desc"
         app:layout_constraintBottom_toTopOf="@id/playlist_name_layout"
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_playlist_toolbar"
-        />
+        app:layout_constraintTop_toBottomOf="@id/new_playlist_toolbar" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlist_name_layout"
@@ -47,15 +46,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
+        app:endIconMode="clear_text"
         app:layout_constraintBottom_toTopOf="@id/playlist_description_layout"
-        app:layout_constraintTop_toBottomOf="@id/new_playlist_upload_image"
-   >
+        app:layout_constraintTop_toBottomOf="@id/new_playlist_upload_image">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlist_name"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Название*"
+            android:hint="@string/new_playlist_activity_name_edit_text_hint"
             android:textAppearance="@style/small_font" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -69,15 +68,15 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="96dp"
+        app:endIconMode="clear_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlist_name_layout"
->
+        app:layout_constraintTop_toBottomOf="@id/playlist_name_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlist_description"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Описание"
+            android:hint="@string/new_playlist_activity_desc_edit_text_hint"
             android:textAppearance="@style/small_font" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -93,11 +92,9 @@
         android:enabled="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="Создать"
+        android:text="@string/new_playlist_activity_create_button_caption"
         android:textAppearance="@style/small_font"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

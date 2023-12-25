@@ -56,4 +56,10 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="new_playlist_activity_title">Новый плейлист</string>
+    <string name="new_playlist_activity_image_cont_desc">Изображение для плейлиста</string>
+    <string name="new_playlist_activity_name_edit_text_hint">Название*</string>
+    <string name="new_playlist_activity_desc_edit_text_hint">Описание</string>
+    <string name="new_playlist_activity_create_button_caption">Создать</string>
+
 </resources>
