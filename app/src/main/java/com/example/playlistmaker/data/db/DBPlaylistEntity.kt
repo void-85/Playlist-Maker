@@ -10,6 +10,7 @@ data class DBPlaylistEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
     val id: Long,
 
+    @ColumnInfo(name = "name")
     val name: String,
     val description: String,
 

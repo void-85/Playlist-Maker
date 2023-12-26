@@ -37,6 +37,7 @@ class PlaylistsFragmentViewModel(
 }
 
 sealed class PlaylistsFragmentScreenUpdate {
+
     object ShowNoData : PlaylistsFragmentScreenUpdate()
 
     data class ShowAllPlaylists(

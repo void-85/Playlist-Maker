@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -155,19 +156,37 @@ class NewPlaylistActivity : AppCompatActivity() {
 
                     imageId = imageIdFilename,
 
-                    emptyList(),
-                    0
+                    tracks = emptyList(),
+                    numberOfTracks =  0
                 )
             )
+
+            Toast.makeText(
+                applicationContext,
+
+                getString(R.string.new_playlist_activity_created_pre_msg) +
+                " \"${playlistName.text.toString()}\" " +
+                getString(R.string.new_playlist_activity_created_post_msg),
+
+                Toast.LENGTH_LONG
+            ).show()
 
             finish()
         }
 
         confirmExitDialog = MaterialAlertDialogBuilder(this)
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны!")
-            .setNeutralButton("Отмена") { _, _ -> /* NOTHING */ }
-            .setPositiveButton("Завершить") { dialog, which ->
+            .setTitle(
+                getString(R.string.new_playlist_activity_exit_dialog_title)
+            )
+            .setMessage(
+                getString(R.string.new_playlist_activity_exit_dialog_text)
+            )
+            .setNeutralButton(
+                getString(R.string.new_playlist_activity_exit_dialog_cancel)
+            ) { _, _ -> /* NOTHING */ }
+            .setPositiveButton(
+                getString(R.string.new_playlist_activity_exit_dialog_terminate)
+            ) { dialog, which ->
                 finish()
             }
 

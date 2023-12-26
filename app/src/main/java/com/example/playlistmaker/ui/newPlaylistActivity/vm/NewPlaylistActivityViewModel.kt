@@ -11,7 +11,9 @@ class NewPlaylistActivityViewModel(
 ) : ViewModel() {
 
     fun createPlaylist(playlist: Playlist) {
-        viewModelScope.launch { mediaInteractor.createPlaylist(playlist) }
+        viewModelScope.launch {
+            mediaInteractor.createPlaylist(playlist)
+        }
     }
 
 }

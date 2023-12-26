@@ -32,7 +32,7 @@ interface DBTrackDAO {
     @Insert
     suspend fun createPlaylist(playlist: DBPlaylistEntity)
 
-    @Query("SELECT * FROM playlists_table ORDER BY image_id DESC")
+    @Query("SELECT * FROM playlists_table ORDER BY name ASC")
     suspend fun getAllPlaylists(): List<DBPlaylistEntity>
     // -- PLAYLISTS -----------------------------------------------------------
 }
