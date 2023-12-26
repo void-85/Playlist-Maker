@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
+package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,7 +33,7 @@ class RecyclerViewPlaylistAdapter(
         holder.bind( playlists[position] )
         holder.itemView.animation=
             AnimationUtils.loadAnimation(
-                holder.itemView.context, R.anim.anim
+                holder.itemView.context, R.anim.playlists_adapter
             )
     }
 

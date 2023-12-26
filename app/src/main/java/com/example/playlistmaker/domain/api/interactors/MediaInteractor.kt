@@ -2,6 +2,7 @@ package com.example.playlistmaker.domain.api.interactors
 
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.flow.Flow
 
 interface MediaInteractor {
 
@@ -42,6 +43,7 @@ interface MediaInteractor {
     suspend fun isTrackFavorite(track: Track): Boolean
 
     suspend fun createPlaylist(playlist: Playlist)
+    suspend fun getAllPlaylists(): Flow<Playlist>
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }
 

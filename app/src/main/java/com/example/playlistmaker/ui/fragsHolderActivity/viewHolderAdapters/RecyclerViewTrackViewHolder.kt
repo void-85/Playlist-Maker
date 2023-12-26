@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
+package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters
 
 
 import android.view.View

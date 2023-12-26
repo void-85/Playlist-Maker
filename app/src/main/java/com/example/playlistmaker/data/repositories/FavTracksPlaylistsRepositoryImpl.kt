@@ -43,5 +43,11 @@ class FavTracksPlaylistsRepositoryImpl(
     override suspend fun createPlaylist(playlist: Playlist) {
         appDB.getDAO().createPlaylist( playlist.convert() )
     }
+
+    override suspend fun getAllPlaylists(): Flow<Playlist> = flow {
+        appDB.getDAO().getAllPlaylists().forEach {
+            emit(it.convert())
+        }
+    }
     // -- PLAYLISTS -----------------------------------------------------------
 }

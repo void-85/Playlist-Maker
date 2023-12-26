@@ -13,6 +13,7 @@ data class DBPlaylistEntity(
     val name: String,
     val description: String,
 
+    @ColumnInfo(name = "image_id")
     val imageId: String,
 
     val tracksJson: String,

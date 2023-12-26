@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
+package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters
 
 import android.net.Uri
 import android.os.Environment
@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Playlist
+import com.example.playlistmaker.ui.utils.toTrackNumberString
 import java.io.File
 
 class RecyclerViewPlaylistViewHolder(
@@ -25,9 +26,9 @@ class RecyclerViewPlaylistViewHolder(
     fun bind(model :Playlist){
 
         name.text = model.name
+        tracksCount.text = model.numberOfTracks.toTrackNumberString()
 
         var uri : Uri? = null
-
         if( model.imageId != "" ){
 
             val filePath = File( itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
@@ -41,11 +42,9 @@ class RecyclerViewPlaylistViewHolder(
             .placeholder(R.drawable.spiral)
             .transform(
                 CenterCrop(),
-                RoundedCorners(
-                    itemView.resources.getDimensionPixelSize(
+                RoundedCorners(itemView.resources.getDimensionPixelSize(
                         R.dimen.new_playlist_upload_image_corner_radius
-                    )
-                )
+                    ))
             )
             .into(image)
     }

@@ -1,11 +1,14 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
+import android.widget.Button
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +16,8 @@ import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentScreenUpdate
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
-import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewPlaylistAdapter
+import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewPlaylistAdapter
+import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -29,14 +33,59 @@ class PlaylistsFragment : Fragment() {
     }
 
     private val viewmodel by viewModel<PlaylistsFragmentViewModel>()
-
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
 
 
-    private lateinit var recyclerView: RecyclerView
+
     private var data = ArrayList<Playlist>()
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var noDataFrame: FrameLayout
+    private lateinit var createPlaylistButton: Button
+
+
+
+
+
+
+    private fun showNoPlaylists() {
+        recyclerView.visibility = View.INVISIBLE
+        noDataFrame.visibility = View.VISIBLE
+
+        val animate = TranslateAnimation(
+            0f, 0f,
+            noDataFrame.height.toFloat() * 2, 0f
+        ).apply {
+            duration = 500
+            fillAfter = true
+        }
+        noDataFrame.startAnimation(animate)
+    }
+
+    private fun showPlaylists() {
+        recyclerView.visibility = View.VISIBLE
+        noDataFrame.visibility = View.INVISIBLE
+    }
+
+    private fun showNothing() {
+        recyclerView.visibility = View.INVISIBLE
+        noDataFrame.visibility = View.INVISIBLE
+    }
+
+
+
+
+
+    override fun onResume() {
+        super.onResume()
+        viewmodel.requestAllPlaylists()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        showNothing()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -48,43 +97,44 @@ class PlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-/*        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"tsaasdasdasdasdasdasdasdasdasdasdasdasdasdasdest", "", "", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
-        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))*/
-
-
-
         recyclerView = binding.playlistsRView
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = RecyclerViewPlaylistAdapter(data)
 
+        noDataFrame = binding.noDataInfo
+
+        createPlaylistButton = binding.createNewPlaylistButton
+        createPlaylistButton.setOnClickListener {
+            val newPlaylistIntent = Intent(context, NewPlaylistActivity::class.java)
+            startActivity(newPlaylistIntent)
+        }
 
 
 
 
+        viewmodel.getState().observe(viewLifecycleOwner) {
+            when (it) {
 
-        viewmodel.getState().observe(viewLifecycleOwner) { state ->
-            when (state) {
+                // DELETE STATE??
                 is PlaylistsFragmentScreenUpdate.ShowNoData -> {
+                    showNoPlaylists()
+                }
 
-                    binding.noDataInfo.visibility = View.VISIBLE
+                is PlaylistsFragmentScreenUpdate.ShowAllPlaylists -> {
 
-                    val animate = TranslateAnimation(
-                        0f, 0f,
-                        binding.noDataInfo.height.toFloat() * 2, 0f
-                    ).apply {
-                        duration = 500
-                        fillAfter = true
+                    //Toast.makeText( context, "${it.playlists.size} playlists extracted from db", Toast.LENGTH_LONG).show()
+                    if (it.playlists.isEmpty()) {
+
+                        showNoPlaylists()
+
+                    } else {
+
+                        showPlaylists()
+
+                        data.clear()
+                        data.addAll(it.playlists)
+                        recyclerView.adapter?.notifyDataSetChanged()
                     }
-                    binding.noDataInfo.startAnimation(animate)
                 }
             }
         }

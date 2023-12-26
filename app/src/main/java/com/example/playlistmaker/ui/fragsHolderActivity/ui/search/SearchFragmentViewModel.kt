@@ -18,20 +18,20 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
 
     private var screenUpdateLiveData =
-        MutableLiveData<SearchActivityUpdate>(SearchActivityUpdate.DoNothing)
+        MutableLiveData<SearchFragmentUpdate>(SearchFragmentUpdate.DoNothing)
     private var searchJob: Job? = null
 
     init {
         requestSearchHistory()
     }
 
-    fun getState(): LiveData<SearchActivityUpdate> {
+    fun getState(): LiveData<SearchFragmentUpdate> {
         return screenUpdateLiveData
     }
 
     fun clearSearchHistory() {
         searchInteractor.setSearchHistory(emptyList())
-        screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
+        screenUpdateLiveData.postValue(SearchFragmentUpdate.DoNothing)
     }
 
     fun cancelSearch() {
@@ -40,7 +40,7 @@ class SearchFragmentViewModel(
 
     fun requestSearchHistory() {
         screenUpdateLiveData.postValue(
-            SearchActivityUpdate.SearchHistoryData(
+            SearchFragmentUpdate.SearchHistoryData(
                 searchInteractor.getSearchHistory()
             )
         )
@@ -68,7 +68,7 @@ class SearchFragmentViewModel(
 
                         if (pair.first == null) {
 
-                            screenUpdateLiveData.postValue(SearchActivityUpdate.NoNetwork)
+                            screenUpdateLiveData.postValue(SearchFragmentUpdate.NoNetwork)
 
                         } else {
 
@@ -83,7 +83,7 @@ class SearchFragmentViewModel(
                                 tracks.add( it ) //it.apply { isFavorite = favIds.contains(it.trackId) } )
                             }
 
-                            screenUpdateLiveData.postValue(SearchActivityUpdate.SearchResult(tracks))
+                            screenUpdateLiveData.postValue(SearchFragmentUpdate.SearchResult(tracks))
 
                         }
                     }
@@ -109,21 +109,21 @@ class SearchFragmentViewModel(
 }
 
 
-sealed class SearchActivityUpdate {
+sealed class SearchFragmentUpdate {
 
-    object DoNothing : SearchActivityUpdate()
+    object DoNothing : SearchFragmentUpdate()
 
-    object NoNetwork : SearchActivityUpdate()
+    object NoNetwork : SearchFragmentUpdate()
 
-    object Loading : SearchActivityUpdate()
+    object Loading : SearchFragmentUpdate()
 
     data class SearchHistoryData(
         val tracks: List<Track>
-    ) : SearchActivityUpdate()
+    ) : SearchFragmentUpdate()
 
     data class SearchResult(
         val tracks: List<Track>
-    ) : SearchActivityUpdate()
+    ) : SearchFragmentUpdate()
 }
 
 

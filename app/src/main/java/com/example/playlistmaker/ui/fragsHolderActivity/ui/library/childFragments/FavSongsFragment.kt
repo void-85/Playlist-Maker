@@ -17,7 +17,7 @@ import com.example.playlistmaker.databinding.FragmentFavSongsBinding
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentScreenUpdate
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.FavSongsFragmentViewModel
-import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
+import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.playerActivity.act.MediaActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,10 +76,12 @@ class FavSongsFragment : Fragment() {
         super.onResume()
         viewmodel.loadDBFavoriteTracks()
     }
-/*    override fun onStart() {
-        super.onStart()
-        viewmodel.loadDBFavoriteTracks()
-    }*/
+
+    override fun onPause() {
+        super.onPause()
+        noDataFrame.visibility = View.INVISIBLE
+        recyclerView.visibility = View.INVISIBLE
+    }
 
 
     override fun onCreateView(
@@ -113,6 +115,7 @@ class FavSongsFragment : Fragment() {
 
                 is FavSongsFragmentScreenUpdate.ShowNoData -> {
 
+                    recyclerView.visibility = View.INVISIBLE
                     noDataFrame.visibility = View.VISIBLE
 
                     val animate = TranslateAnimation(
@@ -125,15 +128,17 @@ class FavSongsFragment : Fragment() {
 
                     noDataFrame.startAnimation(animate)
 
-                    data.clear()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    //data.clear()
+                    //recyclerView.adapter?.notifyDataSetChanged()
 
                     viewmodel.updateRecieved()
                 }
 
                 is FavSongsFragmentScreenUpdate.DBFavoriteTracks -> {
 
-                    noDataFrame.visibility = View.GONE
+                    noDataFrame.visibility = View.INVISIBLE
+                    recyclerView.visibility = View.VISIBLE
+
                     data.clear()
                     data.addAll( state.tracks )
                     recyclerView.adapter?.notifyDataSetChanged()

@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.entities.Track
-import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter.RecyclerViewTrackAdapter
+import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.playerActivity.act.MediaActivity
 import com.example.playlistmaker.ui.utils.hideKeyboard
 
@@ -201,22 +201,22 @@ class SearchFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
 
-                is SearchActivityUpdate.DoNothing -> {
+                is SearchFragmentUpdate.DoNothing -> {
                     //prevent resending LiveData old state
                 }
 
-                is SearchActivityUpdate.Loading -> {
+                is SearchFragmentUpdate.Loading -> {
                     //unreachable?
                     showDataLoading()
                     viewModel.updateRecieved()
                 }
 
-                is SearchActivityUpdate.NoNetwork -> {
+                is SearchFragmentUpdate.NoNetwork -> {
                     showNoNetwork()
                     viewModel.updateRecieved()
                 }
 
-                is SearchActivityUpdate.SearchResult -> {
+                is SearchFragmentUpdate.SearchResult -> {
 
                     data.clear()
                     if (it.tracks.isEmpty()) {
@@ -229,7 +229,7 @@ class SearchFragment : Fragment() {
                     viewModel.updateRecieved()
                 }
 
-                is SearchActivityUpdate.SearchHistoryData -> {
+                is SearchFragmentUpdate.SearchHistoryData -> {
 
                     historyData.clear()
 

@@ -18,5 +18,6 @@ interface FavTracksPlaylistsRepository {
 
     // -- PLAYLISTS -----------------------------------------------------------
     suspend fun createPlaylist(playlist: Playlist)
+    suspend fun getAllPlaylists(): Flow<Playlist>
     // -- PLAYLISTS -----------------------------------------------------------
 }

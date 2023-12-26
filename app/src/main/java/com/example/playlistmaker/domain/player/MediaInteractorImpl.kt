@@ -8,6 +8,7 @@ import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.db.FavTracksPlaylistsRepository
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.flow.Flow
 
 
 class MediaInteractorImpl(
@@ -103,6 +104,10 @@ class MediaInteractorImpl(
     // ------ PLAYLISTS ------------------------------------------------
     override suspend fun createPlaylist(playlist: Playlist) {
         favTracksPlaylistsRepositoryImpl.createPlaylist( playlist )
+    }
+
+    override suspend fun getAllPlaylists(): Flow<Playlist> {
+        return favTracksPlaylistsRepositoryImpl.getAllPlaylists()
     }
     // ------ PLAYLISTS ------------------------------------------------
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
