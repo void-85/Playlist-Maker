@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapter
 
+import android.net.Uri
 import android.os.Environment
 import android.view.View
 import android.widget.ImageView
@@ -25,12 +26,18 @@ class RecyclerViewPlaylistViewHolder(
 
         name.text = model.name
 
-        val filePath = File( itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
-        val file = File(filePath, "first_cover.jpg")
+        var uri : Uri? = null
+
+        if( model.imageId != "" ){
+
+            val filePath = File( itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+            val file = File(filePath, model.imageId)
+            uri = file.toUri()
+        }
 
         Glide
             .with(itemView)
-            .load(file.toUri())
+            .load(uri)
             .placeholder(R.drawable.spiral)
             .transform(
                 CenterCrop(),

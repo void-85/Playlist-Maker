@@ -9,11 +9,25 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+
+
+
+
+
+
     <!-- NO COLOR -->
     <style name="small_font">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/app_small_font_size</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- NO COLOR -->
+    <style name="smaller_font">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/app_smaller_font_size</item>
         <item name="android:textAllCaps">false</item>
     </style>
 

@@ -50,7 +50,17 @@ class PlaylistsFragment : Fragment() {
 
 
 
+/*        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"tsaasdasdasdasdasdasdasdasdasdasdasdasdasdasdest", "", "", emptyList(), 15))
         data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))
+        data.add(Playlist(0L,"test", "", "1703473002", emptyList(), 15))*/
+
+
 
         recyclerView = binding.playlistsRView
         recyclerView.layoutManager = GridLayoutManager(context, 2)

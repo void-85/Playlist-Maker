@@ -85,6 +85,7 @@ class MediaInteractorImpl(
 
 
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
+    // ------ TRACKS ---------------------------------------------------
     override suspend fun insertTrack(track: Track) {
         favTracksPlaylistsRepositoryImpl.insertFavTrack(track)
     }
@@ -96,9 +97,13 @@ class MediaInteractorImpl(
     override suspend fun isTrackFavorite(track: Track): Boolean {
         return favTracksPlaylistsRepositoryImpl.isTrackFavorite(track)
     }
+    // ------ TRACKS ---------------------------------------------------
 
+
+    // ------ PLAYLISTS ------------------------------------------------
     override suspend fun createPlaylist(playlist: Playlist) {
         favTracksPlaylistsRepositoryImpl.createPlaylist( playlist )
     }
+    // ------ PLAYLISTS ------------------------------------------------
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }
