@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.example.playlistmaker.databinding.ActivityMediaBinding
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityScreenUpdate
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.utils.millisToMinSec
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
 class MediaActivity : AppCompatActivity() {
@@ -29,6 +31,10 @@ class MediaActivity : AppCompatActivity() {
     private val viewModel by viewModel<MediaActivityViewModel>()
     private lateinit var binding: ActivityMediaBinding
 
+
+    private lateinit var bottomSheetContainer: LinearLayout
+    private lateinit var overlay: View
+    private lateinit var bottomSheetBehavior:BottomSheetBehavior<LinearLayout>
 
 
     private lateinit var goBackButton: ImageView
@@ -47,7 +53,6 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var playPauseButton: ImageSwitcher
     private lateinit var favoriteTrackButton: ImageSwitcher
-
 
 
     private var intentionalExit: Boolean = false
@@ -75,7 +80,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private var trackIsFavorite: Boolean = false
-    private fun updateTrackIsFavoriteButtonStateFromVar(){
+    private fun updateTrackIsFavoriteButtonStateFromVar() {
         when (AppCompatDelegate.getDefaultNightMode()) {
 
             AppCompatDelegate.MODE_NIGHT_YES -> {
@@ -98,16 +103,13 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         viewModel.onStartActivity()
     }
 
     override fun onStop() {
         super.onStop()
-
         viewModel.onStopActivity()
     }
-
 
     private fun onIntentionalExit() {
         intentionalExit = true
@@ -125,13 +127,42 @@ class MediaActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        bottomSheetContainer = binding.playlistsBottomSheet
+        overlay = binding.overlay
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                overlay.alpha = 0.5f +slideOffset
+            }
+        })
+
+
+
+
 
         onBackPressedDispatcher.addCallback(this) { onIntentionalExit() }
 
@@ -203,9 +234,12 @@ class MediaActivity : AppCompatActivity() {
         }
 
         addToPlaylistButton = binding.mediaScreenAddToPlaylist
-        addToPlaylistButton.setOnClickListener{
-            //asdasdasdasasdasd
+        addToPlaylistButton.setOnClickListener {
+
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+
 
         playPauseButton = binding.mediaScreenPlay
         playPauseButton.setFactory {
@@ -240,7 +274,7 @@ class MediaActivity : AppCompatActivity() {
         favoriteTrackButton.inAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_in)
         favoriteTrackButton.outAnimation = AnimationUtils.loadAnimation(this, R.anim.likes_out)
         favoriteTrackButton.setOnClickListener {
-            viewModel.favoriteTrackButtonPressed( makeTrackFavorite = !trackIsFavorite )
+            viewModel.favoriteTrackButtonPressed(makeTrackFavorite = !trackIsFavorite)
         }
 
 
