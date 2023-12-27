@@ -29,9 +29,9 @@
         android:layout_marginTop="24dp"
         android:layout_marginRight="24dp"
         android:background="@drawable/rounded_dashed_line_shape"
+        android:contentDescription="@string/new_playlist_activity_image_cont_desc"
         android:scaleType="center"
         android:src="@drawable/addimage"
-        android:contentDescription="@string/new_playlist_activity_image_cont_desc"
         app:layout_constraintBottom_toTopOf="@id/playlist_name_layout"
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="@string/new_playlist_activity_name_edit_text_hint"
+            android:maxLines="1"
             android:textAppearance="@style/small_font" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -77,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="@string/new_playlist_activity_desc_edit_text_hint"
+            android:maxLines="1"
             android:textAppearance="@style/small_font" />
 
     </com.google.android.material.textfield.TextInputLayout>

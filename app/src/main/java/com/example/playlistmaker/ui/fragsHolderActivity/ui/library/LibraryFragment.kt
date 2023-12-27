@@ -42,7 +42,9 @@ class LibraryFragment : Fragment() {
 
         tabMediator = TabLayoutMediator(
             binding.mediaLibraryTabs,
-            binding.mediaLibraryViewPager
+            binding.mediaLibraryViewPager,
+            false,
+            false
         ) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.media_library_tab_1_text)
