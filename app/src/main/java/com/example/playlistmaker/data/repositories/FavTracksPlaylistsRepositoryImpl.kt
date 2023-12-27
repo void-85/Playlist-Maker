@@ -49,5 +49,9 @@ class FavTracksPlaylistsRepositoryImpl(
             emit(it.convert())
         }
     }
+
+    override suspend fun deletePlaylist( playlistId: Long ){
+        appDB.getDAO().deletePlaylist( playlistId )
+    }
     // -- PLAYLISTS -----------------------------------------------------------
 }

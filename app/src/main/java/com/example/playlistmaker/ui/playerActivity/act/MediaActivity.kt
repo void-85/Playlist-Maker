@@ -12,6 +12,7 @@ import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
@@ -29,7 +31,6 @@ import com.example.playlistmaker.ui.playerActivity.viewHolderAdapter.BottomSheet
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityScreenUpdate
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.utils.millisToMinSec
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
 class MediaActivity : AppCompatActivity() {
@@ -37,11 +38,7 @@ class MediaActivity : AppCompatActivity() {
     private val viewModel by viewModel<MediaActivityViewModel>()
     private lateinit var binding: ActivityMediaBinding
 
-    private lateinit var bottomSheetRView: RecyclerView
-    private val playlists = ArrayList<Playlist>()
-
     private lateinit var bottomSheetCreatePlaylistButton: Button
-
     private lateinit var bottomSheetContainer: LinearLayout
     private lateinit var overlay: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -62,6 +59,14 @@ class MediaActivity : AppCompatActivity() {
 
     private lateinit var playPauseButton: ImageSwitcher
     private lateinit var favoriteTrackButton: ImageSwitcher
+
+
+    private lateinit var bottomSheetRView: RecyclerView
+    private val playlists = ArrayList<Playlist>()
+    private val playlistClicked: (Playlist) -> Unit = { playlist ->
+        viewModel.includeOrExcludeCurrentTrackInFromPlaylist(playlist)
+    }
+
 
 
     private var intentionalExit: Boolean = false
@@ -169,7 +174,7 @@ class MediaActivity : AppCompatActivity() {
         })
 
         bottomSheetRView = binding.bottomSheetRView
-        bottomSheetRView.adapter = BottomSheetRecyclerViewPlaylistAdapter(playlists)
+        bottomSheetRView.adapter = BottomSheetRecyclerViewPlaylistAdapter(playlists, playlistClicked)
 
         bottomSheetCreatePlaylistButton = binding.mediaPlayerBottomSheetCreatePlaylist
         bottomSheetCreatePlaylistButton.setOnClickListener {
@@ -270,6 +275,11 @@ class MediaActivity : AppCompatActivity() {
                     viewModel.dataWasRecieved()
                 }
 
+                is MediaActivityScreenUpdate.NotifyUser -> {
+
+                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
+                }
+
                 else -> {}
             }
         }
@@ -279,7 +289,6 @@ class MediaActivity : AppCompatActivity() {
 
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-
 
 
         playPauseButton = binding.mediaScreenPlay

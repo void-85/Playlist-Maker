@@ -44,6 +44,7 @@ interface MediaInteractor {
 
     suspend fun createPlaylist(playlist: Playlist)
     suspend fun getAllPlaylists(): Flow<Playlist>
+    suspend fun deletePlaylist( playlistId: Long )
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }
 

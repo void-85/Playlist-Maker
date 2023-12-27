@@ -45,6 +45,7 @@ class RecyclerViewTrackViewHolder(
 
         itemView.setOnClickListener {
             trackViewHolderItemClicked(model)
+
         }
     }
 }

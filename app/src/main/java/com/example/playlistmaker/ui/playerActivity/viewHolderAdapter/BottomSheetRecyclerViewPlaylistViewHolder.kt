@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.io.File
+
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.utils.toTrackNumberString
-import java.io.File
+
 
 class BottomSheetRecyclerViewPlaylistViewHolder(
-    itemView: View
+    itemView: View,
+    private val playlistClicked: (Playlist) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val image: ImageView = itemView.findViewById(R.id.image)
@@ -47,5 +50,9 @@ class BottomSheetRecyclerViewPlaylistViewHolder(
                     ))
             )
             .into(image)
+
+        itemView.setOnClickListener {
+            playlistClicked(model)
+        }
     }
 }

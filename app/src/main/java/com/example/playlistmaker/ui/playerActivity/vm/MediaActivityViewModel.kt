@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+
 
 
 class MediaActivityViewModel(
@@ -100,46 +101,46 @@ class MediaActivityViewModel(
             mediaInteractor.start()
         }
 
-        var playlistsUpdated = false
-        if (mediaInteractor.getCurrentPosition() > 0L) {
+/*        var playlistsUpdated = false
+        if (mediaInteractor.getCurrentPosition() >= 0L) {*/
 
-            val track: Track? = mediaInteractor.getCurrentlyPlaying()
-            if (track is Track) {
+        val track: Track? = mediaInteractor.getCurrentlyPlaying()
+        if (track is Track) {
 
-                viewModelScope.launch {
+            viewModelScope.launch {
 
-                    val dbPlaylists = ArrayList<Playlist>()
-                    mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
-                    playlistsUpdated = true
+                val dbPlaylists = ArrayList<Playlist>()
+                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+                //playlistsUpdated = true
 
-                    screenData.postValue(
-                        MediaActivityScreenUpdate.AllData(
-                            timeCode = mediaInteractor.getCurrentPosition(),
-                            artworkUrl100 = track.artworkUrl100,
-                            mediaTitle = track.trackName,
-                            mediaArtist = track.artistName,
-                            mediaLength = track.trackTime,
-                            mediaAlbum = track.collectionName,
-                            mediaDate = track.releaseDate,
-                            mediaGenre = track.primaryGenreName,
-                            mediaCountry = track.country,
-                            showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
-                            trackIsFavorite = false,
+                screenData.postValue(
+                    MediaActivityScreenUpdate.AllData(
+                        timeCode = mediaInteractor.getCurrentPosition(),
+                        artworkUrl100 = track.artworkUrl100,
+                        mediaTitle = track.trackName,
+                        mediaArtist = track.artistName,
+                        mediaLength = track.trackTime,
+                        mediaAlbum = track.collectionName,
+                        mediaDate = track.releaseDate,
+                        mediaGenre = track.primaryGenreName,
+                        mediaCountry = track.country,
+                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                        trackIsFavorite = false,
 
-                            playlists = dbPlaylists
-                        )
+                        playlists = dbPlaylists
                     )
+                )
 
-                    delay(300)
+                delay(200)
 
-                    screenData.postValue(
-                        MediaActivityScreenUpdate.ShowTrackIsFavorite(
-                            mediaInteractor.isTrackFavorite(track)
-                        )
+                screenData.postValue(
+                    MediaActivityScreenUpdate.ShowTrackIsFavorite(
+                        mediaInteractor.isTrackFavorite(track)
                     )
-                }
+                )
             }
         }
+       /* }
 
         if (!playlistsUpdated) {
 
@@ -151,7 +152,7 @@ class MediaActivityViewModel(
                     MediaActivityScreenUpdate.BottomSheetPlaylistsOnly(dbPlaylists)
                 )
             }
-        }
+        }*/
     }
 
     fun onStopActivity() {
@@ -211,6 +212,50 @@ class MediaActivityViewModel(
             MediaActivityScreenUpdate.DoNothing
         )
     }
+
+    fun includeOrExcludeCurrentTrackInFromPlaylist(playlist:Playlist){
+        val track: Track? = mediaInteractor.getCurrentlyPlaying()
+        if (track is Track) {
+
+            val resultMessage: String
+
+            if( playlist.tracks.contains(track) ){
+
+                resultMessage = "Трек уже добавлен в плейлист \"${ playlist.name }\""
+
+            }else{
+
+                resultMessage = "Добавлено в плейлист \"${ playlist.name }\""
+
+                viewModelScope.launch {
+
+                    mediaInteractor.deletePlaylist( playlist.id )
+
+                    val newTracksList = ArrayList<Track>()
+                    newTracksList.addAll( playlist.tracks )
+                    newTracksList.add(track)
+
+                    mediaInteractor.createPlaylist(Playlist(
+                        id = 0,
+
+                        name = playlist.name,
+                        description = playlist.description,
+
+                        imageId = playlist.imageId,
+
+                        tracks = newTracksList,
+                        numberOfTracks = playlist.numberOfTracks +1
+                    ))
+
+                    onStartActivity()
+                }
+            }
+
+            screenData.postValue(
+                MediaActivityScreenUpdate.NotifyUser( resultMessage )
+            )
+        }
+    }
 }
 
 
@@ -230,6 +275,10 @@ sealed class MediaActivityScreenUpdate {
 
     data class BottomSheetPlaylistsOnly(
         val playlists: List<Playlist>
+    ) : MediaActivityScreenUpdate()
+
+    data class NotifyUser(
+        val message: String
     ) : MediaActivityScreenUpdate()
 
     data class AllData(

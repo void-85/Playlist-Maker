@@ -34,5 +34,8 @@ interface DBTrackDAO {
 
     @Query("SELECT * FROM playlists_table ORDER BY name ASC")
     suspend fun getAllPlaylists(): List<DBPlaylistEntity>
+
+    @Query("DELETE FROM playlists_table WHERE id = :playlistId")
+    suspend fun deletePlaylist( playlistId: Long )
     // -- PLAYLISTS -----------------------------------------------------------
 }

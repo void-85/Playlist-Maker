@@ -4,11 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Playlist
 
+
 class BottomSheetRecyclerViewPlaylistAdapter(
-    private val playlists: List<Playlist>
+    private val playlists: List<Playlist>,
+    private val playlistClicked: (Playlist) -> Unit
 ) : RecyclerView.Adapter<BottomSheetRecyclerViewPlaylistViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -23,7 +26,7 @@ class BottomSheetRecyclerViewPlaylistAdapter(
                 parent,
                 false
             )
-        return BottomSheetRecyclerViewPlaylistViewHolder(view)
+        return BottomSheetRecyclerViewPlaylistViewHolder(view, playlistClicked)
     }
 
     override fun onBindViewHolder(
