@@ -68,7 +68,6 @@ class MediaActivity : AppCompatActivity() {
     }
 
 
-
     private var intentionalExit: Boolean = false
     private var showPlayButtonElsePauseButton: Boolean = true
     private fun updatePlayPauseButtonStateFromVar() {
@@ -174,7 +173,8 @@ class MediaActivity : AppCompatActivity() {
         })
 
         bottomSheetRView = binding.bottomSheetRView
-        bottomSheetRView.adapter = BottomSheetRecyclerViewPlaylistAdapter(playlists, playlistClicked)
+        bottomSheetRView.adapter =
+            BottomSheetRecyclerViewPlaylistAdapter(playlists, playlistClicked)
 
         bottomSheetCreatePlaylistButton = binding.mediaPlayerBottomSheetCreatePlaylist
         bottomSheetCreatePlaylistButton.setOnClickListener {
@@ -260,11 +260,13 @@ class MediaActivity : AppCompatActivity() {
                 }
 
                 is MediaActivityScreenUpdate.PlayFinished -> {
-                    mediaTimeCode.text = 0L.millisToMinSec()
+
                     showPlayButtonElsePauseButton = true
                     updatePlayPauseButtonStateFromVar()
 
-                    viewModel.dataWasRecieved()
+                    mediaTimeCode.text = 0L.millisToMinSec()
+
+                    //viewModel.dataWasRecieved()
                 }
 
                 is MediaActivityScreenUpdate.BottomSheetPlaylistsOnly -> {

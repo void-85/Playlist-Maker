@@ -13,7 +13,6 @@ import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
 
 
-
 class MediaActivityViewModel(
     private val mediaInteractor: MediaInteractor
 ) : ViewModel() {
@@ -54,7 +53,7 @@ class MediaActivityViewModel(
                         mediaDate = track.releaseDate,
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
-                        showPlayElsePauseButtonState = true,
+                        showPlayElsePauseButtonState = !mediaInteractor.isPlaying(),
                         trackIsFavorite = mediaInteractor.isTrackFavorite(track),
                         //trackIsFavorite = track.isFavorite
 
@@ -101,8 +100,9 @@ class MediaActivityViewModel(
             mediaInteractor.start()
         }
 
-/*        var playlistsUpdated = false
-        if (mediaInteractor.getCurrentPosition() >= 0L) {*/
+        /*        var playlistsUpdated = false
+                if (mediaInteractor.getCurrentPosition() >= 0L) {*/
+
 
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
@@ -124,7 +124,8 @@ class MediaActivityViewModel(
                         mediaDate = track.releaseDate,
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
-                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                        //showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                        showPlayElsePauseButtonState = !mediaInteractor.isPlaying(),
                         trackIsFavorite = false,
 
                         playlists = dbPlaylists
@@ -140,19 +141,19 @@ class MediaActivityViewModel(
                 )
             }
         }
-       /* }
+        /* }
 
-        if (!playlistsUpdated) {
+         if (!playlistsUpdated) {
 
-            viewModelScope.launch {
-                val dbPlaylists = ArrayList<Playlist>()
-                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+             viewModelScope.launch {
+                 val dbPlaylists = ArrayList<Playlist>()
+                 mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
 
-                screenData.postValue(
-                    MediaActivityScreenUpdate.BottomSheetPlaylistsOnly(dbPlaylists)
-                )
-            }
-        }*/
+                 screenData.postValue(
+                     MediaActivityScreenUpdate.BottomSheetPlaylistsOnly(dbPlaylists)
+                 )
+             }
+         }*/
     }
 
     fun onStopActivity() {
@@ -213,46 +214,48 @@ class MediaActivityViewModel(
         )
     }
 
-    fun includeOrExcludeCurrentTrackInFromPlaylist(playlist:Playlist){
+    fun includeOrExcludeCurrentTrackInFromPlaylist(playlist: Playlist) {
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
             val resultMessage: String
 
-            if( playlist.tracks.contains(track) ){
+            if (playlist.tracks.contains(track)) {
 
-                resultMessage = "Трек уже добавлен в плейлист \"${ playlist.name }\""
+                resultMessage = "Трек уже добавлен в плейлист \"${playlist.name}\""
 
-            }else{
+            } else {
 
-                resultMessage = "Добавлено в плейлист \"${ playlist.name }\""
+                resultMessage = "Добавлено в плейлист \"${playlist.name}\""
 
                 viewModelScope.launch {
 
-                    mediaInteractor.deletePlaylist( playlist.id )
+                    mediaInteractor.deletePlaylist(playlist.id)
 
                     val newTracksList = ArrayList<Track>()
-                    newTracksList.addAll( playlist.tracks )
+                    newTracksList.addAll(playlist.tracks)
                     newTracksList.add(track)
 
-                    mediaInteractor.createPlaylist(Playlist(
-                        id = 0,
+                    mediaInteractor.createPlaylist(
+                        Playlist(
+                            id = 0,
 
-                        name = playlist.name,
-                        description = playlist.description,
+                            name = playlist.name,
+                            description = playlist.description,
 
-                        imageId = playlist.imageId,
+                            imageId = playlist.imageId,
 
-                        tracks = newTracksList,
-                        numberOfTracks = playlist.numberOfTracks +1
-                    ))
+                            tracks = newTracksList,
+                            numberOfTracks = playlist.numberOfTracks + 1
+                        )
+                    )
 
                     onStartActivity()
                 }
             }
 
             screenData.postValue(
-                MediaActivityScreenUpdate.NotifyUser( resultMessage )
+                MediaActivityScreenUpdate.NotifyUser(resultMessage)
             )
         }
     }
