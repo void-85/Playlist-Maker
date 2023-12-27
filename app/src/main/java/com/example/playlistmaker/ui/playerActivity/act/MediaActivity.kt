@@ -1,10 +1,12 @@
 package com.example.playlistmaker.ui.playerActivity.act
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
@@ -13,6 +15,7 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -20,6 +23,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.domain.entities.Playlist
+import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
+import com.example.playlistmaker.ui.playerActivity.viewHolderAdapter.BottomSheetRecyclerViewPlaylistAdapter
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityScreenUpdate
 import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.utils.millisToMinSec
@@ -31,11 +37,14 @@ class MediaActivity : AppCompatActivity() {
     private val viewModel by viewModel<MediaActivityViewModel>()
     private lateinit var binding: ActivityMediaBinding
 
+    private lateinit var bottomSheetRView: RecyclerView
+    private val playlists = ArrayList<Playlist>()
+
+    private lateinit var bottomSheetCreatePlaylistButton: Button
 
     private lateinit var bottomSheetContainer: LinearLayout
     private lateinit var overlay: View
-    private lateinit var bottomSheetBehavior:BottomSheetBehavior<LinearLayout>
-
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private lateinit var goBackButton: ImageView
     private lateinit var mediaArtwork: ImageView
@@ -134,7 +143,6 @@ class MediaActivity : AppCompatActivity() {
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         bottomSheetContainer = binding.playlistsBottomSheet
         overlay = binding.overlay
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
@@ -156,12 +164,23 @@ class MediaActivity : AppCompatActivity() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                overlay.alpha = 0.5f +slideOffset
+                overlay.alpha = 0.5f + slideOffset
             }
         })
 
+        bottomSheetRView = binding.bottomSheetRView
+        bottomSheetRView.adapter = BottomSheetRecyclerViewPlaylistAdapter(playlists)
 
+        bottomSheetCreatePlaylistButton = binding.mediaPlayerBottomSheetCreatePlaylist
+        bottomSheetCreatePlaylistButton.setOnClickListener {
 
+            if (!showPlayButtonElsePauseButton) {
+                viewModel.playPauseButtonPressed()
+            }
+
+            val newPlaylistIntent = Intent(applicationContext, NewPlaylistActivity::class.java)
+            startActivity(newPlaylistIntent)
+        }
 
 
         onBackPressedDispatcher.addCallback(this) { onIntentionalExit() }
@@ -207,26 +226,48 @@ class MediaActivity : AppCompatActivity() {
 
                     trackIsFavorite = it.trackIsFavorite
                     updateTrackIsFavoriteButtonStateFromVar()
+
+                    playlists.clear()
+                    playlists.addAll(it.playlists)
+                    bottomSheetRView.adapter?.notifyDataSetChanged()
+
+                    viewModel.dataWasRecieved()
                 }
 
                 is MediaActivityScreenUpdate.TimeCodeOnly -> {
                     mediaTimeCode.text = it.timeCode.millisToMinSec()
+
+                    viewModel.dataWasRecieved()
                 }
 
                 is MediaActivityScreenUpdate.ShowPlayElsePauseButtonStateOnly -> {
                     showPlayButtonElsePauseButton = it.state
                     updatePlayPauseButtonStateFromVar()
+
+                    viewModel.dataWasRecieved()
                 }
 
                 is MediaActivityScreenUpdate.ShowTrackIsFavorite -> {
                     trackIsFavorite = it.trackIsFavorite
                     updateTrackIsFavoriteButtonStateFromVar()
+
+                    viewModel.dataWasRecieved()
                 }
 
                 is MediaActivityScreenUpdate.PlayFinished -> {
                     mediaTimeCode.text = 0L.millisToMinSec()
                     showPlayButtonElsePauseButton = true
                     updatePlayPauseButtonStateFromVar()
+
+                    viewModel.dataWasRecieved()
+                }
+
+                is MediaActivityScreenUpdate.BottomSheetPlaylistsOnly -> {
+                    playlists.clear()
+                    playlists.addAll(it.playlists)
+                    bottomSheetRView.adapter?.notifyDataSetChanged()
+
+                    viewModel.dataWasRecieved()
                 }
 
                 else -> {}

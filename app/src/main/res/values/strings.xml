@@ -68,6 +68,9 @@
     <string name="new_playlist_activity_exit_dialog_terminate">Завершить</string>
 
     <string name="new_playlist_activity_created_pre_msg">Плейлист</string>
-    <string name="new_playlist_activity_created_post_msg">создан\n\n\n\n\n</string>
+    <string name="new_playlist_activity_created_post_msg">создан</string>
+
+    <string name="media_player_bottom_sheet_title">Добавить в плейлист</string>
+    <string name="media_player_bottom_sheet_create_playlist">Новый плейлист</string>
 
 </resources>

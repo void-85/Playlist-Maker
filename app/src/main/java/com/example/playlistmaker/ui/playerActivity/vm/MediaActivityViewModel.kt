@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
+import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -37,6 +39,9 @@ class MediaActivityViewModel(
 
             viewModelScope.launch {
 
+                val dbPlaylists = ArrayList<Playlist>()
+                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
                         timeCode = 0L,
@@ -49,8 +54,10 @@ class MediaActivityViewModel(
                         mediaGenre = track.primaryGenreName,
                         mediaCountry = track.country,
                         showPlayElsePauseButtonState = true,
-                        trackIsFavorite = mediaInteractor.isTrackFavorite(track)
+                        trackIsFavorite = mediaInteractor.isTrackFavorite(track),
                         //trackIsFavorite = track.isFavorite
+
+                        dbPlaylists
                     )
                 )
             }
@@ -93,29 +100,38 @@ class MediaActivityViewModel(
             mediaInteractor.start()
         }
 
+        var playlistsUpdated = false
         if (mediaInteractor.getCurrentPosition() > 0L) {
+
             val track: Track? = mediaInteractor.getCurrentlyPlaying()
             if (track is Track) {
 
-
-
-                screenData.postValue(
-                    MediaActivityScreenUpdate.AllData(
-                        timeCode = mediaInteractor.getCurrentPosition(),
-                        artworkUrl100 = track.artworkUrl100,
-                        mediaTitle = track.trackName,
-                        mediaArtist = track.artistName,
-                        mediaLength = track.trackTime,
-                        mediaAlbum = track.collectionName,
-                        mediaDate = track.releaseDate,
-                        mediaGenre = track.primaryGenreName,
-                        mediaCountry = track.country,
-                        showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
-                        trackIsFavorite = false
-                    )
-                )
-
                 viewModelScope.launch {
+
+                    val dbPlaylists = ArrayList<Playlist>()
+                    mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+                    playlistsUpdated = true
+
+                    screenData.postValue(
+                        MediaActivityScreenUpdate.AllData(
+                            timeCode = mediaInteractor.getCurrentPosition(),
+                            artworkUrl100 = track.artworkUrl100,
+                            mediaTitle = track.trackName,
+                            mediaArtist = track.artistName,
+                            mediaLength = track.trackTime,
+                            mediaAlbum = track.collectionName,
+                            mediaDate = track.releaseDate,
+                            mediaGenre = track.primaryGenreName,
+                            mediaCountry = track.country,
+                            showPlayElsePauseButtonState = !mediaInteractor.isMediaPlayerToResumeOnCreate(),
+                            trackIsFavorite = false,
+
+                            playlists = dbPlaylists
+                        )
+                    )
+
+                    delay(300)
+
                     screenData.postValue(
                         MediaActivityScreenUpdate.ShowTrackIsFavorite(
                             mediaInteractor.isTrackFavorite(track)
@@ -125,6 +141,17 @@ class MediaActivityViewModel(
             }
         }
 
+        if (!playlistsUpdated) {
+
+            viewModelScope.launch {
+                val dbPlaylists = ArrayList<Playlist>()
+                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+
+                screenData.postValue(
+                    MediaActivityScreenUpdate.BottomSheetPlaylistsOnly(dbPlaylists)
+                )
+            }
+        }
     }
 
     fun onStopActivity() {
@@ -178,6 +205,12 @@ class MediaActivityViewModel(
             }
         }
     }
+
+    fun dataWasRecieved() {
+        screenData.postValue(
+            MediaActivityScreenUpdate.DoNothing
+        )
+    }
 }
 
 
@@ -195,6 +228,10 @@ sealed class MediaActivityScreenUpdate {
         val trackIsFavorite: Boolean
     ) : MediaActivityScreenUpdate()
 
+    data class BottomSheetPlaylistsOnly(
+        val playlists: List<Playlist>
+    ) : MediaActivityScreenUpdate()
+
     data class AllData(
         val timeCode: Long,
         val artworkUrl100: String,
@@ -206,7 +243,9 @@ sealed class MediaActivityScreenUpdate {
         val mediaGenre: String,
         val mediaCountry: String,
         val showPlayElsePauseButtonState: Boolean,
-        val trackIsFavorite: Boolean
+        val trackIsFavorite: Boolean,
+
+        val playlists: List<Playlist>
     ) : MediaActivityScreenUpdate()
 
     object PlayFinished : MediaActivityScreenUpdate()
