@@ -14,26 +14,23 @@ class PlaylistsFragmentViewModel(
     private val mediaInteractor: MediaInteractor
 ) : ViewModel() {
 
-    private var state =
-        MutableLiveData<PlaylistsFragmentScreenUpdate>()
+    init {
+        requestAllPlaylists()
+    }
 
+    private var state = MutableLiveData<PlaylistsFragmentScreenUpdate>()
+    fun getState(): LiveData<PlaylistsFragmentScreenUpdate> {
+        return state
+    }
 
-    fun requestAllPlaylists(){
+    fun requestAllPlaylists() {
         viewModelScope.launch {
 
             val playlists = ArrayList<Playlist>()
-            mediaInteractor.getAllPlaylists().collect{ playlists.add(it) }
-            state.postValue( PlaylistsFragmentScreenUpdate.ShowAllPlaylists(playlists) )
+            mediaInteractor.getAllPlaylists().collect { playlists.add(it) }
+            state.postValue(PlaylistsFragmentScreenUpdate.ShowAllPlaylists(playlists))
         }
     }
-
-
-
-
-
-
-    init { requestAllPlaylists() }
-    fun getState(): LiveData<PlaylistsFragmentScreenUpdate> { return state }
 }
 
 sealed class PlaylistsFragmentScreenUpdate {

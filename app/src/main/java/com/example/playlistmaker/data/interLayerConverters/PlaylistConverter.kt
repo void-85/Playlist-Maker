@@ -6,6 +6,7 @@ import com.example.playlistmaker.domain.entities.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+/*
 fun Playlist.convert(): DBPlaylistEntity {
     return DBPlaylistEntity(
 
@@ -36,4 +37,4 @@ fun DBPlaylistEntity.convert(): Playlist {
         ),
         numberOfTracks = this.numberOfTracks
     )
-}
+}*/

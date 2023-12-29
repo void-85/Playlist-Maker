@@ -26,7 +26,7 @@ class RecyclerViewPlaylistViewHolder(
     fun bind(model :Playlist){
 
         name.text = model.name
-        tracksCount.text = model.numberOfTracks.toTrackNumberString()
+        tracksCount.text = model.amountOfTracks.toTrackNumberString()
 
         var uri : Uri? = null
         if( model.imageId != "" ){

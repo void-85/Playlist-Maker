@@ -6,7 +6,7 @@ import com.example.playlistmaker.domain.entities.Track
 import kotlinx.coroutines.flow.Flow
 
 
-interface FavTracksPlaylistsRepository {
+interface FavoriteTracksAndPlaylistsRepository {
 
     // -- FAV TRACKS ----------------------------------------------------------
     suspend fun insertFavTrack(track: Track)

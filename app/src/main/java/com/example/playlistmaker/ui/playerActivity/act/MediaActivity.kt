@@ -278,9 +278,22 @@ class MediaActivity : AppCompatActivity() {
                     viewModel.dataWasRecieved()
                 }
 
-                is MediaActivityScreenUpdate.NotifyUser -> {
+                is MediaActivityScreenUpdate.NotifyUserTrackAddedToPlaylist -> {
 
-                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.media_player_track_added_to_playlist)+" \"${it.playlistName}\"",
+                        Toast.LENGTH_LONG)
+                    .show()
+                }
+
+                is MediaActivityScreenUpdate.NotifyUserTrackAllreadyInPlaylist -> {
+
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.media_player_track_is_allready_in_playlist)+" \"${it.playlistName}\"",
+                        Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 else -> {}

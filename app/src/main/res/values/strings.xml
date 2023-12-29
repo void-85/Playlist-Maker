@@ -51,7 +51,7 @@
 
     <string name="media_library_fav_songs_tab_the_library_is_empty">Ваша медиатека пуста</string>
     <string name="media_library_playlists_tab_no_playlists">Вы не создали\nни одного плейлиста</string>
-    <string name="title_activity_frags_holder">FragsHolderActivity</string>
+    <string name="title_activity_frags_holder">PLMaker</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>

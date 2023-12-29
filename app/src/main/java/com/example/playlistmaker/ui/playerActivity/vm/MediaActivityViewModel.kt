@@ -1,10 +1,12 @@
 package com.example.playlistmaker.ui.playerActivity.vm
 
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -218,15 +220,13 @@ class MediaActivityViewModel(
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
-            val resultMessage: String
-
             if (playlist.tracks.contains(track)) {
 
-                resultMessage = "Трек уже добавлен в плейлист \"${playlist.name}\""
+                screenData.postValue(
+                    MediaActivityScreenUpdate.NotifyUserTrackAllreadyInPlaylist(playlist.name)
+                )
 
             } else {
-
-                resultMessage = "Добавлено в плейлист \"${playlist.name}\""
 
                 viewModelScope.launch {
 
@@ -246,17 +246,16 @@ class MediaActivityViewModel(
                             imageId = playlist.imageId,
 
                             tracks = newTracksList,
-                            numberOfTracks = playlist.numberOfTracks + 1
+                            amountOfTracks = playlist.amountOfTracks + 1
                         )
                     )
-
                     onStartActivity()
                 }
-            }
 
-            screenData.postValue(
-                MediaActivityScreenUpdate.NotifyUser(resultMessage)
-            )
+                screenData.postValue(
+                    MediaActivityScreenUpdate.NotifyUserTrackAddedToPlaylist(playlist.name)
+                )
+            }
         }
     }
 }
@@ -280,9 +279,15 @@ sealed class MediaActivityScreenUpdate {
         val playlists: List<Playlist>
     ) : MediaActivityScreenUpdate()
 
-    data class NotifyUser(
-        val message: String
+
+    data class NotifyUserTrackAddedToPlaylist(
+        val playlistName: String
     ) : MediaActivityScreenUpdate()
+
+    data class NotifyUserTrackAllreadyInPlaylist(
+        val playlistName: String
+    ) : MediaActivityScreenUpdate()
+
 
     data class AllData(
         val timeCode: Long,
@@ -301,6 +306,5 @@ sealed class MediaActivityScreenUpdate {
     ) : MediaActivityScreenUpdate()
 
     object PlayFinished : MediaActivityScreenUpdate()
-
     object DoNothing : MediaActivityScreenUpdate()
 }

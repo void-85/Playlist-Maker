@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -289,36 +290,24 @@ class SearchFragment : Fragment() {
         }
 
 
-        val simpleTextWatcher = object : TextWatcher {
-
-            override fun beforeTextChanged(
-                s: CharSequence?, start: Int, count: Int, after: Int
-            ) {
-                /* empty */
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
+        editTextId.addTextChangedListener(
+            onTextChanged = { charSequence, _, _, _ ->
+                if (charSequence.isNullOrEmpty()) {
 
                     clearTextButtonId.visibility = View.GONE
                     showHistory()
 
                 } else {
 
-                    if (previousSearchText != s.toString()) {
+                    if (previousSearchText != charSequence.toString()) {
                         showDataLoading()
-                        viewModel.searchTracksDebounced(s.toString())
-                        previousSearchText = s.toString()
+                        viewModel.searchTracksDebounced(charSequence.toString())
+                        previousSearchText = charSequence.toString()
                     }
                     clearTextButtonId.visibility = View.VISIBLE
                 }
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                /* empty */
-            }
-        }
-        editTextId.addTextChangedListener(simpleTextWatcher)
+        )
 
 
         savedInstanceState?.let {

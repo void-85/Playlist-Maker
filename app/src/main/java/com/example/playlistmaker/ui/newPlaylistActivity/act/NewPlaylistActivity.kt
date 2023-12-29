@@ -157,7 +157,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                     imageId = imageIdFilename,
 
                     tracks = emptyList(),
-                    numberOfTracks =  0
+                    amountOfTracks =  0
                 )
             )
 

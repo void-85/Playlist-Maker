@@ -18,5 +18,5 @@ data class DBPlaylistEntity(
     val imageId: String,
 
     val tracksJson: String,
-    val numberOfTracks: Int
+    val amountOfTracks: Int
 )

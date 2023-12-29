@@ -10,5 +10,5 @@ data class Playlist(
     val imageId: String,
 
     val tracks: List<Track>,
-    val numberOfTracks: Int
+    val amountOfTracks: Int
 )
