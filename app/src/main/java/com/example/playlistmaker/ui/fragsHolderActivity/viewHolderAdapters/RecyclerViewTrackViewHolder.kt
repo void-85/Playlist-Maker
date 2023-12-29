@@ -44,8 +44,8 @@ class RecyclerViewTrackViewHolder(
             .into(artworkUrl)
 
         itemView.setOnClickListener {
-            trackViewHolderItemClicked(model)
 
+            trackViewHolderItemClicked(model)
         }
     }
 }

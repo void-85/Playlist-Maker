@@ -226,6 +226,7 @@ class SearchFragment : Fragment() {
                         showTracks()
                     }
                     recyclerView.adapter?.notifyDataSetChanged()
+                    recyclerView.scrollToPosition(0)
                     viewModel.updateRecieved()
                 }
 
@@ -241,6 +242,7 @@ class SearchFragment : Fragment() {
                     }
 
                     historyRView.adapter?.notifyDataSetChanged()
+                    historyRView.scrollToPosition(0)
                     showHistory()
                     viewModel.updateRecieved()
                 }
@@ -369,6 +371,6 @@ class SearchFragment : Fragment() {
         const val SEARCH_HISTORY_MAX_LENGTH = 10
         const val SEARCH_REQUEST_KEY = "SEARCH_REQUEST"
 
-        const val CLICK_DEBOUNCE_DELAY_MILLIS = 2_000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 400L
     }
 }

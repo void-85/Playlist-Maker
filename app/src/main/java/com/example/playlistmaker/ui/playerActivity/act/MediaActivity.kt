@@ -65,6 +65,7 @@ class MediaActivity : AppCompatActivity() {
     private val playlists = ArrayList<Playlist>()
     private val playlistClicked: (Playlist) -> Unit = { playlist ->
         viewModel.includeOrExcludeCurrentTrackInFromPlaylist(playlist)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
 

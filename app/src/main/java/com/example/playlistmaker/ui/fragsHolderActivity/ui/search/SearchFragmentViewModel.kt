@@ -47,7 +47,7 @@ class SearchFragmentViewModel(
     }
 
     fun updateRecieved(){
-        //screenUpdateLiveData.postValue(SearchActivityUpdate.DoNothing)
+        screenUpdateLiveData.postValue(SearchFragmentUpdate.DoNothing)
     }
 
     fun searchTracksDebounced(searchText: String) {
