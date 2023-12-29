@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -124,6 +125,14 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun showNothing() {
+        searchHistory.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        noDataFrame.visibility = View.GONE
+        noNetworkFrame.visibility = View.GONE
+        progressBar.visibility = View.GONE
+    }
+
 
     private fun showHistory() {
 
@@ -227,7 +236,7 @@ class SearchFragment : Fragment() {
                     }
                     recyclerView.adapter?.notifyDataSetChanged()
                     recyclerView.scrollToPosition(0)
-                    viewModel.updateRecieved()
+                    //viewModel.updateRecieved()
                 }
 
                 is SearchFragmentUpdate.SearchHistoryData -> {
@@ -244,7 +253,7 @@ class SearchFragment : Fragment() {
                     historyRView.adapter?.notifyDataSetChanged()
                     historyRView.scrollToPosition(0)
                     showHistory()
-                    viewModel.updateRecieved()
+                    //viewModel.updateRecieved()
                 }
             }
         }
@@ -281,8 +290,11 @@ class SearchFragment : Fragment() {
         clearTextButtonId = binding.searchClearEditTextButton
         clearTextButtonId.setOnClickListener {
 
+            showNothing()
+
             editTextId.setText("")
             data.clear()
+            recyclerView.adapter?.notifyDataSetChanged()
 
             viewModel.cancelSearch()
             viewModel.requestSearchHistory()
@@ -296,7 +308,6 @@ class SearchFragment : Fragment() {
                         }*/
 
             hideKeyboard()
-            showHistory()
         }
 
         editTextId = binding.searchEditText
@@ -359,12 +370,26 @@ class SearchFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        //Toast.makeText(context, "onStart()... data=${data.size} history=${historyData.size}", Toast.LENGTH_LONG).show()
+
         editTextId.requestFocus()
 
-        if (editTextId.text.isEmpty()) {
-            showHistory()
-            //showKeyboard()
-        }
+        /*        if (!data.isEmpty()) {
+                    showTracks()
+                } else {
+                    if (historyData.isEmpty()) {
+                        showNothing()
+                    } else {
+                        isSearchHistoryEmpty = false
+                        showHistory()
+                    }
+                }*/
+
+        /* if (editTextId.text.isEmpty()) {
+             showHistory()
+             //showKeyboard()
+         }*/
     }
 
     private companion object {

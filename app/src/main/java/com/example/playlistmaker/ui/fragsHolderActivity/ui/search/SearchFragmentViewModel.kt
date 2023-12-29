@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class SearchFragmentViewModel(
         requestSearchHistory()
     }
 
+
     fun getState(): LiveData<SearchFragmentUpdate> {
         return screenUpdateLiveData
     }
@@ -46,7 +48,7 @@ class SearchFragmentViewModel(
         )
     }
 
-    fun updateRecieved(){
+    fun updateRecieved() {
         screenUpdateLiveData.postValue(SearchFragmentUpdate.DoNothing)
     }
 
@@ -72,15 +74,15 @@ class SearchFragmentViewModel(
 
                         } else {
 
-/*                            val favIds = ArrayList<Long>()
-                            searchInteractor.getAllFavoriteTracksIds().collect{
-                                favIds.add(it)
-                            }*/
+                            /*                            val favIds = ArrayList<Long>()
+                                                        searchInteractor.getAllFavoriteTracksIds().collect{
+                                                            favIds.add(it)
+                                                        }*/
 
                             val tracks = ArrayList<Track>()
                             pair.first?.forEach {
 
-                                tracks.add( it ) //it.apply { isFavorite = favIds.contains(it.trackId) } )
+                                tracks.add(it) //it.apply { isFavorite = favIds.contains(it.trackId) } )
                             }
 
                             screenUpdateLiveData.postValue(SearchFragmentUpdate.SearchResult(tracks))
