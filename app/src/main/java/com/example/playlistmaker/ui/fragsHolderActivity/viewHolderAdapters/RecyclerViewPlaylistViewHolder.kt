@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Playlist
-import com.example.playlistmaker.ui.utils.toTrackNumberString
+import com.example.playlistmaker.ui.utils.toTrackAmountString
 import java.io.File
 
 class RecyclerViewPlaylistViewHolder(
@@ -26,7 +26,7 @@ class RecyclerViewPlaylistViewHolder(
     fun bind(model :Playlist){
 
         name.text = model.name
-        tracksCount.text = model.amountOfTracks.toTrackNumberString()
+        tracksCount.text = model.amountOfTracks.toTrackAmountString(itemView.context)
 
         var uri : Uri? = null
         if( model.imageId != "" ){
