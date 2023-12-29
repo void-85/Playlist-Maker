@@ -15,7 +15,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +32,6 @@ import com.example.playlistmaker.ui.utils.hideKeyboard
 
 class SearchFragment : Fragment() {
 
-    //private lateinit var binding: FragmentSearchBinding
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -125,15 +123,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showNothing() {
-        searchHistory.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.GONE
-        noNetworkFrame.visibility = View.GONE
-        progressBar.visibility = View.GONE
-    }
-
-
     private fun showHistory() {
 
         searchHistory.visibility = if (isSearchHistoryEmpty) View.GONE else View.VISIBLE
@@ -180,13 +169,6 @@ class SearchFragment : Fragment() {
 
     private fun onSearchEntered() {
 
-        /*
-        searchHistory.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-        noDataFrame.visibility = View.GONE
-        noNetworkFrame.visibility = View.GONE
-        progressBar.visibility = View.GONE
-        */
         showDataLoading()
         viewModel.searchTracksDebounced(editTextId.text.toString())
     }
@@ -210,33 +192,23 @@ class SearchFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
 
-                is SearchFragmentUpdate.DoNothing -> {
-                    //prevent resending LiveData old state
-                }
-
-                is SearchFragmentUpdate.Loading -> {
-                    //unreachable?
-                    showDataLoading()
-                    viewModel.updateRecieved()
-                }
-
                 is SearchFragmentUpdate.NoNetwork -> {
                     showNoNetwork()
-                    viewModel.updateRecieved()
                 }
 
                 is SearchFragmentUpdate.SearchResult -> {
 
                     data.clear()
+
                     if (it.tracks.isEmpty()) {
                         showNoData()
                     } else {
                         data.addAll(it.tracks)
                         showTracks()
                     }
+
                     recyclerView.adapter?.notifyDataSetChanged()
                     recyclerView.scrollToPosition(0)
-                    //viewModel.updateRecieved()
                 }
 
                 is SearchFragmentUpdate.SearchHistoryData -> {
@@ -253,7 +225,6 @@ class SearchFragment : Fragment() {
                     historyRView.adapter?.notifyDataSetChanged()
                     historyRView.scrollToPosition(0)
                     showHistory()
-                    //viewModel.updateRecieved()
                 }
             }
         }
@@ -290,8 +261,6 @@ class SearchFragment : Fragment() {
         clearTextButtonId = binding.searchClearEditTextButton
         clearTextButtonId.setOnClickListener {
 
-            showNothing()
-
             editTextId.setText("")
             data.clear()
             recyclerView.adapter?.notifyDataSetChanged()
@@ -299,23 +268,22 @@ class SearchFragment : Fragment() {
             viewModel.cancelSearch()
             viewModel.requestSearchHistory()
 
-            //editTextId.clearFocus()
-            // TODO
-            /*             requireActivity().currentFocus?.let { view ->
-                            val inputMethodManager =
-                                getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
-                            inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-                        }*/
+            //------------------------------------------------------------------------?
+            /*editTextId.clearFocus()
+             requireActivity().currentFocus?.let { view ->
+                val inputMethodManager =
+                    getSystemService( INPUT_METHOD_SERVICE ) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+            }*/
+            //------------------------------------------------------------------------?
 
             hideKeyboard()
         }
 
         editTextId = binding.searchEditText
-        //editTextId.requestFocus()
         editTextId.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onSearchEntered()
-                //true
             }
             false
         }
@@ -370,26 +338,7 @@ class SearchFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
-        //Toast.makeText(context, "onStart()... data=${data.size} history=${historyData.size}", Toast.LENGTH_LONG).show()
-
         editTextId.requestFocus()
-
-        /*        if (!data.isEmpty()) {
-                    showTracks()
-                } else {
-                    if (historyData.isEmpty()) {
-                        showNothing()
-                    } else {
-                        isSearchHistoryEmpty = false
-                        showHistory()
-                    }
-                }*/
-
-        /* if (editTextId.text.isEmpty()) {
-             showHistory()
-             //showKeyboard()
-         }*/
     }
 
     private companion object {

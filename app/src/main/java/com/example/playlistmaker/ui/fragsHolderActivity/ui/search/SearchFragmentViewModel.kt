@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.fragsHolderActivity.ui.search
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,13 +18,10 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
 
     private var screenUpdateLiveData =
-        MutableLiveData<SearchFragmentUpdate>(SearchFragmentUpdate.DoNothing)
+        MutableLiveData<SearchFragmentUpdate>(
+            SearchFragmentUpdate.SearchHistoryData(searchInteractor.getSearchHistory())
+        )
     private var searchJob: Job? = null
-
-    init {
-        requestSearchHistory()
-    }
-
 
     fun getState(): LiveData<SearchFragmentUpdate> {
         return screenUpdateLiveData
@@ -33,7 +29,9 @@ class SearchFragmentViewModel(
 
     fun clearSearchHistory() {
         searchInteractor.setSearchHistory(emptyList())
-        screenUpdateLiveData.postValue(SearchFragmentUpdate.DoNothing)
+        screenUpdateLiveData.postValue(
+            SearchFragmentUpdate.SearchHistoryData(searchInteractor.getSearchHistory())
+        )
     }
 
     fun cancelSearch() {
@@ -46,10 +44,6 @@ class SearchFragmentViewModel(
                 searchInteractor.getSearchHistory()
             )
         )
-    }
-
-    fun updateRecieved() {
-        screenUpdateLiveData.postValue(SearchFragmentUpdate.DoNothing)
     }
 
     fun searchTracksDebounced(searchText: String) {
@@ -74,19 +68,11 @@ class SearchFragmentViewModel(
 
                         } else {
 
-                            /*                            val favIds = ArrayList<Long>()
-                                                        searchInteractor.getAllFavoriteTracksIds().collect{
-                                                            favIds.add(it)
-                                                        }*/
-
                             val tracks = ArrayList<Track>()
                             pair.first?.forEach {
-
-                                tracks.add(it) //it.apply { isFavorite = favIds.contains(it.trackId) } )
+                                tracks.add(it)
                             }
-
                             screenUpdateLiveData.postValue(SearchFragmentUpdate.SearchResult(tracks))
-
                         }
                     }
                 }
@@ -113,11 +99,7 @@ class SearchFragmentViewModel(
 
 sealed class SearchFragmentUpdate {
 
-    object DoNothing : SearchFragmentUpdate()
-
     object NoNetwork : SearchFragmentUpdate()
-
-    object Loading : SearchFragmentUpdate()
 
     data class SearchHistoryData(
         val tracks: List<Track>
