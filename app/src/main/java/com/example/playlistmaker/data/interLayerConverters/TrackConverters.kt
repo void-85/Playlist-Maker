@@ -5,7 +5,7 @@ import com.example.playlistmaker.domain.entities.Track
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-fun Track.convert(): DBTrackEntity {
+/*fun Track.convert(): DBTrackEntity {
     return DBTrackEntity(
 
         this.trackId,
@@ -45,4 +45,4 @@ fun DBTrackEntity.convert(): Track{
 
         isFavorite = false
     )
-}
+}*/

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/search_screen_background"
     android:orientation="vertical">
 
     <Button
+        android:id="@+id/create_new_playlist_button"
         style="@style/search_info_button"
         android:layout_width="@dimen/search_history_clear_button_width"
         android:layout_height="@dimen/search_history_clear_button_height"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/search_screen_header"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -19,16 +23,17 @@
         app:cornerRadius="@dimen/search_history_clear_button_corner_radius" />
 
     <FrameLayout
-        android:id="@+id/no_data_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <FrameLayout
+            android:id="@+id/no_data_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="120dp"
@@ -48,5 +53,13 @@
                 android:textAlignment="center"
                 android:textColor="@color/search_screen_header" />
         </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlists_rView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:itemCount="5" />
+
     </FrameLayout>
 </LinearLayout>

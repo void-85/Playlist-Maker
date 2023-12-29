@@ -4,7 +4,7 @@ package com.example.playlistmaker.domain.search
 import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
 import com.example.playlistmaker.domain.api.interactors.SearchInteractor
 import com.example.playlistmaker.domain.api.repositories.TracksRepository
-import com.example.playlistmaker.domain.db.FavTracksRepository
+import com.example.playlistmaker.domain.db.FavoriteTracksAndPlaylistsRepository
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.utils.Option
 
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 class SearchInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
     private val tracksRepositoryImpl: TracksRepository,
-    private val favTracksRepositoryImpl: FavTracksRepository
+    private val favoriteTracksAndPlaylistsRepositoryImpl: FavoriteTracksAndPlaylistsRepository
 ) : SearchInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
@@ -53,11 +53,11 @@ class SearchInteractorImpl(
 
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
     override suspend fun getAllFavoriteTracks(): Flow<Track>{
-        return favTracksRepositoryImpl.getAllTracks()
+        return favoriteTracksAndPlaylistsRepositoryImpl.getAllFavTracks()
     }
 
     override suspend fun getAllFavoriteTracksIds(): Flow<Long> {
-        return favTracksRepositoryImpl.getAllTracksIds()
+        return favoriteTracksAndPlaylistsRepositoryImpl.getAllFavTracksIds()
     }
     // FAV TRACKS REPOSITORY --------------------------------------------------------------
 }

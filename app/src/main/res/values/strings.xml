@@ -51,9 +51,33 @@
 
     <string name="media_library_fav_songs_tab_the_library_is_empty">Ваша медиатека пуста</string>
     <string name="media_library_playlists_tab_no_playlists">Вы не создали\nни одного плейлиста</string>
-    <string name="title_activity_frags_holder">FragsHolderActivity</string>
+    <string name="title_activity_frags_holder">PLMaker</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="new_playlist_activity_title">Новый плейлист</string>
+    <string name="new_playlist_activity_image_cont_desc">Изображение для плейлиста</string>
+    <string name="new_playlist_activity_name_edit_text_hint">Название*</string>
+    <string name="new_playlist_activity_desc_edit_text_hint">Описание</string>
+    <string name="new_playlist_activity_create_button_caption">Создать</string>
+
+    <string name="new_playlist_activity_exit_dialog_title">Завершить создание плейлиста?</string>
+    <string name="new_playlist_activity_exit_dialog_text">Все несохраненные данные будут потеряны!</string>
+    <string name="new_playlist_activity_exit_dialog_cancel">Отмена</string>
+    <string name="new_playlist_activity_exit_dialog_terminate">Завершить</string>
+
+    <string name="new_playlist_activity_created_pre_msg">Плейлист</string>
+    <string name="new_playlist_activity_created_post_msg">создан</string>
+
+    <string name="media_player_bottom_sheet_title">Добавить в плейлист</string>
+    <string name="media_player_bottom_sheet_create_playlist">Новый плейлист</string>
+
+    <string name="media_player_track_is_allready_in_playlist">Трек уже добавлен в плейлист</string>
+    <string name="media_player_track_added_to_playlist">Добавлено в плейлист</string>
+    
+    <string name="tracks_amount_string_form_a">трек</string>
+    <string name="tracks_amount_string_form_b">трека</string>
+    <string name="tracks_amount_string_form_c">треков</string>
 
 </resources>

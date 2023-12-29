@@ -12,6 +12,7 @@
 
     <dimen name="app_main_font_size">22sp</dimen>
     <dimen name="app_small_font_size">16sp</dimen>
+    <dimen name="app_smaller_font_size">12sp</dimen>
     <dimen name="app_even_smaller_font_size">11sp</dimen>
 
     <dimen name="search_info_message_font">19sp</dimen>
@@ -92,5 +93,9 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+
+
+    <dimen name="new_playlist_upload_image_corner_radius">10dp</dimen>
 
 </resources>

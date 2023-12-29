@@ -5,14 +5,16 @@ package com.example.playlistmaker.domain.player
 import com.example.playlistmaker.domain.api.repositories.AppPrefsRepository
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import com.example.playlistmaker.domain.api.interactors.MediaInteractor
-import com.example.playlistmaker.domain.db.FavTracksRepository
+import com.example.playlistmaker.domain.db.FavoriteTracksAndPlaylistsRepository
+import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.flow.Flow
 
 
 class MediaInteractorImpl(
     private val appPrefsRepositoryImpl: AppPrefsRepository,
     private val audioRepositoryImpl: AudioRepository,
-    private val favTracksRepositoryImpl: FavTracksRepository
+    private val favoriteTracksAndPlaylistsRepositoryImpl: FavoriteTracksAndPlaylistsRepository
 ) : MediaInteractor {
 
     // APP PREFS REPOSITORY ---------------------------------------------------------------
@@ -83,17 +85,34 @@ class MediaInteractorImpl(
     // AUDIO REPOSITORY -------------------------------------------------------------------
 
 
-    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
+    // ------ TRACKS ---------------------------------------------------
     override suspend fun insertTrack(track: Track) {
-        favTracksRepositoryImpl.insertTrack(track)
+        favoriteTracksAndPlaylistsRepositoryImpl.insertFavTrack(track)
     }
 
     override suspend fun deleteTrack(track: Track) {
-        favTracksRepositoryImpl.deleteTrack(track)
+        favoriteTracksAndPlaylistsRepositoryImpl.deleteFavTrack(track)
     }
 
     override suspend fun isTrackFavorite(track: Track): Boolean {
-        return favTracksRepositoryImpl.isTrackFavorite(track)
+        return favoriteTracksAndPlaylistsRepositoryImpl.isTrackFavorite(track)
     }
-    // FAV TRACKS REPOSITORY --------------------------------------------------------------
+    // ------ TRACKS ---------------------------------------------------
+
+
+    // ------ PLAYLISTS ------------------------------------------------
+    override suspend fun createPlaylist(playlist: Playlist) {
+        favoriteTracksAndPlaylistsRepositoryImpl.createPlaylist( playlist )
+    }
+
+    override suspend fun getAllPlaylists(): Flow<Playlist> {
+        return favoriteTracksAndPlaylistsRepositoryImpl.getAllPlaylists()
+    }
+
+    override suspend fun deletePlaylist( playlistId: Long ){
+        favoriteTracksAndPlaylistsRepositoryImpl.deletePlaylist( playlistId )
+    }
+    // ------ PLAYLISTS ------------------------------------------------
+    // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }

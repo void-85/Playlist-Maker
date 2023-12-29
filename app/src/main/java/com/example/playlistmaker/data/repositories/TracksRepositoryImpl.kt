@@ -7,7 +7,7 @@ import com.example.playlistmaker.data.api.NetworkClient
 import com.example.playlistmaker.data.utils.millisToMinSec
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.domain.api.repositories.TracksRepository
-import com.example.playlistmaker.domain.db.FavTracksRepository
+import com.example.playlistmaker.domain.db.FavoriteTracksAndPlaylistsRepository
 import com.example.playlistmaker.ui.utils.Option
 
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val favTracksRepositoryImpl: FavTracksRepository
+    private val favoriteTracksAndPlaylistsRepositoryImpl: FavoriteTracksAndPlaylistsRepository
 ) : TracksRepository {
 
     override fun searchTracks(searchText: String): Flow<Option<List<Track>>> = flow {
@@ -31,7 +31,7 @@ class TracksRepositoryImpl(
                 with(response as ResponseData) {
 
                     val favIds = ArrayList<Long>()
-                    favTracksRepositoryImpl.getAllTracksIds().collect{
+                    favoriteTracksAndPlaylistsRepositoryImpl.getAllFavTracksIds().collect{
                         favIds.add(it)
                     }
 
