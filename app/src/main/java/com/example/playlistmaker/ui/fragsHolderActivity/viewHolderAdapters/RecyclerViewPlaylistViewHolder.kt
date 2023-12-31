@@ -16,7 +16,8 @@ import com.example.playlistmaker.ui.utils.toTrackAmountString
 import java.io.File
 
 class RecyclerViewPlaylistViewHolder(
-    itemView: View
+    itemView: View,
+    private val playlistClicked: (Playlist) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val image: ImageView = itemView.findViewById(R.id.image)
@@ -47,5 +48,9 @@ class RecyclerViewPlaylistViewHolder(
                     ))
             )
             .into(image)
+
+        itemView.setOnClickListener {
+            playlistClicked(model)
+        }
     }
 }

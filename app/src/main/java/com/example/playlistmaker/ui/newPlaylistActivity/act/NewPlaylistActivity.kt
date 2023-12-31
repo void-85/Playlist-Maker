@@ -30,7 +30,10 @@ import java.time.ZoneOffset
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
 import com.example.playlistmaker.domain.entities.Playlist
+import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.PlaylistsFragment
 import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class NewPlaylistActivity : AppCompatActivity() {
@@ -43,26 +46,53 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var playlistName: TextInputEditText
     private lateinit var playlistDescription: TextInputEditText
     private lateinit var createPlaylistButton: Button
-
-    private var currentImageURI: Uri? = null
-
     lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
 
-    private fun renderImageFromVar() {
-        Glide
-            .with(applicationContext)
-            .load(currentImageURI)
-            .placeholder(R.drawable.spiral)
-            .transform(
-                CenterCrop(),
-                RoundedCorners(
-                    resources.getDimensionPixelSize(
-                        R.dimen.new_playlist_upload_image_corner_radius
+    private var currentImageURI: Uri? = null
+    private var editPlaylistId: Long? = null
+
+    private fun renderImage(imageURI: Uri?) {
+        if (imageURI is Uri) {
+            Glide
+                .with(applicationContext)
+                .load(imageURI)
+                .placeholder(R.drawable.spiral)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(
+                        resources.getDimensionPixelSize(
+                            R.dimen.new_playlist_upload_image_corner_radius
+                        )
                     )
                 )
-            )
-            .into(playlistImage)
+                .into(playlistImage)
+        }
+    }
+
+    private fun checkIfEditMode() {
+        val playlistJson = intent.extras?.getString(PlaylistsFragment.PLAYLIST_EDIT_MODE_KEY, null)
+        if (playlistJson is String) {
+
+            val playlist: Playlist =
+                Gson().fromJson(playlistJson, object : TypeToken<Playlist>() {}.type)
+
+            editPlaylistId = playlist.id
+
+            toolbar.title = getString(R.string.new_edit_playlist_activity_title)
+            playlistName.setText( playlist.name )
+            playlistDescription.setText( playlist.description )
+            createPlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
+
+            if(playlist.imageId != ""){
+
+                val filePath = File( getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                val file = File(filePath, playlist.imageId)
+                currentImageURI = file.toUri()
+
+                renderImage(currentImageURI)
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -87,7 +117,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 //Toast.makeText(applicationContext, uri.toString(), Toast.LENGTH_LONG).show()
                 //playlistImage.setImageURI(uri)
                 currentImageURI = uri
-                renderImageFromVar()
+                renderImage(currentImageURI)
             }
         }
         playlistImage = binding.newPlaylistUploadImage
@@ -127,7 +157,6 @@ class NewPlaylistActivity : AppCompatActivity() {
 
         createPlaylistButton = binding.createNewPlaylistButton
         createPlaylistButton.setOnClickListener {
-            //Toast.makeText(applicationContext, "saving...", Toast.LENGTH_LONG).show()
 
             var imageIdFilename = ""
             if (currentImageURI != null) {
@@ -148,6 +177,9 @@ class NewPlaylistActivity : AppCompatActivity() {
             }
 
             viewModel.createPlaylist(
+
+                deletePlaylistById = editPlaylistId,
+
                 Playlist(
                     id = 0L,
 
@@ -175,20 +207,10 @@ class NewPlaylistActivity : AppCompatActivity() {
         }
 
         confirmExitDialog = MaterialAlertDialogBuilder(this)
-            .setTitle(
-                getString(R.string.new_playlist_activity_exit_dialog_title)
-            )
-            .setMessage(
-                getString(R.string.new_playlist_activity_exit_dialog_text)
-            )
-            .setNeutralButton(
-                getString(R.string.new_playlist_activity_exit_dialog_cancel)
-            ) { _, _ -> /* NOTHING */ }
-            .setPositiveButton(
-                getString(R.string.new_playlist_activity_exit_dialog_terminate)
-            ) { dialog, which ->
-                finish()
-            }
+            .setTitle(getString(R.string.new_playlist_activity_exit_dialog_title))
+            .setMessage(getString(R.string.new_playlist_activity_exit_dialog_text))
+            .setNeutralButton(getString(R.string.new_playlist_activity_exit_dialog_cancel)) { _, _ -> /* NOTHING */ }
+            .setPositiveButton(getString(R.string.new_playlist_activity_exit_dialog_terminate)) { _, _ -> finish() }
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -205,9 +227,11 @@ class NewPlaylistActivity : AppCompatActivity() {
             val selectedImageUri = it.getString(SELECTED_IMAGE_URI, "")
             if (selectedImageUri.isNotEmpty()) {
                 currentImageURI = selectedImageUri.toUri()
-                renderImageFromVar()
+                renderImage(currentImageURI)
             }
         }
+
+        checkIfEditMode()
     }
 
     private companion object {

@@ -18,6 +18,8 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewPlaylistAdapter
 import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,13 +32,13 @@ class PlaylistsFragment : Fragment() {
                 putInt(TEXT_RESOURCE, textResource)
             }*/
         }
+
+        const val PLAYLIST_EDIT_MODE_KEY = "PLAYLIST_EDIT_MODE_KEY"
     }
 
     private val viewmodel by viewModel<PlaylistsFragmentViewModel>()
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-
-
 
     private var data = ArrayList<Playlist>()
 
@@ -45,8 +47,11 @@ class PlaylistsFragment : Fragment() {
     private lateinit var createPlaylistButton: Button
 
 
-
-
+    private val playlistClicked: (Playlist) -> Unit = {
+        val editPlaylistIntent = Intent(context, NewPlaylistActivity::class.java)
+        editPlaylistIntent.putExtra(PLAYLIST_EDIT_MODE_KEY, Gson().toJson(it))
+        startActivity(editPlaylistIntent)
+    }
 
 
     private fun showNoPlaylists() {
@@ -99,7 +104,7 @@ class PlaylistsFragment : Fragment() {
 
         recyclerView = binding.playlistsRView
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        recyclerView.adapter = RecyclerViewPlaylistAdapter(data)
+        recyclerView.adapter = RecyclerViewPlaylistAdapter(data, playlistClicked )
 
         noDataFrame = binding.noDataInfo
 
