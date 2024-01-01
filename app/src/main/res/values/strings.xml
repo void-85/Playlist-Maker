@@ -82,7 +82,9 @@
 
     <string name="media_player_track_is_allready_in_playlist">Трек уже добавлен в плейлист</string>
     <string name="media_player_track_added_to_playlist">Добавлено в плейлист</string>
-    
+
+    <string name="edit_playlist_share_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+
     <string name="tracks_amount_string_form_a">трек</string>
     <string name="tracks_amount_string_form_b">трека</string>
     <string name="tracks_amount_string_form_c">треков</string>

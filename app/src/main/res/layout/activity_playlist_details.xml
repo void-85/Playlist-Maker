@@ -130,7 +130,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet"
         android:minHeight="@dimen/playlist_details_bottom_sheet_default_size"
-
         android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/playlist_details_bottom_sheet_default_size"
@@ -151,5 +150,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
+
+    <include layout="@layout/bottom_sheet_edit_playlist"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

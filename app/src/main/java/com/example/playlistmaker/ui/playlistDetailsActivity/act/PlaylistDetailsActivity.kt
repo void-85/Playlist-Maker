@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
@@ -53,6 +54,9 @@ class PlaylistDetailsActivity : AppCompatActivity() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetContainer: LinearLayout
 
+    private lateinit var bottomSheetBehavior2: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetContainer2: LinearLayout
+
     private lateinit var bottomSheetRView: RecyclerView
     private val tracks = ArrayList<Track>()
     private val trackClicked: (Track) -> Unit = {
@@ -66,7 +70,6 @@ class PlaylistDetailsActivity : AppCompatActivity() {
 
         viewModel.deleteTrackFromPlaylist(it, playlistOnEdit)
     }
-
 
 
     override fun onStart() {
@@ -86,6 +89,37 @@ class PlaylistDetailsActivity : AppCompatActivity() {
 
         binding = ActivityPlaylistDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
+        bottomSheetContainer2 = findViewById<LinearLayout>(R.id.bottom_sheet_edit_playlist)
+        bottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheetContainer2).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        bottomSheetBehavior2.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.alpha = 0.0f
+                        if(tracks.isEmpty()){
+                            bottomSheetContainer.visibility = View.INVISIBLE
+                        }else{
+                            bottomSheetContainer.visibility = View.VISIBLE
+                        }
+                    }
+
+                    else -> {
+                        overlay.alpha = 1.0f
+                        bottomSheetContainer.visibility = View.INVISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) { /**/
+            }
+        })
 
 
         bottomSheetContainer = binding.bottomSheet
@@ -119,8 +153,43 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         name = binding.name
         desc = binding.description
         stats = binding.statistics
+
         share = binding.share
+        share.setOnClickListener {
+            if (playlistOnEdit.tracks.isNotEmpty()) {
+
+                var msg: String =
+                    "\"${playlistOnEdit.name}\"\n${playlistOnEdit.description}\n${
+                        playlistOnEdit.tracks.size.toTrackAmountString(applicationContext)
+                    }"
+
+                var number = 0
+                playlistOnEdit.tracks.forEach {
+                    number++
+                    msg += "\n${number}. ${it.artistName} - ${it.trackName} (${it.trackTime})"
+                }
+
+                val sendIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, msg)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(Intent.createChooser(sendIntent, null))
+
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.edit_playlist_share_nothing_to_share),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
         options = binding.options
+        options.setOnClickListener {
+            bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
 
         viewModel.getState().observe(this) { state ->
             when (state) {
@@ -145,9 +214,32 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                         .transform(CenterCrop())
                         .into(image)
 
+
+                    // bottom sheet view holder ----------------------------------------------------
+                    Glide
+                        .with(applicationContext)
+                        .load(file.toUri())
+                        .placeholder(R.drawable.spiral)
+                        .transform(CenterCrop())
+                        .into( findViewById<ImageView>(R.id.edit_image) )
+
+                    findViewById<TextView>(R.id.edit_name).text = state.playlist.name
+                    findViewById<TextView>(R.id.edit_number_of_tracks).text = state.playlist.tracks.size.toTrackAmountString(applicationContext)
+                    // bottom sheet view holder ----------------------------------------------------
+
+
+
+
+
                     tracks.clear()
                     tracks.addAll(state.playlist.tracks)
                     bottomSheetRView.adapter?.notifyDataSetChanged()
+
+                    if(tracks.isEmpty()){
+                        bottomSheetContainer.visibility = View.INVISIBLE
+                    }else{
+                        bottomSheetContainer.visibility = View.VISIBLE
+                    }
 
                     name.text = state.playlist.name
 
