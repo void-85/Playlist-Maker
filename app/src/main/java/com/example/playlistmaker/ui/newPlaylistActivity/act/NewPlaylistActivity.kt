@@ -71,6 +71,7 @@ class NewPlaylistActivity : AppCompatActivity() {
     }
 
     private fun checkIfEditMode() {
+
         val playlistJson = intent.extras?.getString(PlaylistsFragment.PLAYLIST_EDIT_MODE_KEY, null)
         if (playlistJson is String) {
 
@@ -181,7 +182,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 deletePlaylistById = editPlaylistId,
 
                 Playlist(
-                    id = 0L,
+                    id = editPlaylistId ?: 0,
 
                     name = playlistName.text.toString(),
                     description = playlistDescription.text.toString(),
@@ -193,15 +194,17 @@ class NewPlaylistActivity : AppCompatActivity() {
                 )
             )
 
-            Toast.makeText(
-                applicationContext,
+            if (editPlaylistId !is Long) {
+                Toast.makeText(
+                    applicationContext,
 
-                getString(R.string.new_playlist_activity_created_pre_msg) +
-                " \"${playlistName.text.toString()}\" " +
-                getString(R.string.new_playlist_activity_created_post_msg),
+                    getString(R.string.new_playlist_activity_created_pre_msg) +
+                            " \"${playlistName.text.toString()}\" " +
+                            getString(R.string.new_playlist_activity_created_post_msg),
 
-                Toast.LENGTH_LONG
-            ).show()
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
             finish()
         }

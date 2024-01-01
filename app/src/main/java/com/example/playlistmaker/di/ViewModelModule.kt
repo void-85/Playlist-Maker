@@ -9,6 +9,8 @@ import com.example.playlistmaker.ui.playerActivity.vm.MediaActivityViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.search.SearchFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.settings.SettingsFragmentViewModel
 import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
+import com.example.playlistmaker.ui.playlistDetailsActivity.act.PlaylistDetailsActivity
+import com.example.playlistmaker.ui.playlistDetailsActivity.vm.PlaylistDetailsActivityViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -41,5 +43,9 @@ val viewModuleModule = module {
 
     viewModel {
         NewPlaylistActivityViewModel(get())
+    }
+
+    viewModel{
+        PlaylistDetailsActivityViewModel(get())
     }
 }

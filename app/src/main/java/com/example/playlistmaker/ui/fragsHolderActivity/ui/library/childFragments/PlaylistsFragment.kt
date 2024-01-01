@@ -18,6 +18,7 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewPlaylistAdapter
 import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
+import com.example.playlistmaker.ui.playlistDetailsActivity.act.PlaylistDetailsActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,7 +49,9 @@ class PlaylistsFragment : Fragment() {
 
 
     private val playlistClicked: (Playlist) -> Unit = {
-        val editPlaylistIntent = Intent(context, NewPlaylistActivity::class.java)
+
+        val editPlaylistIntent = Intent(context, PlaylistDetailsActivity::class.java)
+        //val editPlaylistIntent = Intent(context, NewPlaylistActivity::class.java)
         editPlaylistIntent.putExtra(PLAYLIST_EDIT_MODE_KEY, Gson().toJson(it))
         startActivity(editPlaylistIntent)
     }

@@ -8,7 +8,7 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_round"
@@ -31,13 +31,15 @@
 
         <activity
             android:name=".ui.playerActivity.act.MediaActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
 
         <activity
             android:name=".ui.newPlaylistActivity.act.NewPlaylistActivity"
-            android:exported="false"
-        />
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.playlistDetailsActivity.act.PlaylistDetailsActivity"
+            android:exported="false"/>
 
         <!--
         <activity
