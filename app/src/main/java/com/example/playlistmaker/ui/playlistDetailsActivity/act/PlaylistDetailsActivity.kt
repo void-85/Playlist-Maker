@@ -71,6 +71,7 @@ class PlaylistDetailsActivity : AppCompatActivity() {
     private val trackLongTouched: (Track) -> Unit = {
 
         viewModel.deleteTrackFromPlaylist(it, playlistOnEdit)
+        overlay.alpha = 0.0f
     }
 
 

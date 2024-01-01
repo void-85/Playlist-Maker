@@ -48,7 +48,7 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var createOrSavePlaylistButton: Button
     private lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
-    private lateinit var playlist: Playlist
+    private var playlist: Playlist? = null
 
     private var currentImageURI: Uri? = null
     private var editPlaylistId: Long? = null
@@ -79,17 +79,17 @@ class NewPlaylistActivity : AppCompatActivity() {
             playlist =
                 Gson().fromJson(playlistJson, object : TypeToken<Playlist>() {}.type)
 
-            editPlaylistId = playlist.id
+            editPlaylistId = playlist?.id ?: 0
 
             toolbar.title = getString(R.string.new_edit_playlist_activity_title)
-            playlistName.setText( playlist.name )
-            playlistDescription.setText( playlist.description )
+            playlistName.setText( playlist?.name ?: "" )
+            playlistDescription.setText( playlist?.description ?: "")
             createOrSavePlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
 
-            if(playlist.imageId != ""){
+            if((playlist?.imageId ?: "") != ""){
 
                 val filePath = File( getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
-                val file = File(filePath, playlist.imageId)
+                val file = File(filePath, playlist?.imageId ?: "")
                 currentImageURI = file.toUri()
 
                 renderImage(currentImageURI)
@@ -178,6 +178,8 @@ class NewPlaylistActivity : AppCompatActivity() {
                     .compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             }
 
+
+
             viewModel.createPlaylist(
 
                 deletePlaylistById = editPlaylistId,
@@ -190,8 +192,8 @@ class NewPlaylistActivity : AppCompatActivity() {
 
                     imageId = imageIdFilename,
 
-                    tracks = playlist.tracks,
-                    amountOfTracks =  playlist.tracks.size
+                    tracks = playlist?.tracks ?: emptyList(),
+                    amountOfTracks = (playlist?.tracks ?: emptyList()).size
                 )
             )
 
