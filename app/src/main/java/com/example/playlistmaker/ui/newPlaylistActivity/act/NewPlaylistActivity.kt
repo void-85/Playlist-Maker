@@ -46,8 +46,9 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var playlistName: TextInputEditText
     private lateinit var playlistDescription: TextInputEditText
     private lateinit var createOrSavePlaylistButton: Button
-    lateinit var confirmExitDialog: MaterialAlertDialogBuilder
+    private lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
+    private lateinit var playlist: Playlist
 
     private var currentImageURI: Uri? = null
     private var editPlaylistId: Long? = null
@@ -75,7 +76,7 @@ class NewPlaylistActivity : AppCompatActivity() {
         val playlistJson = intent.extras?.getString(PlaylistsFragment.PLAYLIST_EDIT_MODE_KEY, null)
         if (playlistJson is String) {
 
-            val playlist: Playlist =
+            playlist =
                 Gson().fromJson(playlistJson, object : TypeToken<Playlist>() {}.type)
 
             editPlaylistId = playlist.id
@@ -189,8 +190,8 @@ class NewPlaylistActivity : AppCompatActivity() {
 
                     imageId = imageIdFilename,
 
-                    tracks = emptyList(),
-                    amountOfTracks =  0
+                    tracks = playlist.tracks,
+                    amountOfTracks =  playlist.tracks.size
                 )
             )
 

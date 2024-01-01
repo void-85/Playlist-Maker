@@ -35,6 +35,12 @@ class PlaylistDetailsActivityViewModel(
         }
     }
 
+    fun deletePlaylist(playlistId: Long) {
+        viewModelScope.launch {
+            mediaInteractor.deletePlaylist(playlistId)
+        }
+    }
+
     fun deleteTrackFromPlaylist(track: Track, playlist:Playlist) {
 
         viewModelScope.launch {

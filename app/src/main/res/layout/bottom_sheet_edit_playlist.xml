@@ -62,33 +62,36 @@
         </LinearLayout>
 
 
-
-
-
         <TextView
-            style="@style/media_player_bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="@string/media_player_bottom_sheet_title"
-            android:textAlignment="center"
+            android:id="@+id/bottom_sheet_share"
+            style="@style/small_font"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/edit_playlist_bottom_sheet_button_share"
+            android:gravity="center_vertical"
             android:textColor="@color/settings_screen_header" />
 
-        <Button
-            android:id="@+id/media_player_bottom_sheet_create_playlist"
-            style="@style/media_player_time_code_font"
+        <TextView
+            android:id="@+id/bottom_sheet_edit"
+            style="@style/small_font"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/settings_screen_header"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/media_player_bottom_sheet_create_playlist"
-            android:textColor="@color/search_screen_background"
-            app:cornerRadius="54dp" />
+            android:layout_height="61dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/edit_playlist_bottom_sheet_button_edit"
+            android:gravity="center_vertical"
+            android:textColor="@color/settings_screen_header" />
+
+        <TextView
+            android:id="@+id/bottom_sheet_delete"
+            style="@style/small_font"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/edit_playlist_bottom_sheet_button_delete"
+            android:gravity="center_vertical"
+            android:textColor="@color/settings_screen_header" />
 
     </LinearLayout>
 

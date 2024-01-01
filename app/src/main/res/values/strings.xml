@@ -85,6 +85,15 @@
 
     <string name="edit_playlist_share_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
+    <string name="edit_playlist_bottom_sheet_button_share">Поделиться</string>
+    <string name="edit_playlist_bottom_sheet_button_edit">Редактировать информацию</string>
+    <string name="edit_playlist_bottom_sheet_button_delete">Удалить плейлист</string>
+
+    <string name="edit_playlist_bottom_sheet_delete_title">Удалить плейлист</string>
+    <string name="edit_playlist_bottom_sheet_delete_msg">Хотите удалить плейлист?</string>
+    <string name="edit_playlist_bottom_sheet_delete_delete">Да</string>
+    <string name="edit_playlist_bottom_sheet_delete_cancel">Нет</string>
+
     <string name="tracks_amount_string_form_a">трек</string>
     <string name="tracks_amount_string_form_b">трека</string>
     <string name="tracks_amount_string_form_c">треков</string>

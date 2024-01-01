@@ -21,6 +21,7 @@ import com.example.playlistmaker.databinding.ActivityPlaylistDetailsBinding
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.PlaylistsFragment
+import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
 import com.example.playlistmaker.ui.playerActivity.act.MediaActivity
 import com.example.playlistmaker.ui.playlistDetailsActivity.vhAdapter.BottomSheetRecyclerViewTrackAdapter
 import com.example.playlistmaker.ui.playlistDetailsActivity.vm.PlaylistDetailsActivityScreenUpdate
@@ -28,6 +29,7 @@ import com.example.playlistmaker.ui.playlistDetailsActivity.vm.PlaylistDetailsAc
 import com.example.playlistmaker.ui.utils.toMinutesAmountString
 import com.example.playlistmaker.ui.utils.toTrackAmountString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -91,7 +93,6 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         bottomSheetContainer2 = findViewById<LinearLayout>(R.id.bottom_sheet_edit_playlist)
         bottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheetContainer2).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -144,6 +145,7 @@ class PlaylistDetailsActivity : AppCompatActivity() {
             BottomSheetRecyclerViewTrackAdapter(tracks, trackClicked, trackLongTouched)
 
 
+
         toolbar = binding.toolbar
         toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -190,6 +192,37 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         options.setOnClickListener {
             bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+        findViewById<TextView>(R.id.bottom_sheet_share).setOnClickListener {
+
+            share.performClick()
+        }
+
+        findViewById<TextView>(R.id.bottom_sheet_edit).setOnClickListener {
+
+            bottomSheetBehavior2.state = BottomSheetBehavior.STATE_HIDDEN
+
+            val mediaIntent = Intent(applicationContext, NewPlaylistActivity::class.java)
+            mediaIntent.putExtra(PlaylistsFragment.PLAYLIST_EDIT_MODE_KEY, Gson().toJson(playlistOnEdit))
+            startActivity(mediaIntent)
+        }
+
+        findViewById<TextView>(R.id.bottom_sheet_delete).setOnClickListener {
+
+            bottomSheetBehavior2.state = BottomSheetBehavior.STATE_HIDDEN
+
+            MaterialAlertDialogBuilder(applicationContext)
+                .setTitle(getString(R.string.edit_playlist_bottom_sheet_delete_title))
+                .setMessage(getString(R.string.edit_playlist_bottom_sheet_delete_msg))
+                .setNegativeButton(getString(R.string.edit_playlist_bottom_sheet_delete_cancel)){ _,_ -> /**/ }
+                .setPositiveButton(getString(R.string.edit_playlist_bottom_sheet_delete_delete)){ _,_ ->
+                    viewModel.deletePlaylist(playlistOnEdit.id)
+                    finish()
+                }.show()
+
+        }
+
+
 
         viewModel.getState().observe(this) { state ->
             when (state) {
