@@ -45,7 +45,7 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var playlistImage: ImageView
     private lateinit var playlistName: TextInputEditText
     private lateinit var playlistDescription: TextInputEditText
-    private lateinit var createPlaylistButton: Button
+    private lateinit var createOrSavePlaylistButton: Button
     lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
 
@@ -83,7 +83,7 @@ class NewPlaylistActivity : AppCompatActivity() {
             toolbar.title = getString(R.string.new_edit_playlist_activity_title)
             playlistName.setText( playlist.name )
             playlistDescription.setText( playlist.description )
-            createPlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
+            createOrSavePlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
 
             if(playlist.imageId != ""){
 
@@ -148,7 +148,7 @@ class NewPlaylistActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                createPlaylistButton.isEnabled = (s?.length ?: 0) > 0
+                createOrSavePlaylistButton.isEnabled = (s?.length ?: 0) > 0
             }
         })
 
@@ -156,8 +156,8 @@ class NewPlaylistActivity : AppCompatActivity() {
         playlistDescription = binding.playlistDescription
 
 
-        createPlaylistButton = binding.createNewPlaylistButton
-        createPlaylistButton.setOnClickListener {
+        createOrSavePlaylistButton = binding.createNewPlaylistButton
+        createOrSavePlaylistButton.setOnClickListener {
 
             var imageIdFilename = ""
             if (currentImageURI != null) {
@@ -218,7 +218,7 @@ class NewPlaylistActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 //Toast.makeText(applicationContext, "trying to exit...", Toast.LENGTH_LONG).show()
-                if (createPlaylistButton.isEnabled || currentImageURI != null) {
+                if (createOrSavePlaylistButton.isEnabled || currentImageURI != null) {
                     confirmExitDialog.show()
                 } else {
                     finish()

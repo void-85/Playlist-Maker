@@ -113,6 +113,10 @@ class MediaInteractorImpl(
     override suspend fun deletePlaylist( playlistId: Long ){
         favoriteTracksAndPlaylistsRepositoryImpl.deletePlaylist( playlistId )
     }
+
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+        return favoriteTracksAndPlaylistsRepositoryImpl.getPlaylist( playlistId )
+    }
     // ------ PLAYLISTS ------------------------------------------------
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
 }

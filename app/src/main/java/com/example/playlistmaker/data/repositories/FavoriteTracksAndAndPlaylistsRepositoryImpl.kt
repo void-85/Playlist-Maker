@@ -59,6 +59,10 @@ class FavoriteTracksAndAndPlaylistsRepositoryImpl(
     override suspend fun deletePlaylist(playlistId: Long) {
         appDB.getDAO().deletePlaylist(playlistId)
     }
+
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+        return appDB.getDAO().getPlaylist(playlistId).convert()
+    }
     // -- PLAYLISTS -----------------------------------------------------------
 
 

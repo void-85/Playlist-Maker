@@ -20,5 +20,6 @@ interface FavoriteTracksAndPlaylistsRepository {
     suspend fun createPlaylist(playlist: Playlist)
     suspend fun getAllPlaylists(): Flow<Playlist>
     suspend fun deletePlaylist( playlistId: Long )
+    suspend fun getPlaylist( playlistId: Long ):Playlist
     // -- PLAYLISTS -----------------------------------------------------------
 }

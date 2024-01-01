@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-
 @Dao
 interface DBTrackDAO {
 
@@ -27,7 +26,6 @@ interface DBTrackDAO {
     // -- FAV TRACKS ----------------------------------------------------------
 
 
-
     // -- PLAYLISTS -----------------------------------------------------------
     @Insert
     suspend fun createPlaylist(playlist: DBPlaylistEntity)
@@ -36,6 +34,9 @@ interface DBTrackDAO {
     suspend fun getAllPlaylists(): List<DBPlaylistEntity>
 
     @Query("DELETE FROM playlists_table WHERE id = :playlistId")
-    suspend fun deletePlaylist( playlistId: Long )
+    suspend fun deletePlaylist(playlistId: Long)
+
+    @Query("SELECT * FROM playlists_table WHERE id = :playlistId")
+    suspend fun getPlaylist(playlistId: Long): DBPlaylistEntity
     // -- PLAYLISTS -----------------------------------------------------------
 }

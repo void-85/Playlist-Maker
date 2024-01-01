@@ -18,9 +18,7 @@
     <dimen name="search_info_message_font">19sp</dimen>
     <dimen name="search_info_message_button_font">14sp</dimen>
 
-
     <dimen name="app_icon_size">20sp</dimen>
-
 
     <dimen name="settings_back_button_margin_left_top">20dp</dimen>
     <dimen name="settings_back_button_click_area">56dp</dimen>
@@ -36,14 +34,12 @@
     <dimen name="settings_icon_padding_right">12dp</dimen>
     <dimen name="settings_icon_click_area">60dp</dimen>
 
-
     <dimen name="search_header_size">56dp</dimen>
     <dimen name="search_search_size">52dp</dimen>
     <dimen name="search_search_panel_height">36dp</dimen>
     <dimen name="search_search_panel_margin_top">8dp</dimen>
     <dimen name="search_search_panel_margin_side">16dp</dimen>
     <dimen name="search_search_panel_corner_radius">8dp</dimen>
-
 
     <dimen name="search_track_view_height">61dp</dimen>
 
@@ -94,8 +90,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
-
-
     <dimen name="new_playlist_upload_image_corner_radius">10dp</dimen>
+
+    <dimen name="playlist_details_bottom_sheet_default_size">150dp</dimen>
 
 </resources>
