@@ -69,6 +69,11 @@
     <string name="new_playlist_activity_exit_dialog_cancel">Отмена</string>
     <string name="new_playlist_activity_exit_dialog_terminate">Завершить</string>
 
+    <string name="edit_playlist_delete_track_title">Удалить трек</string>
+    <string name="edit_playlist_delete_track_msg">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="edit_playlist_delete_track_cancel">Отмена</string>
+    <string name="edit_playlist_delete_track_delete">Удалить</string>
+
     <string name="new_playlist_activity_created_pre_msg">Плейлист</string>
     <string name="new_playlist_activity_created_post_msg">создан</string>
 

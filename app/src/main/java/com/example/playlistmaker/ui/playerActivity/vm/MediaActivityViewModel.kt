@@ -1,12 +1,10 @@
 package com.example.playlistmaker.ui.playerActivity.vm
 
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -238,7 +236,7 @@ class MediaActivityViewModel(
 
                     mediaInteractor.createPlaylist(
                         Playlist(
-                            id = 0,
+                            id = playlist.id,
 
                             name = playlist.name,
                             description = playlist.description,

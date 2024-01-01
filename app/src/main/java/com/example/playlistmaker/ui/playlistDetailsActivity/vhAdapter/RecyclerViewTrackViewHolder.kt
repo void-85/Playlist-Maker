@@ -8,14 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Track
 
 
 class BottomSheetRecyclerViewTrackViewHolder(
+
     itemView: View,
-    private val trackViewHolderItemClicked: (Track) -> Unit
+    private val trackViewHolderItemClicked: (Track) -> Unit,
+    private val trackLongTouched: (Track) -> Unit
+
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_view_track_name)
@@ -46,6 +50,20 @@ class BottomSheetRecyclerViewTrackViewHolder(
         itemView.setOnClickListener {
 
             trackViewHolderItemClicked(model)
+        }
+
+        itemView.setOnLongClickListener {
+
+            MaterialAlertDialogBuilder(itemView.context)
+                .setTitle(itemView.context.getString(R.string.edit_playlist_delete_track_title))
+                .setMessage(itemView.context.getString(R.string.edit_playlist_delete_track_msg))
+                .setNeutralButton(itemView.context.getString(R.string.edit_playlist_delete_track_cancel)){ _,_ -> /**/ }
+                .setPositiveButton(itemView.context.getString(R.string.edit_playlist_delete_track_delete)) { _, _ ->
+                    trackLongTouched(model)
+                }
+                .show()
+
+            true
         }
     }
 }

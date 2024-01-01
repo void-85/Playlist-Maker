@@ -13,7 +13,8 @@ import com.example.playlistmaker.domain.entities.Track
 class BottomSheetRecyclerViewTrackAdapter(
 
     private val tracks: List<Track>,
-    private val trackViewHolderItemClicked: (Track) -> Unit
+    private val trackViewHolderItemClicked: (Track) -> Unit,
+    private val trackLongTouched: (Track) -> Unit
 
 ) : RecyclerView.Adapter<BottomSheetRecyclerViewTrackViewHolder>() {
 
@@ -31,7 +32,8 @@ class BottomSheetRecyclerViewTrackAdapter(
             )
         return BottomSheetRecyclerViewTrackViewHolder(
             view,
-            trackViewHolderItemClicked
+            trackViewHolderItemClicked,
+            trackLongTouched
         )
     }
 

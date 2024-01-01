@@ -62,13 +62,17 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         val mediaIntent = Intent(applicationContext, MediaActivity::class.java)
         startActivity(mediaIntent)
     }
+    private val trackLongTouched: (Track) -> Unit = {
+
+        viewModel.deleteTrackFromPlaylist(it, playlistOnEdit)
+    }
 
 
 
     override fun onStart() {
         super.onStart()
 
-        viewModel.refreshPlaylistData( playlistOnEdit.id )
+        viewModel.refreshPlaylistData(playlistOnEdit.id)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,14 +97,17 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) { /**/ }
+            override fun onStateChanged(bottomSheet: View, newState: Int) { /**/
+            }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 overlay.alpha = slideOffset
             }
         })
 
         bottomSheetRView = binding.bottomSheetRView
-        bottomSheetRView.adapter = BottomSheetRecyclerViewTrackAdapter(tracks, trackClicked)
+        bottomSheetRView.adapter =
+            BottomSheetRecyclerViewTrackAdapter(tracks, trackClicked, trackLongTouched)
 
 
         toolbar = binding.toolbar
@@ -108,24 +115,27 @@ class PlaylistDetailsActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        image   = binding.playlistImage
-        name    = binding.name
-        desc    = binding.description
-        stats   = binding.statistics
-        share   = binding.share
+        image = binding.playlistImage
+        name = binding.name
+        desc = binding.description
+        stats = binding.statistics
+        share = binding.share
         options = binding.options
 
-        viewModel.getState().observe(this){ state ->
-            when(state){
+        viewModel.getState().observe(this) { state ->
+            when (state) {
                 is PlaylistDetailsActivityScreenUpdate.PlaylistDataRefreshed -> {
 
-                    val filePath = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
-                    val file = File(filePath, state.playlist.imageId )
+                    playlistOnEdit = state.playlist
 
-                    if(state.playlist.imageId.isNotEmpty()){
-                        image.setPadding( 0 )
-                    }else{
-                        image.setPadding( resources.getDimensionPixelSize( R.dimen.playlist_details_placeholder_padding ) )
+                    val filePath =
+                        File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                    val file = File(filePath, state.playlist.imageId)
+
+                    if (state.playlist.imageId.isNotEmpty()) {
+                        image.setPadding(0)
+                    } else {
+                        image.setPadding(resources.getDimensionPixelSize(R.dimen.playlist_details_placeholder_padding))
                     }
 
                     Glide
@@ -136,15 +146,15 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                         .into(image)
 
                     tracks.clear()
-                    tracks.addAll( state.playlist.tracks )
+                    tracks.addAll(state.playlist.tracks)
                     bottomSheetRView.adapter?.notifyDataSetChanged()
 
                     name.text = state.playlist.name
 
-                    if(state.playlist.description.isNotEmpty()){
+                    if (state.playlist.description.isNotEmpty()) {
                         desc.visibility = View.VISIBLE
                         desc.text = state.playlist.description
-                    }else{
+                    } else {
                         desc.visibility = View.GONE
                     }
 

@@ -33,7 +33,38 @@ class PlaylistDetailsActivityViewModel(
                 )
             )
         }
+    }
 
+    fun deleteTrackFromPlaylist(track: Track, playlist:Playlist) {
+
+        viewModelScope.launch {
+
+            mediaInteractor.deletePlaylist(playlist.id)
+
+            val newTracksList = ArrayList<Track>()
+            newTracksList.addAll(playlist.tracks)
+            newTracksList.remove(track)
+
+            mediaInteractor.createPlaylist(
+                Playlist(
+                    id = playlist.id,
+
+                    name = playlist.name,
+                    description = playlist.description,
+
+                    imageId = playlist.imageId,
+
+                    tracks = newTracksList,
+                    amountOfTracks = playlist.amountOfTracks - 1
+                )
+            )
+
+            updateData.postValue(
+                PlaylistDetailsActivityScreenUpdate.PlaylistDataRefreshed(
+                    mediaInteractor.getPlaylist(playlist.id)
+                )
+            )
+        }
     }
 }
 
