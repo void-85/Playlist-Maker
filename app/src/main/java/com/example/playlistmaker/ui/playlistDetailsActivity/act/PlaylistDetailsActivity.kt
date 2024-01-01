@@ -211,15 +211,14 @@ class PlaylistDetailsActivity : AppCompatActivity() {
 
             bottomSheetBehavior2.state = BottomSheetBehavior.STATE_HIDDEN
 
-            MaterialAlertDialogBuilder(applicationContext)
+            MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.edit_playlist_bottom_sheet_delete_title))
                 .setMessage(getString(R.string.edit_playlist_bottom_sheet_delete_msg))
-                .setNegativeButton(getString(R.string.edit_playlist_bottom_sheet_delete_cancel)){ _,_ -> /**/ }
+                .setNeutralButton(getString(R.string.edit_playlist_bottom_sheet_delete_cancel)){ _,_ -> /**/ }
                 .setPositiveButton(getString(R.string.edit_playlist_bottom_sheet_delete_delete)){ _,_ ->
                     viewModel.deletePlaylist(playlistOnEdit.id)
                     finish()
                 }.show()
-
         }
 
 
