@@ -82,4 +82,8 @@
     <string name="tracks_amount_string_form_b">трека</string>
     <string name="tracks_amount_string_form_c">треков</string>
 
+    <string name="minutes_amount_string_form_a">минута</string>
+    <string name="minutes_amount_string_form_b">минуты</string>
+    <string name="minutes_amount_string_form_c">минут</string>
+
 </resources>

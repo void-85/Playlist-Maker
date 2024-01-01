@@ -92,6 +92,7 @@
 
     <dimen name="new_playlist_upload_image_corner_radius">10dp</dimen>
 
-    <dimen name="playlist_details_bottom_sheet_default_size">150dp</dimen>
+    <dimen name="playlist_details_bottom_sheet_default_size">200dp</dimen>
+    <dimen name="playlist_details_placeholder_padding">64dp</dimen>
 
 </resources>

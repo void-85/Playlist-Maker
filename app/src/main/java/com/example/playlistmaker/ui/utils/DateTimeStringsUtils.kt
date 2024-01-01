@@ -17,3 +17,12 @@ fun Int.toTrackAmountString(context: Context):String{
 
     return "${this} "+context.getString(R.string.tracks_amount_string_form_c)//треков"
 }
+
+fun Int.toMinutesAmountString(context: Context):String{
+
+    if( this in 5..20     ) return "${this} "+context.getString(R.string.minutes_amount_string_form_c)//треков"
+    if( this % 10 == 1    ) return "${this} "+context.getString(R.string.minutes_amount_string_form_a)//трек"
+    if( this % 10 in 2..4 ) return "${this} "+context.getString(R.string.minutes_amount_string_form_b)//трека"
+
+    return "${this} "+context.getString(R.string.minutes_amount_string_form_c)//треков"
+}
