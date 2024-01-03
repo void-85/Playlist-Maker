@@ -66,7 +66,7 @@ class PlaylistDetailsActivity : AppCompatActivity() {
     private val tracks = ArrayList<Track>()
     private val trackClicked: (Track) -> Unit = {
 
-        viewModel.playTrack(it)
+        viewModel.prepareTrackForPlaying(it)
 
         val mediaIntent = Intent(applicationContext, MediaActivity::class.java)
         startActivity(mediaIntent)
@@ -267,9 +267,6 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.edit_number_of_tracks).text =
                         state.playlist.tracks.size.toTrackAmountString(applicationContext)
                     // bottom sheet view holder ----------------------------------------------------
-
-
-
 
 
                     tracks.clear()

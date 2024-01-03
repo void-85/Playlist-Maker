@@ -75,13 +75,10 @@ class PlaylistsFragment : Fragment() {
         noDataFrame.visibility = View.INVISIBLE
     }
 
-/*    private fun showNothing() {
-        recyclerView.visibility = View.INVISIBLE
-        noDataFrame.visibility = View.INVISIBLE
-    }*/
-
-
-
+    /*    private fun showNothing() {
+            recyclerView.visibility = View.INVISIBLE
+            noDataFrame.visibility = View.INVISIBLE
+        }*/
 
 
     override fun onResume() {
@@ -106,7 +103,7 @@ class PlaylistsFragment : Fragment() {
 
         recyclerView = binding.playlistsRView
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        recyclerView.adapter = RecyclerViewPlaylistAdapter(data, playlistClicked )
+        recyclerView.adapter = RecyclerViewPlaylistAdapter(data, playlistClicked)
 
         noDataFrame = binding.noDataInfo
 
@@ -116,16 +113,8 @@ class PlaylistsFragment : Fragment() {
             startActivity(newPlaylistIntent)
         }
 
-
-
-
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
-
-                // DELETE STATE??
-                /*is PlaylistsFragmentScreenUpdate.ShowNoData -> {
-                    showNoPlaylists()
-                }*/
 
                 is PlaylistsFragmentScreenUpdate.ShowAllPlaylists -> {
 
@@ -145,6 +134,5 @@ class PlaylistsFragment : Fragment() {
                 }
             }
         }
-        //binding.playlistsFragText.text = getString( requireArguments().getInt(TEXT_RESOURCE))
     }
 }

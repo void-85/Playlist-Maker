@@ -16,10 +16,12 @@ class PlaylistDetailsActivityViewModel(
 ) : ViewModel() {
 
     private var updateData = MutableLiveData<PlaylistDetailsActivityScreenUpdate>()
-    fun getState(): LiveData<PlaylistDetailsActivityScreenUpdate>{ return updateData }
+    fun getState(): LiveData<PlaylistDetailsActivityScreenUpdate> {
+        return updateData
+    }
 
-    fun playTrack(track: Track){
-       searchInteractor.setCurrentlyPlaying(track)
+    fun prepareTrackForPlaying(track: Track) {
+        searchInteractor.setCurrentlyPlaying(track)
     }
 
     fun refreshPlaylistData(
@@ -41,32 +43,11 @@ class PlaylistDetailsActivityViewModel(
         }
     }
 
-    fun deleteTrackFromPlaylist(track: Track, playlist:Playlist) {
+    fun deleteTrackFromPlaylist(track: Track, playlist: Playlist) {
 
         viewModelScope.launch {
 
-
-            /////////////////////////////////////////////////////
-            mediaInteractor.deletePlaylist(playlist.id)
-
-            val newTracksList = ArrayList<Track>()
-            newTracksList.addAll(playlist.tracks)
-            newTracksList.remove(track)
-
-            mediaInteractor.createPlaylist(
-                Playlist(
-                    id = playlist.id,
-
-                    name = playlist.name,
-                    description = playlist.description,
-
-                    imageId = playlist.imageId,
-
-                    tracks = newTracksList,
-                    amountOfTracks = playlist.amountOfTracks - 1
-                )
-            )
-            /////////////////////////////////////////////////////
+            mediaInteractor.deleteTrackFromPlaylist(track.trackId, playlist.id)
 
             updateData.postValue(
                 PlaylistDetailsActivityScreenUpdate.PlaylistDataRefreshed(

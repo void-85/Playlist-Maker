@@ -12,11 +12,10 @@ data class DBPlaylistEntity(
 
     @ColumnInfo(name = "name")
     val name: String,
+
+    @ColumnInfo(name = "description")
     val description: String,
 
     @ColumnInfo(name = "image_id")
-    val imageId: String,
-
-    val tracksJson: String,
-    val amountOfTracks: Int
+    val imageId: String
 )

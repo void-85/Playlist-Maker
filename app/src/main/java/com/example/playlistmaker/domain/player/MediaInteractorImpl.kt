@@ -103,19 +103,35 @@ class MediaInteractorImpl(
 
     // ------ PLAYLISTS ------------------------------------------------
     override suspend fun createPlaylist(playlist: Playlist) {
-        favoriteTracksAndPlaylistsRepositoryImpl.createPlaylist( playlist )
+        favoriteTracksAndPlaylistsRepositoryImpl.createPlaylist(playlist)
     }
 
-    override suspend fun getAllPlaylists(): Flow<Playlist> {
-        return favoriteTracksAndPlaylistsRepositoryImpl.getAllPlaylists()
+    override suspend fun getAllPlaylistsWithoutTracksData(): Flow<Playlist> {
+        return favoriteTracksAndPlaylistsRepositoryImpl.getAllPlaylistsWithoutTracksData()
     }
 
-    override suspend fun deletePlaylist( playlistId: Long ){
-        favoriteTracksAndPlaylistsRepositoryImpl.deletePlaylist( playlistId )
+    override suspend fun deletePlaylist(playlistId: Long) {
+        favoriteTracksAndPlaylistsRepositoryImpl.deletePlaylist(playlistId)
     }
 
     override suspend fun getPlaylist(playlistId: Long): Playlist {
-        return favoriteTracksAndPlaylistsRepositoryImpl.getPlaylist( playlistId )
+        return favoriteTracksAndPlaylistsRepositoryImpl.getPlaylist(playlistId)
+    }
+
+    override suspend fun updatePlaylistInfo(playlist: Playlist) {
+        return favoriteTracksAndPlaylistsRepositoryImpl.updatePlaylistInfo(playlist)
+    }
+
+    override suspend fun checkIfTrackIsInPlaylist(trackId: Long, playlistId: Long): Boolean {
+        return favoriteTracksAndPlaylistsRepositoryImpl.checkIfTrackIsInPlaylist(trackId, playlistId)
+    }
+
+    override suspend fun addTrackToPlaylist(track: Track, playlistId: Long) {
+        favoriteTracksAndPlaylistsRepositoryImpl.addTrackToPlaylist(track, playlistId)
+    }
+
+    override suspend fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long) {
+        favoriteTracksAndPlaylistsRepositoryImpl.deleteTrackFromPlaylist(trackId, playlistId)
     }
     // ------ PLAYLISTS ------------------------------------------------
     // FAV TRACKS & PLAYLISTS REPOSITORY --------------------------------------------------
