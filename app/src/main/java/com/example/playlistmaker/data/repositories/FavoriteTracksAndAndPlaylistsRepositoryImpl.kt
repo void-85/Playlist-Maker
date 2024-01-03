@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.repositories
 
 import com.example.playlistmaker.data.db.AppDB
 import com.example.playlistmaker.data.db.DBPlaylistEntity
-import com.example.playlistmaker.data.db.DBTrackEntity
+import com.example.playlistmaker.data.db.DBFavoriteTrackEntity
 import com.example.playlistmaker.domain.db.FavoriteTracksAndPlaylistsRepository
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
@@ -100,8 +100,8 @@ class FavoriteTracksAndAndPlaylistsRepositoryImpl(
     }
 
 
-    private fun Track.convert(): DBTrackEntity {
-        return DBTrackEntity(
+    private fun Track.convert(): DBFavoriteTrackEntity {
+        return DBFavoriteTrackEntity(
 
             this.trackId,
 
@@ -120,7 +120,7 @@ class FavoriteTracksAndAndPlaylistsRepositoryImpl(
             LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         )
     }
-    private fun DBTrackEntity.convert(): Track {
+    private fun DBFavoriteTrackEntity.convert(): Track {
         return Track(
 
             this.trackId,

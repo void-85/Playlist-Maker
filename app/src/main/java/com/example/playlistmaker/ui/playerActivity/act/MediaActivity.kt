@@ -64,7 +64,7 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var bottomSheetRView: RecyclerView
     private val playlists = ArrayList<Playlist>()
     private val playlistClicked: (Playlist) -> Unit = { playlist ->
-        viewModel.includeOrExcludeCurrentTrackInFromPlaylist(playlist)
+        viewModel.includeCurrentTrackInPlaylist(playlist)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 

@@ -214,7 +214,7 @@ class MediaActivityViewModel(
         )
     }
 
-    fun includeOrExcludeCurrentTrackInFromPlaylist(playlist: Playlist) {
+    fun includeCurrentTrackInPlaylist(playlist: Playlist) {
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
@@ -231,8 +231,9 @@ class MediaActivityViewModel(
                     mediaInteractor.deletePlaylist(playlist.id)
 
                     val newTracksList = ArrayList<Track>()
-                    newTracksList.addAll(playlist.tracks)
                     newTracksList.add(track)
+                    newTracksList.addAll(playlist.tracks)
+
 
                     mediaInteractor.createPlaylist(
                         Playlist(

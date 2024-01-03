@@ -46,7 +46,7 @@ class NewPlaylistActivity : AppCompatActivity() {
     private lateinit var playlistImage: ImageView
     private lateinit var playlistName: TextInputEditText
     private lateinit var playlistDescription: TextInputEditText
-    private lateinit var createOrSavePlaylistButton: Button
+    private lateinit var createOrEditPlaylistButton: Button
     private lateinit var confirmExitDialog: MaterialAlertDialogBuilder
 
     private var playlist: Playlist? = null
@@ -85,7 +85,7 @@ class NewPlaylistActivity : AppCompatActivity() {
             toolbar.title = getString(R.string.new_edit_playlist_activity_title)
             playlistName.setText( playlist?.name ?: "" )
             playlistDescription.setText( playlist?.description ?: "")
-            createOrSavePlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
+            createOrEditPlaylistButton.text = getString(R.string.new_edit_playlist_activity_create_button_caption)
 
             if((playlist?.imageId ?: "") != ""){
 
@@ -153,7 +153,7 @@ class NewPlaylistActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                createOrSavePlaylistButton.isEnabled = (s?.length ?: 0) > 0
+                createOrEditPlaylistButton.isEnabled = (s?.length ?: 0) > 0
             }
         })
 
@@ -161,8 +161,8 @@ class NewPlaylistActivity : AppCompatActivity() {
         playlistDescription = binding.playlistDescription
 
 
-        createOrSavePlaylistButton = binding.createNewPlaylistButton
-        createOrSavePlaylistButton.setOnClickListener {
+        createOrEditPlaylistButton = binding.createNewPlaylistButton
+        createOrEditPlaylistButton.setOnClickListener {
 
             var imageIdFilename = ""
             if (currentImageURI != null) {
@@ -185,7 +185,7 @@ class NewPlaylistActivity : AppCompatActivity() {
 
 
             viewModel.createPlaylist(
-
+                
                 deletePlaylistById = editPlaylistId,
 
                 Playlist(
@@ -224,8 +224,11 @@ class NewPlaylistActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //Toast.makeText(applicationContext, "trying to exit...", Toast.LENGTH_LONG).show()
-                if (createOrSavePlaylistButton.isEnabled || currentImageURI != null) {
+
+                if (
+                    (createOrEditPlaylistButton.isEnabled || currentImageURI != null) &&
+                    playlist !is Playlist
+                ) {
                     confirmExitDialog.show()
                 } else {
                     finish()

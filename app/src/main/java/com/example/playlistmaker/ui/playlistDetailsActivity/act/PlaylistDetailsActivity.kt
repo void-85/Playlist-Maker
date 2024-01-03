@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -51,6 +52,7 @@ class PlaylistDetailsActivity : AppCompatActivity() {
     private lateinit var stats: TextView
     private lateinit var share: ImageView
     private lateinit var options: ImageView
+    private lateinit var noTracksInfo: FrameLayout
 
 
     private lateinit var overlay: View
@@ -94,8 +96,9 @@ class PlaylistDetailsActivity : AppCompatActivity() {
         binding = ActivityPlaylistDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        noTracksInfo = findViewById(R.id.no_tracks_info)
 
-        bottomSheetContainer2 = findViewById<LinearLayout>(R.id.bottom_sheet_edit_playlist)
+        bottomSheetContainer2 = findViewById(R.id.bottom_sheet_edit_playlist)
         bottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheetContainer2).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -106,11 +109,7 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.alpha = 0.0f
-                        if(tracks.isEmpty()){
-                            bottomSheetContainer.visibility = View.INVISIBLE
-                        }else{
-                            bottomSheetContainer.visibility = View.VISIBLE
-                        }
+                        bottomSheetContainer.visibility = View.VISIBLE
                     }
 
                     else -> {
@@ -120,7 +119,8 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) { /**/
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                /**/
             }
         })
 
@@ -197,6 +197,8 @@ class PlaylistDetailsActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.bottom_sheet_share).setOnClickListener {
 
+            bottomSheetBehavior2.state = BottomSheetBehavior.STATE_HIDDEN
+
             share.performClick()
         }
 
@@ -260,8 +262,10 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                         .transform(CenterCrop())
                         .into( findViewById<ImageView>(R.id.edit_image) )
 
-                    findViewById<TextView>(R.id.edit_name).text = state.playlist.name
-                    findViewById<TextView>(R.id.edit_number_of_tracks).text = state.playlist.tracks.size.toTrackAmountString(applicationContext)
+                    findViewById<TextView>(R.id.edit_name).text =
+                        state.playlist.name
+                    findViewById<TextView>(R.id.edit_number_of_tracks).text =
+                        state.playlist.tracks.size.toTrackAmountString(applicationContext)
                     // bottom sheet view holder ----------------------------------------------------
 
 
@@ -273,9 +277,9 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                     bottomSheetRView.adapter?.notifyDataSetChanged()
 
                     if(tracks.isEmpty()){
-                        bottomSheetContainer.visibility = View.INVISIBLE
+                        noTracksInfo.visibility = View.VISIBLE
                     }else{
-                        bottomSheetContainer.visibility = View.VISIBLE
+                        noTracksInfo.visibility = View.INVISIBLE
                     }
 
                     name.text = state.playlist.name

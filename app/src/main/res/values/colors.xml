@@ -12,7 +12,7 @@
     <color name="main_screen_header">#FFFFFF</color>
     <color name="main_screen_button_text">#1A1B22</color>
     <color name="main_screen_button_background">#FFFFFF</color>
-    <color name="settings_screen_background">#F5F5F5</color>
+    <color name="settings_screen_background">#FFFFFf</color>
     <color name="settings_screen_header">#1A1B22</color>
     <color name="settings_screen_text">#000000</color>
     <color name="settings_screen_switch_thumb">#AEAFB4</color>

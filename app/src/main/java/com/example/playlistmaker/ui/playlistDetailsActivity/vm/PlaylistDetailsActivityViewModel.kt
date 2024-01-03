@@ -45,6 +45,8 @@ class PlaylistDetailsActivityViewModel(
 
         viewModelScope.launch {
 
+
+            /////////////////////////////////////////////////////
             mediaInteractor.deletePlaylist(playlist.id)
 
             val newTracksList = ArrayList<Track>()
@@ -64,6 +66,7 @@ class PlaylistDetailsActivityViewModel(
                     amountOfTracks = playlist.amountOfTracks - 1
                 )
             )
+            /////////////////////////////////////////////////////
 
             updateData.postValue(
                 PlaylistDetailsActivityScreenUpdate.PlaylistDataRefreshed(

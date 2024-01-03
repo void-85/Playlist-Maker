@@ -142,12 +142,50 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/bottom_sheet_handler" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bottom_sheet_rView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="match_parent">
+
+
+
+            <FrameLayout
+                android:id="@+id/no_tracks_info"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/search_info_no_data"
+                    android:src="@drawable/no_data" />
+
+                <TextView
+                    android:id="@+id/playlists_frag_text"
+                    style="@style/search_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="100dp"
+                    android:text="@string/edit_playlist_no_tracks"
+                    android:textAlignment="center"
+                    android:textColor="@color/search_screen_header" />
+            </FrameLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bottom_sheet_rView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </FrameLayout>
+
+
 
     </LinearLayout>
 
