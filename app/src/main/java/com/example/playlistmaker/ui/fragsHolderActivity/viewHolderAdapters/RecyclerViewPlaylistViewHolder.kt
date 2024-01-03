@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.di.Constants
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.utils.toTrackAmountString
 import java.io.File
@@ -32,7 +33,10 @@ class RecyclerViewPlaylistViewHolder(
         var uri : Uri? = null
         if( model.imageId != "" ){
 
-            val filePath = File( itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+            val filePath = File(
+                itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                Constants.PLAYLISTS_IMAGE_FOLDER
+            )
             val file = File(filePath, model.imageId)
             uri = file.toUri()
         }

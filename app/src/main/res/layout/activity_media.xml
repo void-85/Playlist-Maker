@@ -99,7 +99,7 @@
             android:layout_height="@dimen/media_medium_button_size"
             android:layout_marginTop="@dimen/media_screen_small_margin"
             android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-            android:src="@drawable/icon_play"
+            android:src="@drawable/icon_play_dark"
             app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
             android:layout_marginTop="@dimen/media_screen_small_margin"
             android:layout_marginEnd="@dimen/media_screen_large_margin"
             android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-            android:src="@drawable/icon_like"
+            android:src="@drawable/icon_like_dark"
             app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist" />
@@ -289,7 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CC000000"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
 
     <LinearLayout
@@ -298,7 +298,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet"
         android:orientation="vertical"
-
+        android:visibility="visible"
         app:behavior_hideable="true"
         app:behavior_peekHeight="400dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -306,7 +306,7 @@
         <!-- child LinearLayout in this.LinearLayout ? delete one ?
         <include layout="@layout/activity_media_bottom_sheet" /> -->
         <!-- LinearLayout in super.LinearLayout ? delete one ? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bottom_sheet"

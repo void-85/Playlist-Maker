@@ -21,6 +21,7 @@ class Constants {
     companion object {
         const val SERVICE_URL = "https://itunes.apple.com"
         const val SHARED_PREFS = "playlist_preferences"
+        const val PLAYLISTS_IMAGE_FOLDER = "playlists"
     }
 }
 

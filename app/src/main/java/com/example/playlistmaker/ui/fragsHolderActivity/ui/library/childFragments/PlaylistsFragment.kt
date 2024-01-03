@@ -19,7 +19,6 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewPlaylistAdapter
 import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
 import com.example.playlistmaker.ui.playlistDetailsActivity.act.PlaylistDetailsActivity
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -37,7 +36,7 @@ class PlaylistsFragment : Fragment() {
         const val PLAYLIST_EDIT_MODE_KEY = "PLAYLIST_EDIT_MODE_KEY"
     }
 
-    private val viewmodel by viewModel<PlaylistsFragmentViewModel>()
+    private val viewModel by viewModel<PlaylistsFragmentViewModel>()
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
 
@@ -65,7 +64,7 @@ class PlaylistsFragment : Fragment() {
             0f, 0f,
             noDataFrame.height.toFloat() * 2, 0f
         ).apply {
-            duration = 500
+            duration = 300
             fillAfter = true
         }
         noDataFrame.startAnimation(animate)
@@ -76,10 +75,10 @@ class PlaylistsFragment : Fragment() {
         noDataFrame.visibility = View.INVISIBLE
     }
 
-    private fun showNothing() {
+/*    private fun showNothing() {
         recyclerView.visibility = View.INVISIBLE
         noDataFrame.visibility = View.INVISIBLE
-    }
+    }*/
 
 
 
@@ -87,12 +86,12 @@ class PlaylistsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewmodel.requestAllPlaylists()
+        viewModel.requestAllPlaylists()
     }
 
     override fun onPause() {
         super.onPause()
-        showNothing()
+        //showNothing()
     }
 
     override fun onCreateView(
@@ -120,13 +119,13 @@ class PlaylistsFragment : Fragment() {
 
 
 
-        viewmodel.getState().observe(viewLifecycleOwner) {
+        viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
 
                 // DELETE STATE??
-                is PlaylistsFragmentScreenUpdate.ShowNoData -> {
+                /*is PlaylistsFragmentScreenUpdate.ShowNoData -> {
                     showNoPlaylists()
-                }
+                }*/
 
                 is PlaylistsFragmentScreenUpdate.ShowAllPlaylists -> {
 

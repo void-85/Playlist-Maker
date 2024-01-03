@@ -31,7 +31,8 @@
 
         <activity
             android:name=".ui.playerActivity.act.MediaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PlaylistMaker.NoActionBar" />
 
         <activity
             android:name=".ui.newPlaylistActivity.act.NewPlaylistActivity"

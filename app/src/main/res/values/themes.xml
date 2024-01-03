@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+
     <style name="Theme.PlaylistMaker.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -22,5 +23,6 @@
     <style name="Theme.PlaylistMaker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PlaylistMaker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

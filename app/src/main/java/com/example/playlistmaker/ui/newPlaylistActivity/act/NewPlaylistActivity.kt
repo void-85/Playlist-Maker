@@ -29,6 +29,7 @@ import java.time.ZoneOffset
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityNewPlaylistBinding
+import com.example.playlistmaker.di.Constants
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.PlaylistsFragment
 import com.example.playlistmaker.ui.newPlaylistActivity.vm.NewPlaylistActivityViewModel
@@ -88,7 +89,10 @@ class NewPlaylistActivity : AppCompatActivity() {
 
             if((playlist?.imageId ?: "") != ""){
 
-                val filePath = File( getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                val filePath = File(
+                    getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    Constants.PLAYLISTS_IMAGE_FOLDER
+                )
                 val file = File(filePath, playlist?.imageId ?: "")
                 currentImageURI = file.toUri()
 
@@ -166,7 +170,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 imageIdFilename = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
 
                 val filePath =
-                    File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                    File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), Constants.PLAYLISTS_IMAGE_FOLDER)
                 if (!filePath.exists()) {
                     filePath.mkdirs()
                 }

@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlaylistDetailsBinding
+import com.example.playlistmaker.di.Constants
 import com.example.playlistmaker.domain.entities.Playlist
 import com.example.playlistmaker.domain.entities.Track
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragments.PlaylistsFragment
@@ -231,7 +232,10 @@ class PlaylistDetailsActivity : AppCompatActivity() {
                     playlistOnEdit = state.playlist
 
                     val filePath =
-                        File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlists")
+                        File(
+                            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                            Constants.PLAYLISTS_IMAGE_FOLDER
+                        )
                     val file = File(filePath, state.playlist.imageId)
 
                     if (state.playlist.imageId.isNotEmpty()) {
