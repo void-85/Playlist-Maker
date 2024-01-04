@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -118,7 +117,7 @@ class FavSongsFragment : Fragment() {
                     recyclerView.visibility = View.INVISIBLE
                     noDataFrame.visibility = View.VISIBLE
 
-                    val animate = TranslateAnimation(
+/*                    val animate = TranslateAnimation(
                         0f, 0f,
                         noDataFrame.height.toFloat(), 0f
                     ).apply {
@@ -126,7 +125,7 @@ class FavSongsFragment : Fragment() {
                         fillAfter = true
                     }
 
-                    noDataFrame.startAnimation(animate)
+                    noDataFrame.startAnimation(animate)*/
 
                     //data.clear()
                     //recyclerView.adapter?.notifyDataSetChanged()

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
@@ -60,14 +59,14 @@ class PlaylistsFragment : Fragment() {
         recyclerView.visibility = View.INVISIBLE
         noDataFrame.visibility = View.VISIBLE
 
-        val animate = TranslateAnimation(
+       /* val animate = TranslateAnimation(
             0f, 0f,
             noDataFrame.height.toFloat() * 2, 0f
         ).apply {
             duration = 300
             fillAfter = true
         }
-        noDataFrame.startAnimation(animate)
+        noDataFrame.startAnimation(animate)*/
     }
 
     private fun showPlaylists() {
@@ -75,14 +74,15 @@ class PlaylistsFragment : Fragment() {
         noDataFrame.visibility = View.INVISIBLE
     }
 
-    /*    private fun showNothing() {
-            recyclerView.visibility = View.INVISIBLE
-            noDataFrame.visibility = View.INVISIBLE
-        }*/
+    private fun showNothing() {
+        recyclerView.visibility = View.INVISIBLE
+        noDataFrame.visibility = View.INVISIBLE
+    }
 
 
     override fun onResume() {
         super.onResume()
+        showNothing()
         viewModel.requestAllPlaylists()
     }
 
@@ -106,6 +106,7 @@ class PlaylistsFragment : Fragment() {
         recyclerView.adapter = RecyclerViewPlaylistAdapter(data, playlistClicked)
 
         noDataFrame = binding.noDataInfo
+        noDataFrame.visibility = View.INVISIBLE
 
         createPlaylistButton = binding.createNewPlaylistButton
         createPlaylistButton.setOnClickListener {

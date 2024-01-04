@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="120dp"
@@ -58,8 +58,8 @@
             android:id="@+id/playlists_rView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             android:layout_margin="12dp"
+            android:visibility="visible"
             tools:itemCount="5" />
 
     </FrameLayout>
