@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
@@ -18,6 +17,8 @@ import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragment
 import com.example.playlistmaker.ui.fragsHolderActivity.ui.library.childFragmentsVM.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.fragsHolderActivity.viewHolderAdapters.RecyclerViewPlaylistAdapter
 import com.example.playlistmaker.ui.newPlaylistActivity.act.NewPlaylistActivity
+import com.example.playlistmaker.ui.playlistDetailsActivity.act.PlaylistDetailsActivity
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,13 +31,13 @@ class PlaylistsFragment : Fragment() {
                 putInt(TEXT_RESOURCE, textResource)
             }*/
         }
+
+        const val PLAYLIST_EDIT_MODE_KEY = "PLAYLIST_EDIT_MODE_KEY"
     }
 
-    private val viewmodel by viewModel<PlaylistsFragmentViewModel>()
+    private val viewModel by viewModel<PlaylistsFragmentViewModel>()
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-
-
 
     private var data = ArrayList<Playlist>()
 
@@ -45,22 +46,27 @@ class PlaylistsFragment : Fragment() {
     private lateinit var createPlaylistButton: Button
 
 
+    private val playlistClicked: (Playlist) -> Unit = {
 
-
+        val editPlaylistIntent = Intent(context, PlaylistDetailsActivity::class.java)
+        //val editPlaylistIntent = Intent(context, NewPlaylistActivity::class.java)
+        editPlaylistIntent.putExtra(PLAYLIST_EDIT_MODE_KEY, Gson().toJson(it))
+        startActivity(editPlaylistIntent)
+    }
 
 
     private fun showNoPlaylists() {
         recyclerView.visibility = View.INVISIBLE
         noDataFrame.visibility = View.VISIBLE
 
-        val animate = TranslateAnimation(
+       /* val animate = TranslateAnimation(
             0f, 0f,
             noDataFrame.height.toFloat() * 2, 0f
         ).apply {
-            duration = 500
+            duration = 300
             fillAfter = true
         }
-        noDataFrame.startAnimation(animate)
+        noDataFrame.startAnimation(animate)*/
     }
 
     private fun showPlaylists() {
@@ -74,17 +80,15 @@ class PlaylistsFragment : Fragment() {
     }
 
 
-
-
-
     override fun onResume() {
         super.onResume()
-        viewmodel.requestAllPlaylists()
+        showNothing()
+        viewModel.requestAllPlaylists()
     }
 
     override fun onPause() {
         super.onPause()
-        showNothing()
+        //showNothing()
     }
 
     override fun onCreateView(
@@ -99,9 +103,10 @@ class PlaylistsFragment : Fragment() {
 
         recyclerView = binding.playlistsRView
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        recyclerView.adapter = RecyclerViewPlaylistAdapter(data)
+        recyclerView.adapter = RecyclerViewPlaylistAdapter(data, playlistClicked)
 
         noDataFrame = binding.noDataInfo
+        noDataFrame.visibility = View.INVISIBLE
 
         createPlaylistButton = binding.createNewPlaylistButton
         createPlaylistButton.setOnClickListener {
@@ -109,16 +114,8 @@ class PlaylistsFragment : Fragment() {
             startActivity(newPlaylistIntent)
         }
 
-
-
-
-        viewmodel.getState().observe(viewLifecycleOwner) {
+        viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
-
-                // DELETE STATE??
-                is PlaylistsFragmentScreenUpdate.ShowNoData -> {
-                    showNoPlaylists()
-                }
 
                 is PlaylistsFragmentScreenUpdate.ShowAllPlaylists -> {
 
@@ -138,6 +135,5 @@ class PlaylistsFragment : Fragment() {
                 }
             }
         }
-        //binding.playlistsFragText.text = getString( requireArguments().getInt(TEXT_RESOURCE))
     }
 }

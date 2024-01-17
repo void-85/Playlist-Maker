@@ -1,12 +1,10 @@
 package com.example.playlistmaker.ui.playerActivity.vm
 
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,7 +40,8 @@ class MediaActivityViewModel(
             viewModelScope.launch {
 
                 val dbPlaylists = ArrayList<Playlist>()
-                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+                mediaInteractor.getAllPlaylistsWithoutTracksData().collect{ dbPlaylists.add(it) }
+                //getAllPlaylists().collect { dbPlaylists.add(it) }
 
                 screenData.postValue(
                     MediaActivityScreenUpdate.AllData(
@@ -112,7 +111,7 @@ class MediaActivityViewModel(
             viewModelScope.launch {
 
                 val dbPlaylists = ArrayList<Playlist>()
-                mediaInteractor.getAllPlaylists().collect { dbPlaylists.add(it) }
+                mediaInteractor.getAllPlaylistsWithoutTracksData().collect{ dbPlaylists.add(it) }
                 //playlistsUpdated = true
 
                 screenData.postValue(
@@ -216,45 +215,48 @@ class MediaActivityViewModel(
         )
     }
 
-    fun includeOrExcludeCurrentTrackInFromPlaylist(playlist: Playlist) {
+    fun includeCurrentTrackInPlaylist(playlist: Playlist) {
         val track: Track? = mediaInteractor.getCurrentlyPlaying()
         if (track is Track) {
 
-            if (playlist.tracks.contains(track)) {
 
-                screenData.postValue(
-                    MediaActivityScreenUpdate.NotifyUserTrackAllreadyInPlaylist(playlist.name)
-                )
+            viewModelScope.launch {
+                if ( mediaInteractor.checkIfTrackIsInPlaylist(track.trackId, playlist.id) ) {
 
-            } else {
-
-                viewModelScope.launch {
-
-                    mediaInteractor.deletePlaylist(playlist.id)
-
-                    val newTracksList = ArrayList<Track>()
-                    newTracksList.addAll(playlist.tracks)
-                    newTracksList.add(track)
-
-                    mediaInteractor.createPlaylist(
-                        Playlist(
-                            id = 0,
-
-                            name = playlist.name,
-                            description = playlist.description,
-
-                            imageId = playlist.imageId,
-
-                            tracks = newTracksList,
-                            amountOfTracks = playlist.amountOfTracks + 1
-                        )
+                    screenData.postValue(
+                        MediaActivityScreenUpdate.NotifyUserTrackAllreadyInPlaylist(playlist.name)
                     )
-                    onStartActivity()
-                }
 
-                screenData.postValue(
-                    MediaActivityScreenUpdate.NotifyUserTrackAddedToPlaylist(playlist.name)
-                )
+                } else {
+
+                    mediaInteractor.addTrackToPlaylist(track, playlist.id)
+
+                    /*                  mediaInteractor.deletePlaylist(playlist.id)
+
+                                        val newTracksList = ArrayList<Track>()
+                                        newTracksList.add(track)
+                                        newTracksList.addAll(playlist.tracks)
+
+                                        mediaInteractor.createPlaylist(
+                                            Playlist(
+                                                id = playlist.id,
+
+                                                name = playlist.name,
+                                                description = playlist.description,
+
+                                                imageId = playlist.imageId,
+
+                                                tracks = newTracksList,
+                                                amountOfTracks = playlist.amountOfTracks + 1
+                                            )
+                                        )*/
+
+                    onStartActivity()
+
+                    screenData.postValue(
+                        MediaActivityScreenUpdate.NotifyUserTrackAddedToPlaylist(playlist.name)
+                    )
+                }
             }
         }
     }

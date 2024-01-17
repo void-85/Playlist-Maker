@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -48,6 +47,7 @@
             android:layout_marginStart="@dimen/media_screen_large_margin"
             android:layout_marginTop="@dimen/media_screen_large_margin"
             android:layout_marginEnd="@dimen/media_screen_large_margin"
+            android:ellipsize="end"
             android:text="@string/media_initial_text"
             android:textColor="@color/search_screen_header"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +62,7 @@
             android:layout_marginStart="@dimen/media_screen_large_margin"
             android:layout_marginTop="@dimen/media_screen_main_margin"
             android:layout_marginEnd="@dimen/media_screen_large_margin"
+            android:ellipsize="end"
             android:text="@string/media_initial_text"
             android:textColor="@color/search_screen_header"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +99,7 @@
             android:layout_height="@dimen/media_medium_button_size"
             android:layout_marginTop="@dimen/media_screen_small_margin"
             android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-            android:src="@drawable/icon_play"
+            android:src="@drawable/icon_play_dark"
             app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +124,7 @@
             android:layout_marginTop="@dimen/media_screen_small_margin"
             android:layout_marginEnd="@dimen/media_screen_large_margin"
             android:layout_marginBottom="@dimen/media_screen_margin_with_timecode"
-            android:src="@drawable/icon_like"
+            android:src="@drawable/icon_like_dark"
             app:layout_constraintBottom_toTopOf="@id/media_screen_details_1_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/media_screen_song_artist" />
@@ -288,7 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CC000000"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
 
     <LinearLayout
@@ -297,7 +298,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet"
         android:orientation="vertical"
-
+        android:visibility="visible"
         app:behavior_hideable="true"
         app:behavior_peekHeight="400dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -305,7 +306,7 @@
         <!-- child LinearLayout in this.LinearLayout ? delete one ?
         <include layout="@layout/activity_media_bottom_sheet" /> -->
         <!-- LinearLayout in super.LinearLayout ? delete one ? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bottom_sheet"
@@ -323,8 +324,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
-                android:text="@string/media_player_bottom_sheet_title"
                 android:gravity="center"
+                android:text="@string/media_player_bottom_sheet_title"
                 android:textAlignment="center"
                 android:textColor="@color/settings_screen_header" />
 
@@ -334,9 +335,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/settings_screen_header"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/settings_screen_header"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/media_player_bottom_sheet_create_playlist"
@@ -345,9 +346,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/bottom_sheet_rView"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
         <!-- include end -->

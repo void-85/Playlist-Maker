@@ -51,7 +51,8 @@ class TracksRepositoryImpl(
                             primaryGenreName = it.primaryGenreName ?: "-",
                             country = it.country ?: "-",
 
-                            previewUrl = it.previewUrl ?: "-",
+                            // itunes empty urls ???
+                            previewUrl = it.previewUrl ?: "",
 
                             isFavorite = favIds.contains(it.trackId)
                         )

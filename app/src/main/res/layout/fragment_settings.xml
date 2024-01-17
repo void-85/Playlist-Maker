@@ -112,7 +112,11 @@
             android:text="@string/settings_user_agreement" />
 
         <ImageView
-            style="@style/settings_screen_items_icons"
+            android:layout_width="8dp"
+            android:layout_height="14dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
             android:contentDescription="@string/settings_user_agreement"
             android:src="@drawable/next_icon" />
     </FrameLayout>

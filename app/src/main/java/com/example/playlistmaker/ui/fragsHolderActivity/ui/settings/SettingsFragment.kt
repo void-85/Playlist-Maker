@@ -20,7 +20,9 @@ import com.example.playlistmaker.databinding.FragmentSettingsBinding
 class SettingsFragment : Fragment() {
 
     private lateinit var settingsThemeSwitcher: SwitchMaterial
-    private lateinit var binding: FragmentSettingsBinding
+
+    private var _binding: FragmentSettingsBinding? =null
+    private val binding get() = _binding!!
 
     //private lateinit var viewModel: SettingsActivityViewModel
     private val viewModel by viewModel<SettingsFragmentViewModel>()
@@ -40,7 +42,7 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
         //return inflater.inflate(R.layout.fragment_blank, container, false)
     }

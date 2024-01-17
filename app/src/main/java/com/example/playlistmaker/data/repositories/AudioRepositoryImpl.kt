@@ -2,6 +2,8 @@ package com.example.playlistmaker.data.repositories
 
 
 import android.media.MediaPlayer
+import android.util.Log
+import android.widget.Toast
 
 import com.example.playlistmaker.domain.api.repositories.AudioRepository
 import kotlinx.coroutines.GlobalScope
@@ -64,7 +66,13 @@ class AudioRepositoryImpl : AudioRepository {
 
         mediaPlayer.reset()
 
-        mediaPlayer.setDataSource(url)
+        // empty urls from itunes?
+        /*try{*/
+            mediaPlayer.setDataSource(url)
+        /*}catch (e: Exception){
+            Log.d(">>>","${url} -> ${e.toString()}")
+        }*/
+
         mediaPlayer.prepareAsync()
 
         mediaPlayer.setOnPreparedListener {

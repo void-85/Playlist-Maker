@@ -56,16 +56,23 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="new_playlist_activity_title">Новый плейлист</string>
     <string name="new_playlist_activity_image_cont_desc">Изображение для плейлиста</string>
     <string name="new_playlist_activity_name_edit_text_hint">Название*</string>
     <string name="new_playlist_activity_desc_edit_text_hint">Описание</string>
-    <string name="new_playlist_activity_create_button_caption">Создать</string>
+    <string name="new_playlist_activity_title"     >Новый плейлист</string>
+    <string name="new_edit_playlist_activity_title">Редактировать</string>
+    <string name="new_playlist_activity_create_button_caption"     >Создать</string>
+    <string name="new_edit_playlist_activity_create_button_caption">Сохранить</string>
 
     <string name="new_playlist_activity_exit_dialog_title">Завершить создание плейлиста?</string>
     <string name="new_playlist_activity_exit_dialog_text">Все несохраненные данные будут потеряны!</string>
     <string name="new_playlist_activity_exit_dialog_cancel">Отмена</string>
     <string name="new_playlist_activity_exit_dialog_terminate">Завершить</string>
+
+    <string name="edit_playlist_delete_track_title">Удалить трек</string>
+    <string name="edit_playlist_delete_track_msg">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="edit_playlist_delete_track_cancel">Отмена</string>
+    <string name="edit_playlist_delete_track_delete">Удалить</string>
 
     <string name="new_playlist_activity_created_pre_msg">Плейлист</string>
     <string name="new_playlist_activity_created_post_msg">создан</string>
@@ -75,9 +82,25 @@
 
     <string name="media_player_track_is_allready_in_playlist">Трек уже добавлен в плейлист</string>
     <string name="media_player_track_added_to_playlist">Добавлено в плейлист</string>
-    
+
+    <string name="edit_playlist_no_tracks">Вы не добавили\nни одного трека</string>
+    <string name="edit_playlist_share_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+
+    <string name="edit_playlist_bottom_sheet_button_share">Поделиться</string>
+    <string name="edit_playlist_bottom_sheet_button_edit">Редактировать информацию</string>
+    <string name="edit_playlist_bottom_sheet_button_delete">Удалить плейлист</string>
+
+    <string name="edit_playlist_bottom_sheet_delete_title">Удалить плейлист</string>
+    <string name="edit_playlist_bottom_sheet_delete_msg">Хотите удалить плейлист?</string>
+    <string name="edit_playlist_bottom_sheet_delete_delete">Да</string>
+    <string name="edit_playlist_bottom_sheet_delete_cancel">Нет</string>
+
     <string name="tracks_amount_string_form_a">трек</string>
     <string name="tracks_amount_string_form_b">трека</string>
     <string name="tracks_amount_string_form_c">треков</string>
+
+    <string name="minutes_amount_string_form_a">минута</string>
+    <string name="minutes_amount_string_form_b">минуты</string>
+    <string name="minutes_amount_string_form_c">минут</string>
 
 </resources>

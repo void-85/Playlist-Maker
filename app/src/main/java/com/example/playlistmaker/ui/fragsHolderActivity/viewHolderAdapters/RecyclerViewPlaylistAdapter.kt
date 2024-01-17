@@ -8,7 +8,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entities.Playlist
 
 class RecyclerViewPlaylistAdapter(
-    private val playlists: List<Playlist>
+    private val playlists: List<Playlist>,
+    private val playlistClicked: (Playlist) -> Unit
 ) : RecyclerView.Adapter<RecyclerViewPlaylistViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -23,7 +24,7 @@ class RecyclerViewPlaylistAdapter(
                 parent,
                 false
             )
-        return RecyclerViewPlaylistViewHolder(view)
+        return RecyclerViewPlaylistViewHolder(view, playlistClicked)
     }
 
     override fun onBindViewHolder(

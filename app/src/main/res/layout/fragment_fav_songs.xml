@@ -5,24 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fav_songs_rView"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="40" />
-
-
 
     <FrameLayout
         android:id="@+id/no_data_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:layout_marginTop="50dp"
+        android:visibility="visible">
 
         <FrameLayout
             android:layout_width="wrap_content"

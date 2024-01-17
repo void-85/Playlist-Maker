@@ -27,7 +27,10 @@ class PlaylistsFragmentViewModel(
         viewModelScope.launch {
 
             val playlists = ArrayList<Playlist>()
-            mediaInteractor.getAllPlaylists().collect { playlists.add(it) }
+            mediaInteractor.getAllPlaylistsWithoutTracksData().collect {
+                playlists.add(it)
+            }
+            //mediaInteractor.getAllPlaylists().collect { playlists.add(it) }
             state.postValue(PlaylistsFragmentScreenUpdate.ShowAllPlaylists(playlists))
         }
     }
@@ -35,7 +38,7 @@ class PlaylistsFragmentViewModel(
 
 sealed class PlaylistsFragmentScreenUpdate {
 
-    object ShowNoData : PlaylistsFragmentScreenUpdate()
+    //object ShowNoData : PlaylistsFragmentScreenUpdate()
 
     data class ShowAllPlaylists(
         val playlists: List<Playlist>

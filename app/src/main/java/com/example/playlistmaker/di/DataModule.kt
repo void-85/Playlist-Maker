@@ -21,6 +21,7 @@ class Constants {
     companion object {
         const val SERVICE_URL = "https://itunes.apple.com"
         const val SHARED_PREFS = "playlist_preferences"
+        const val PLAYLISTS_IMAGE_FOLDER = "playlists"
     }
 }
 
@@ -48,6 +49,6 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDB::class.java, "database2.db").build()
+        Room.databaseBuilder(androidContext(), AppDB::class.java, "database.db").build()
     }
 }

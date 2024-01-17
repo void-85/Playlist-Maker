@@ -64,12 +64,13 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var bottomSheetRView: RecyclerView
     private val playlists = ArrayList<Playlist>()
     private val playlistClicked: (Playlist) -> Unit = { playlist ->
-        viewModel.includeOrExcludeCurrentTrackInFromPlaylist(playlist)
+        viewModel.includeCurrentTrackInPlaylist(playlist)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-
     private var intentionalExit: Boolean = false
+
+
     private var showPlayButtonElsePauseButton: Boolean = true
     private fun updatePlayPauseButtonStateFromVar() {
 
@@ -115,6 +116,8 @@ class MediaActivity : AppCompatActivity() {
         }
     }
 
+
+
     override fun onStart() {
         super.onStart()
         viewModel.onStartActivity()
@@ -149,6 +152,7 @@ class MediaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         bottomSheetContainer = binding.playlistsBottomSheet
+        bottomSheetContainer.visibility - View.VISIBLE
         overlay = binding.overlay
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN

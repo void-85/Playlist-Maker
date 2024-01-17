@@ -6,8 +6,9 @@ import androidx.room.RoomDatabase
 @Database(
     version = 1,
     entities = [
-        DBTrackEntity::class,
-        DBPlaylistEntity::class
+        DBFavoriteTrackEntity::class,
+        DBPlaylistEntity::class,
+        DBTrackInPlaylist::class
     ]
 )
 abstract class AppDB : RoomDatabase() {
